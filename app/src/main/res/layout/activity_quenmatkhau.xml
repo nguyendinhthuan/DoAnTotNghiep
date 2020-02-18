@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/main_background_fragment"
+    android:orientation="vertical"
+    android:padding="13dp">
+
+    <TextView
+        android:id="@+id/txtUsenamequen"
+        style="@style/WhiteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên tài khoản"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <EditText
+        android:id="@+id/txtNhapusernamequen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/main_edittext" />
+
+    <TextView
+        android:id="@+id/txtMasoquen"
+        style="@style/WhiteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mabimat"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <EditText
+        android:id="@+id/txtNhapmasoquen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/main_edittext"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/txtMatkhauquen"
+        style="@style/WhiteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/matkhaumoi"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <EditText
+        android:id="@+id/txtNhapmatkhauquen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/main_edittext"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/txtMatkhau2quen"
+        style="@style/WhiteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/nhaplaimatkhau"
+        android:textAppearance="?android:attr/textAppearance" />
+
+    <EditText
+        android:id="@+id/txtNhapmatkhau2quen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/main_edittext"
+        android:inputType="textPassword" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btnThaydoiquen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/confirm_button"
+            android:ems="8"
+            android:text="@string/taomatkhau" />
+
+        <Button
+            android:id="@+id/btnHuy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="60dp"
+            android:background="@drawable/cancel_button"
+            android:ems="8"
+            android:text="Hủy" />
+    </LinearLayout>
+
+</LinearLayout>

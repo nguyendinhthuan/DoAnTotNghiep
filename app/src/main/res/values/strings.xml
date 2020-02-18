@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">DoAnTotNghiep</string>
+
+    <!--Đăng nhập-->
+    <string name="tendangnhap">Tên đăng nhập</string>
+    <string name="matkhau">Mật khẩu</string>
+    <string name="dangky">Đăng ký</string>
+    <string name="quenmatkhau">Quên mật khẩu</string>
+    <string name="dangnhap">Đăng nhập</string>
+    <string name="mabimat">Mã số bí mật</string>
+
+    <!--Quên mật khẩu-->
+    <string name="matkhaumoi">Mật khẩu mới</string>
+    <string name="nhaplaimatkhau">Nhập lại mật khẩu</string>
+    <string name="taomatkhau">Tạo mật khẩu</string>
+
+    <!--Đăng ký-->
+    <string name="xoatrang">Xóa trắng</string>
+    <string name="luuy">Lưu ý: Mã số này được dùng để khôi phục mật khẩu!</string>
+    <string name="title_activity_giaodien">GiaodienActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <string-array name="navigation">
+        <item>Thêm giao dịch</item>
+        <item>Xem giao dịch</item>
+        <item>Thu chi</item>
+        <item>Thống kê</item>
+        <item>Cài đặt</item>
+        <item>Đăng xuất</item>
+        <item>Thoát</item>
+    </string-array>
+
+    <string-array name="taikhoan">
+        <item>Tiền mặt</item>
+        <item>Tiết kiệm</item>
+        <item>Thẻ tín dụng</item>
+    </string-array>
+
+    <string-array name="trangthai">
+        <item>Đã trả</item>
+        <item>Còn nợ</item>
+    </string-array>
+
+    <string-array name="giaodich">
+        <item>Khoản thu</item>
+        <item>Khoản chi</item>
+    </string-array>
+
+    <!--Giao dịch-->
+    <string name="taikhoan">Tài khoản</string>
+    <string name="loaigiaodich">Loại giao dịch</string>
+    <string name="sotien">Số tiền</string>
+    <string name="nhapsotien">Nhập số tiền</string>
+    <string name="lydo">Lý do</string>
+    <string name="nhaplydo">Nhập lý do</string>
+    <string name="phannhom">Phân nhóm</string>
+    <string name="trangthai">Trạng thái giao dịch</string>
+    <string name="ngaygiaodich">Ngày giao dịch</string>
+    <string name="hientai">Hiện tại</string>
+    <string name="luu">Lưu</string>
+    <string name="luuvadong">Lưu &amp; Đóng</string>
+    <string name="title_activity_trangchu">TrangchuActivity</string>
+</resources>
