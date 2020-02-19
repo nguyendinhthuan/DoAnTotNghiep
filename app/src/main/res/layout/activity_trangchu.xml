@@ -20,6 +20,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_trangchu"
-        app:menu="@menu/activity_trangchu_drawer" />
+        app:menu="@menu/activity_trangchu_drawer" >
 
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
