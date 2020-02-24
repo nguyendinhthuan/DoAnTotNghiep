@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             if (c.getString(c.getColumnIndex("tentaikhoan")).equals(username.getText().toString())) {
                 tk = true;
                 if (c.getString(c.getColumnIndex("matkhau")).equals(password.getText().toString())) {
-                    Intent intent = new Intent(this, TrangchuActivity.class);
+                    Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("matk", c.getString(c.getColumnIndex("mataikhoan")));
                     startActivityForResult(intent, 2);
                 } else {
