@@ -202,4 +202,42 @@ public class MainActivity extends AppCompatActivity {
         }
         edit.commit();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2) {
+            if (resultCode == 0) {
+                luutaikhoan();
+                finish();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        if (share.getBoolean("ghinho", false)) {
+            username.setText(share.getString("user", null));
+            password.setText(share.getString("pass", null));
+            dangnhap(null);
+        } else {
+            username.setText(null);
+            password.setText(null);
+        }
+        ghinho.setChecked(share.getBoolean("ghinho", false));
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        luutaikhoan();
+        super.onPause();
+    }
+
+    public void dangxuat(View v) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+
 }
