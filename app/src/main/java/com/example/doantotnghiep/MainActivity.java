@@ -233,11 +233,4 @@ public class MainActivity extends AppCompatActivity {
         luutaikhoan();
         super.onPause();
     }
-
-    public void dangxuat(View v) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-    }
-
-
 }

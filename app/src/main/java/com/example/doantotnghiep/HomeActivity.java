@@ -80,14 +80,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch (id) {
-            case R.id.nav_tools:
-//                Intent i = new Intent(this, MainActivity.class);
-//                startActivity(i);
-//                break;
+        if(id == R.id.nav_tools) {
+            Intent i = new Intent(HomeActivity.this, MainActivity.class);
+            startActivity(i);
         }
-        //DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //drawerLayout.closeDrawer(GravityCompat.START);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
