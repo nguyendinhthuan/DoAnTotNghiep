@@ -26,7 +26,7 @@
             <LinearLayout
                 android:id="@+id/layoutDangnhap"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="325dp"
                 android:layout_gravity="center"
                 android:layout_margin="13dp"
                 android:orientation="vertical">
@@ -48,7 +48,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/tendangnhap"
                             android:textAppearance="?android:attr/textAppearance"
-                            android:textColor="#FFFF" />
+                            android:textColor="#000000" />
                     </TableRow>
 
                     <TableRow
@@ -78,7 +78,7 @@
                             android:layout_marginTop="8dp"
                             android:text="@string/matkhau"
                             android:textAppearance="?android:attr/textAppearance"
-                            android:textColor="#FFFF" />
+                            android:textColor="#000000" />
                     </TableRow>
 
                     <TableRow
@@ -110,7 +110,7 @@
                             android:layout_span="2"
                             android:text="Lưu mật khẩu"
                             android:textAppearance="?android:attr/textAppearance"
-                            android:textColor="#FFFF" />
+                            android:textColor="#000000" />
                     </TableRow>
 
                     <TableRow
@@ -122,8 +122,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10dp"
                             android:layout_marginLeft="60dp"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/confirm_button"
                             android:ems="10"
                             android:onClick="dangnhap"
@@ -142,7 +142,7 @@
                             android:gravity="left|center_vertical"
                             android:onClick="dangky"
                             android:text="@string/dangky"
-                            android:textColor="#FFFF" />
+                            android:textColor="#000000" />
 
                         <Button
                             android:id="@+id/btnQuenmatkhaumain"
@@ -152,7 +152,7 @@
                             android:gravity="right|center_vertical"
                             android:onClick="quenmatkhau"
                             android:text="@string/quenmatkhau"
-                            android:textColor="#FFFF" />
+                            android:textColor="#000000" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>

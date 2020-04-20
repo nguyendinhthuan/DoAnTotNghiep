@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                imglogo.setVisibility(View.GONE);
+                imglogo.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.VISIBLE);
             }
         }, 2000);
