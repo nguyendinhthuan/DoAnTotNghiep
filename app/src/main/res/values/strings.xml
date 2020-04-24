@@ -21,7 +21,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+
 
     <string name="menu_QuanLyThuChi">Quản lý thu chi</string>
     <string name="menu_QuanLyVi">Quản lý ví</string>
@@ -85,4 +85,7 @@
     <!--Giới thiệu-->
     <string name="nav_header_title">Ứng dụng quản lý thu chi dành cho sinh viên</string>
     <string name="nav_header_subtitle">Nguyễn Đình Thuận - Bùi Đức Thuận Phát</string>
+
+    <!--Menu-->
+    <string name="action_settings">Them thu chi</string>
 </resources>

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_QuanLyThuChi"
-        android:name="com.example.doantotnghiep.ui.home.HomeFragment"
+        android:name="com.example.doantotnghiep.ui.QuanLyThuChi.QuanLyThuChiFragment"
         android:label="@string/menu_QuanLyThuChi"
         tools:layout="@layout/fragment_quanlythuchi" />
 
     <fragment
         android:id="@+id/nav_QuanLyVi"
-        android:name="com.example.doantotnghiep.ui.gallery.GalleryFragment"
+        android:name="com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment"
         android:label="@string/menu_QuanLyVi"
         tools:layout="@layout/fragment_quanlyvi" />
 
     <fragment
         android:id="@+id/nav_QuanLyTaiKhoan"
-        android:name="com.example.doantotnghiep.ui.slideshow.SlideshowFragment"
+        android:name="com.example.doantotnghiep.ui.QuanLyTaiKhoan.QuanLyTaiKhoanFragment"
         android:label="@string/menu_QuanLyTaiKhoan"
         tools:layout="@layout/fragment_QuanLyTaiKhoan" />
 
