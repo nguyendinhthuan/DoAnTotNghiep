@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
     private void createtable() {
         try {
             data.execSQL("create table if not exists tbltaikhoan(mataikhoan text primary key, tentaikhoan text, matkhau text);");
-            data.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
-                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
-            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitk text, sotien int, ngay date, " +
-                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
-            data.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
-                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
+//            data.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
+//                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
+//            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitk text, sotien int, ngay date, " +
+//                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
+//            data.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
+//                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
