@@ -78,7 +78,9 @@ public class QuanLyThuChiFragment extends Fragment {
 
         adapter.addFragment(new ThuChiNgayFragment(), "Ngày");
         adapter.addFragment(new ThuChiTuanFragment(), "Tuần");
-
+        adapter.addFragment(new ThuChiThangFragment(), "Tháng");
+        adapter.addFragment(new ThuChiNamFragment(), "Năm");
+        
         viewPager.setAdapter(adapter);
     }
 }

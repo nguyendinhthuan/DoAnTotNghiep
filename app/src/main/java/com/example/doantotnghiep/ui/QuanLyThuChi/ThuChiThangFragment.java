@@ -29,7 +29,7 @@ import java.util.Calendar;
  * Use the {@link ThuChiNgayFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ThuChiTuanFragment extends Fragment {
+public class ThuChiThangFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -44,7 +44,7 @@ public class ThuChiTuanFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ThuChiTuanFragment() {
+    public ThuChiThangFragment() {
         // Required empty public constructor
     }
 
@@ -80,7 +80,7 @@ public class ThuChiTuanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_thu_chi_tuan, container, false);
+        return inflater.inflate(R.layout.fragment_thu_chi_thang, container, false);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ThuChiTuanFragment extends Fragment {
         arrtong = getResources().getStringArray(R.array.thongketong);
         arrthu = new ArrayList<ArrayThongKe>();
         arrchi = new ArrayList<ArrayThongKe>();
-        listView = (ExpandableListView)a.findViewById(R.id.lvThongKeTuan);
+        listView = (ExpandableListView)a.findViewById(R.id.lvThongKeThang);
         adapterlistview = new AdapterThongKe(this.a, arrtong, arrthu, arrchi);
         listView.setAdapter(adapterlistview);
     }
