@@ -88,4 +88,18 @@
 
     <!--Menu-->
     <string name="action_settings">Them thu chi</string>
+
+    <!--Spinner chọn loại thống kê-->
+    <string-array name="chonloaithongke">
+        <item>HÔM NAY</item>
+        <item>TUẦN NÀY</item>
+        <item>THÁNG NÀY</item>
+        <item>NĂM NAY</item>
+    </string-array>
+
+    <!--Thống kê tổng-->
+    <string-array name="thongketong">
+        <item>Tổng thu</item>
+        <item>Tổng chi</item>
+    </string-array>
 </resources>

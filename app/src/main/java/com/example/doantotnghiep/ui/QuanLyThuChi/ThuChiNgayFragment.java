@@ -1,5 +1,8 @@
 package com.example.doantotnghiep.ui.QuanLyThuChi;
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,10 +10,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.doantotnghiep.R;
+import com.example.doantotnghiep.adapter.AdapterThongKe;
+import com.example.doantotnghiep.model.ArrayThongKe;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,8 +34,11 @@ public class ThuChiNgayFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    Button button;
+    private Activity a;
+    private String[] arrtong;
+    private ArrayList<ArrayThongKe> arrthu, arrchi;
+    private ExpandableListView listView;
+    private AdapterThongKe adapterlistview;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -65,14 +80,23 @@ public class ThuChiNgayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_thu_chi_ngay, container, false);
-        button = (Button) view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "qwe", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return view;
+        return inflater.inflate(R.layout.fragment_thu_chi_ngay, container, false);
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        a = getActivity();
+        setListView();
+    }
+
+    public void setListView() {
+        arrtong = getResources().getStringArray(R.array.thongketong);
+        arrthu = new ArrayList<ArrayThongKe>();
+        arrchi = new ArrayList<ArrayThongKe>();
+        listView = (ExpandableListView)a.findViewById(R.id.lvThongKeNgay);
+        adapterlistview = new AdapterThongKe(this.a, arrtong, arrthu, arrchi);
+        listView.setAdapter(adapterlistview);
+    }
+
 }
