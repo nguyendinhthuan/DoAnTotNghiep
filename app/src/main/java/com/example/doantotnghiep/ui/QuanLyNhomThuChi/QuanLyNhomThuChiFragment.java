@@ -23,7 +23,7 @@ public class QuanLyNhomThuChiFragment extends Fragment {
         slideshowViewModel =
                 ViewModelProviders.of(this).get(QuanLyNhomThuChiViewModel.class);
         View root = inflater.inflate(R.layout.fragment_quanlynhomthuchi, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow2);
+        final TextView textView = root.findViewById(R.id.text_slideshow);
         slideshowViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
