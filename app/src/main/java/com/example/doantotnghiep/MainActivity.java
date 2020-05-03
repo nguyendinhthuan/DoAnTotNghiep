@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
             data.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
                     "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
+            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

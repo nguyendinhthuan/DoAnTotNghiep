@@ -16,4 +16,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"/>
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageButton
+            android:id="@+id/button_ThemThuChiThang"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@null"
+            android:padding="4dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/add_icon_green" />
+    </RelativeLayout>
 </RelativeLayout>
