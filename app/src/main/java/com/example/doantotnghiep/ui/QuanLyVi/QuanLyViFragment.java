@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class QuanLyViFragment extends Fragment {
 
     private QuanLyViViewModel galleryViewModel;
     private ImageButton button_ThemVi;
-    private ListView listView_Vi;
+    private GridView listView_Vi;
     private View myFragment;
     private ArrayList<ArrayVi> arrayVi;
     private AdapterVi adapterVi;
@@ -53,16 +54,17 @@ public class QuanLyViFragment extends Fragment {
                 startActivity(i);
             }
         });
-        setListView();
+        //setListView();
+        //setuplistview();
         return myFragment;
     }
 
-    public void setListView() {
-        arrayVi = new ArrayList<ArrayVi>();
-        listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
-        adapterVi = new AdapterVi(getActivity(), R.layout.fragment_quanlyvi_item, arrayVi);
-        listView_Vi.setAdapter(adapterVi);
-    }
+//    public void setListView() {
+//        arrayVi = new ArrayList<ArrayVi>();
+//        listView_Vi = (GridView) myFragment.findViewById(R.id.gridView_Vi);
+//        adapterVi = new AdapterVi(getActivity(), R.layout.fragment_quanlyvi_item, arrayVi);
+//        listView_Vi.setAdapter(adapterVi);
+//    }
 
 //    public void setArrListView() {
 //        arrayVi.clear();
@@ -76,7 +78,7 @@ public class QuanLyViFragment extends Fragment {
 //
 //    }
 
-    public void seuplistview() {
+    public void setuplistview() {
         ArrayList<String> list = new ArrayList<>();
         ArrayList<ArrayVi> listVi = new ArrayList<>();
         listVi = database.LayDanhSachVi();
@@ -85,8 +87,8 @@ public class QuanLyViFragment extends Fragment {
             list.add(arrayVi.getMotavi());
             list.add(arrayVi.getSotien());
         }
-        arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1, list);
-        listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
+        arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, list);
+        listView_Vi = (GridView) myFragment.findViewById(R.id.gridView_Vi);
         listView_Vi.setAdapter(arrayAdapter);
 
     }
