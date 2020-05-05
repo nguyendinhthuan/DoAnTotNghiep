@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.doantotnghiep.Database;
 import com.example.doantotnghiep.MainActivity;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.ViActivity;
@@ -25,6 +27,7 @@ import com.example.doantotnghiep.adapter.AdapterVi;
 import com.example.doantotnghiep.model.ArrayVi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class QuanLyViFragment extends Fragment {
 
@@ -35,7 +38,8 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<ArrayVi> arrayVi;
     private AdapterVi adapterVi;
     private SQLiteDatabase data;
-    MainActivity mainActivity;
+    private Database database;
+    private ArrayAdapter<String> arrayAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,21 +64,30 @@ public class QuanLyViFragment extends Fragment {
         listView_Vi.setAdapter(adapterVi);
     }
 
-    public void setArrListView() {
-        arrayVi.clear();
-        Cursor c = data.rawQuery("select mavi, tenvi, motavi, sotien from tblvi", null);
-        c.moveToFirst();
-        while (c.isAfterLast() == false) {
-            arrayVi.add(new ArrayVi(c.getInt(c.getColumnIndex("mavi")), c.getString(c.getColumnIndex("tenvi")), c.getString(c.getColumnIndex("motavi")), c.getInt(c.getColumnIndex("sotien"))));
-            c.moveToNext();
-        }
-        adapterVi.notifyDataSetChanged();
-
-    }
+//    public void setArrListView() {
+//        arrayVi.clear();
+//        Cursor c = data.rawQuery("select mavi, tenvi, motavi, sotien from tblvi", null);
+//        c.moveToFirst();
+//        while (c.isAfterLast() == false) {
+//            arrayVi.add(new ArrayVi(c.getInt(c.getColumnIndex("mavi")), c.getString(c.getColumnIndex("tenvi")), c.getString(c.getColumnIndex("motavi")), c.getInt(c.getColumnIndex("sotien"))));
+//            c.moveToNext();
+//        }
+//        adapterVi.notifyDataSetChanged();
+//
+//    }
 
     public void seuplistview() {
         ArrayList<String> list = new ArrayList<>();
         ArrayList<ArrayVi> listVi = new ArrayList<>();
+        listVi = database.LayDanhSachVi();
+        for (ArrayVi arrayVi : listVi) {
+            list.add(arrayVi.getTenvi() + "");
+            list.add(arrayVi.getMotavi());
+            list.add(arrayVi.getSotien());
+        }
+        arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1, list);
+        listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
+        listView_Vi.setAdapter(arrayAdapter);
 
     }
 }

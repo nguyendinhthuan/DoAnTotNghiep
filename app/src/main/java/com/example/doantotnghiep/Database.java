@@ -1,10 +1,15 @@
 package com.example.doantotnghiep;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+
+import com.example.doantotnghiep.model.ArrayVi;
+
+import java.util.ArrayList;
 
 public class Database extends SQLiteOpenHelper {
     private SQLiteDatabase data;
@@ -33,5 +38,21 @@ public class Database extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists tblvi");
         onCreate(db);
+    }
+
+    public ArrayList<ArrayVi> LayDanhSachVi() {
+        ArrayList<ArrayVi> danhsachvi = new ArrayList<ArrayVi>();
+        SQLiteDatabase database = this.getReadableDatabase();
+        String query = "select * from tblvi";
+        Cursor cursor = database.rawQuery(query, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            danhsachvi.add(new ArrayVi(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        database.close();
+        return danhsachvi;
     }
 }
