@@ -28,7 +28,7 @@
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/txtNhaptendangnhapdangky"
+                android:id="@+id/editText_TenTaiKhoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -44,7 +44,7 @@
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/txtNhapmatkhaudangky"
+                android:id="@+id/editText_MatKhau"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -68,7 +68,7 @@
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/txtNhapmasodangky"
+                android:id="@+id/editText_MaSoBiMat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -83,7 +83,7 @@
             android:layout_marginBottom="10dp"
             android:background="@drawable/main_button"
             android:ems="6"
-            android:onClick="xoatrang"
+            android:onClick="XoaTrang"
             android:text="@string/xoatrang" />
 
         <LinearLayout
@@ -99,7 +99,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/confirm_button"
                 android:ems="9"
-                android:onClick="dangky"
+                android:onClick="DangKy"
                 android:text="@string/dangky" />
 
             <Button
@@ -110,7 +110,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/cancel_button"
                 android:ems="9"
-                android:onClick="huy"
+                android:onClick="ThoatDangKy"
                 android:text="Hủy" />
         </LinearLayout>
 

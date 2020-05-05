@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.doantotnghiep.MainActivity;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.ViActivity;
 import com.example.doantotnghiep.adapter.AdapterVi;
@@ -34,6 +35,7 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<ArrayVi> arrayVi;
     private AdapterVi adapterVi;
     private SQLiteDatabase data;
+    MainActivity mainActivity;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -67,6 +69,12 @@ public class QuanLyViFragment extends Fragment {
             c.moveToNext();
         }
         adapterVi.notifyDataSetChanged();
+
+    }
+
+    public void seuplistview() {
+        ArrayList<String> list = new ArrayList<>();
+        ArrayList<ArrayVi> listVi = new ArrayList<>();
 
     }
 }

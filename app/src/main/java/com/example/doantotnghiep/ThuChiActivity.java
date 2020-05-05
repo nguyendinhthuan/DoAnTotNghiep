@@ -17,10 +17,8 @@ public class ThuChiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thu_chi);
 
-        //Anh xa
-        button_ThoatThuChi = (Button) findViewById(R.id.button_ThoatThuChi);
-        button_LuuThuChi = (Button) findViewById(R.id.button_LuuThuChi);
-        imageButton_test = (ImageButton) findViewById(R.id.button4);
+        AnhXa();
+
 
         imageButton_test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,5 +35,11 @@ public class ThuChiActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void AnhXa() {
+        button_ThoatThuChi = (Button) findViewById(R.id.button_ThoatThuChi);
+        button_LuuThuChi = (Button) findViewById(R.id.button_LuuThuChi);
+        imageButton_test = (ImageButton) findViewById(R.id.button4);
     }
 }

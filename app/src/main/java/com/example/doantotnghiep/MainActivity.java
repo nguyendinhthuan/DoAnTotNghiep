@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -22,11 +23,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.doantotnghiep.model.ArrayVi;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase data;
     private SharedPreferences share;
     private LinearLayout layout;
-    private EditText username, password, taikhoan, maso, matkhau1, matkhau2;
+    private EditText editText_TenTaiKhoanDangNhap, editText_MatKhauDangNhap, taikhoan, maso, matkhau1, matkhau2;
     private Button thaydoi, huy;
     private ImageView imglogo;
     private Animation animation;
@@ -37,33 +42,39 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
         share = getSharedPreferences("taikhoan", MODE_PRIVATE);
-        setWidget();
-        createtable();
+
+        AnhXa();
+        //TaoBangCoSoDuLieu();
     }
 
-    private void createtable() {
-        try {
-            data.execSQL("create table if not exists tbltaikhoan(mataikhoan text primary key, tentaikhoan text, matkhau text);");
-            data.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
-                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
-            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitaikhoan text, sotien int, ngay date, " +
-                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
-            data.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
-                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
-            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+//    private void TaoBangCoSoDuLieu() {
+//        try {
+//            data.execSQL("create table if not exists tbltaikhoan(mataikhoan text primary key, tentaikhoan text, matkhau text);");
+//            data.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
+//                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
+//            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitaikhoan text, sotien int, ngay date, " +
+//                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
+//            data.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
+//                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
+//            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
+    private void LayDanhSachVi() {
+        ArrayList<ArrayVi> danhsachvi = new ArrayList<ArrayVi>();
+
     }
 
-    private void setWidget() {
+    private void AnhXa() {
         imglogo = (ImageView) findViewById(R.id.imgLogo);
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_logo);
         imglogo.startAnimation(animation);
         layout = (LinearLayout) findViewById(R.id.layoutDangnhap);
         layout.setVisibility(View.GONE);
-        username = (EditText) findViewById(R.id.txtNhaptendangnhapmain);
-        password = (EditText) findViewById(R.id.txtNhapmatkhaumain);
+        editText_TenTaiKhoanDangNhap = (EditText) findViewById(R.id.editText_TenTaiKhoanDangNhap);
+        editText_MatKhauDangNhap = (EditText) findViewById(R.id.editText_MatKhauDangNhap);
         ghinho = (CheckBox) findViewById(R.id.chkGhinhomain);
         Handler h = new Handler();
         h.postDelayed(new Runnable() {
@@ -75,26 +86,26 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
     }
 
-    public void dangky(View v) {
+    public void DangKyTaiKhoan(View v) {
         clearData();
         Intent intent = new Intent(this, DangkyActivity.class);
         startActivity(intent);
     }
 
     private void clearData() {
-        username.setText(null);
-        password.setText(null);
+        editText_TenTaiKhoanDangNhap.setText(null);
+        editText_MatKhauDangNhap.setText(null);
     }
 
-    public void dangnhap(View v) {
+    public void DangNhap(View v) {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_edittext);
         boolean tk = false, mk = true;
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            if (c.getString(c.getColumnIndex("tentaikhoan")).equals(username.getText().toString())) {
+            if (c.getString(c.getColumnIndex("tentaikhoan")).equals(editText_TenTaiKhoanDangNhap.getText().toString())) {
                 tk = true;
-                if (c.getString(c.getColumnIndex("matkhau")).equals(password.getText().toString())) {
+                if (c.getString(c.getColumnIndex("matkhau")).equals(editText_MatKhauDangNhap.getText().toString())) {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("matk", c.getString(c.getColumnIndex("mataikhoan")));
                     startActivityForResult(intent, 2);
@@ -104,22 +115,22 @@ public class MainActivity extends AppCompatActivity {
             }
             c.moveToNext();
         }
-        if (username.getText().toString().equals("")) {
-            username.startAnimation(animation);
-            Toast.makeText(getApplicationContext(), "Bạn chưa nhập username", Toast.LENGTH_SHORT).show();
-        } else if (password.getText().toString().equals("")) {
-            password.startAnimation(animation);
-            Toast.makeText(getApplicationContext(), "Bạn chưa nhập password", Toast.LENGTH_SHORT).show();
+        if (editText_TenTaiKhoanDangNhap.getText().toString().equals("")) {
+            editText_TenTaiKhoanDangNhap.startAnimation(animation);
+            Toast.makeText(getApplicationContext(), "Bạn chưa nhập tên tài khoản", Toast.LENGTH_SHORT).show();
+        } else if (editText_MatKhauDangNhap.getText().toString().equals("")) {
+            editText_MatKhauDangNhap.startAnimation(animation);
+            Toast.makeText(getApplicationContext(), "Bạn chưa nhập mật khẩu", Toast.LENGTH_SHORT).show();
         } else if (tk == false) {
-            Toast.makeText(getApplicationContext(), "Tài khoản không tồn tại", Toast.LENGTH_SHORT).show();
-            username.startAnimation(animation);
+            Toast.makeText(getApplicationContext(), "Tài khoản này không tồn tại", Toast.LENGTH_SHORT).show();
+            editText_TenTaiKhoanDangNhap.startAnimation(animation);
         } else if (mk == false) {
             Toast.makeText(getApplicationContext(), "Không đúng mật khẩu", Toast.LENGTH_SHORT).show();
-            password.startAnimation(animation);
+            editText_MatKhauDangNhap.startAnimation(animation);
         }
     }
 
-    public void quenmatkhau(View v) {
+    public void QuenMatKhau(View v) {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_edittext);
         clearData();
         final Dialog d = new Dialog(MainActivity.this);
@@ -137,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         thaydoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doimatkhau()) {
+                if (DoiMatKhau()) {
                     d.dismiss();
                 }
             }
@@ -150,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public boolean doimatkhau() {
+    public boolean DoiMatKhau() {
         String thongbao = "";
         boolean ms = false;
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
@@ -165,13 +176,13 @@ public class MainActivity extends AppCompatActivity {
             thongbao = "Bạn chưa nhập tên tài khoản";
             taikhoan.startAnimation(animation);
         } else if (maso.getText().toString().equals("")) {
-            thongbao = "Bạn chưa nhập mã số";
+            thongbao = "Bạn chưa nhập mã số bí mật";
             maso.startAnimation(animation);
         } else if (matkhau1.getText().toString().equals("")) {
-            thongbao = "Bạn chưa nhập password";
+            thongbao = "Bạn chưa nhập mật khẩu";
             matkhau1.startAnimation(animation);
         } else if (matkhau2.getText().toString().equals("")) {
-            thongbao = "Bạn chưa nhập password 2";
+            thongbao = "Bạn chưa nhập mật khẩu mới";
             matkhau2.startAnimation(animation);
         } else if (ms == false) {
             thongbao = "Sai mã số bí mật";
@@ -192,11 +203,11 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    public void luutaikhoan() {
+    public void GhiNhoTaiKhoan() {
         SharedPreferences.Editor edit = share.edit();
         if (ghinho.isChecked()) {
-            edit.putString("user", username.getText().toString());
-            edit.putString("pass", password.getText().toString());
+            edit.putString("user", editText_TenTaiKhoanDangNhap.getText().toString());
+            edit.putString("pass", editText_MatKhauDangNhap.getText().toString());
             edit.putBoolean("ghinho", ghinho.isChecked());
         } else {
             edit.clear();
@@ -209,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2) {
             if (resultCode == 0) {
-                luutaikhoan();
+                GhiNhoTaiKhoan();
                 finish();
             }
         }
@@ -218,12 +229,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         if (share.getBoolean("ghinho", false)) {
-            username.setText(share.getString("user", null));
-            password.setText(share.getString("pass", null));
-            dangnhap(null);
+            editText_TenTaiKhoanDangNhap.setText(share.getString("user", null));
+            editText_MatKhauDangNhap.setText(share.getString("pass", null));
+            DangNhap(null);
         } else {
-            username.setText(null);
-            password.setText(null);
+            editText_TenTaiKhoanDangNhap.setText(null);
+            editText_MatKhauDangNhap.setText(null);
         }
         ghinho.setChecked(share.getBoolean("ghinho", false));
         super.onResume();
@@ -231,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        luutaikhoan();
+        GhiNhoTaiKhoan();
         super.onPause();
     }
 }

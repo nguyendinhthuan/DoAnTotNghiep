@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/txtNhaptendangnhapmain"
+                            android:id="@+id/editText_TenTaiKhoanDangNhap"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -86,7 +86,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/txtNhapmatkhaumain"
+                            android:id="@+id/editText_MatKhauDangNhap"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -126,7 +126,7 @@
                             android:layout_marginTop="10dp"
                             android:background="@drawable/confirm_button"
                             android:ems="10"
-                            android:onClick="dangnhap"
+                            android:onClick="DangNhap"
                             android:text="@string/dangnhap" />
                     </TableRow>
 
@@ -140,7 +140,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="left|center_vertical"
-                            android:onClick="dangky"
+                            android:onClick="DangKyTaiKhoan"
                             android:text="@string/dangky"
                             android:textColor="#000000" />
 
@@ -150,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="right|center_vertical"
-                            android:onClick="quenmatkhau"
+                            android:onClick="QuenMatKhau"
                             android:text="@string/quenmatkhau"
                             android:textColor="#000000" />
                     </TableRow>
