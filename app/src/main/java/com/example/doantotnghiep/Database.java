@@ -20,18 +20,18 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try {
-            db.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text);");
-//            db.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
-//                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
-//            db.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitaikhoan text, sotien int, ngay date, " +
-//                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
-//            db.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
-//                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
-            db.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+//        try {
+//            db.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text);");
+////            db.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
+////                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
+////            db.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitaikhoan text, sotien int, ngay date, " +
+////                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
+////            db.execSQL("create table if not exists tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
+////                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
+//            db.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     @Override
