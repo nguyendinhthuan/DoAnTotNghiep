@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imglogo;
     private Animation animation;
     private CheckBox ghinho;
+    Database database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void TaoBangCoSoDuLieu() {
         try {
-            data.execSQL("create table if not exists tbltaikhoan(mataikhoan text primary key, tentaikhoan text, matkhau text);");
+//            data.execSQL("create table if not exists tbltaikhoan(mataikhoan text primary key, tentaikhoan text, matkhau text);");
+            data.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text);");
             data.execSQL("create table if not exists tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
                     "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
             data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaitaikhoan text, sotien int, ngay date, " +
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void AnhXa() {
+        database = new Database(this);
+
         imglogo = (ImageView) findViewById(R.id.imgLogo);
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_logo);
         imglogo.startAnimation(animation);
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void DangKyTaiKhoan(View v) {
         clearData();
-        Intent intent = new Intent(this, DangkyActivity.class);
+        Intent intent = new Intent(this, DangKyActivity.class);
         startActivity(intent);
     }
 
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 tk = true;
                 if (c.getString(c.getColumnIndex("matkhau")).equals(editText_MatKhauDangNhap.getText().toString())) {
                     Intent intent = new Intent(this, HomeActivity.class);
-                    intent.putExtra("matk", c.getString(c.getColumnIndex("mataikhoan")));
+                    intent.putExtra("matk", c.getString(c.getColumnIndex("masobimat")));
                     startActivityForResult(intent, 2);
                 } else {
                     mk = false;
@@ -167,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            if (c.getString(c.getColumnIndex("mataikhoan")).equals(maso.getText().toString())) {
+            if (c.getString(c.getColumnIndex("masobimat")).equals(maso.getText().toString())) {
                 ms = true;
             }
             c.moveToNext();
@@ -194,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ContentValues values = new ContentValues();
             values.put("matkhau", matkhau1.getText().toString());
-            data.update("tbltaikhoan", values, "mataikhoan=?", new String[]{maso.getText().toString()});
+            data.update("tbltaikhoan", values, "masobimat=?", new String[]{maso.getText().toString()});
             thongbao = "Lấy lại mật khẩu thành công";
             Toast.makeText(getApplicationContext(), thongbao, Toast.LENGTH_SHORT).show();
             return true;

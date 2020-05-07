@@ -12,7 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class DangkyActivity extends AppCompatActivity {
+public class DangKyActivity extends AppCompatActivity {
     private SQLiteDatabase data;
     private EditText editText_TenTaiKhoan, editText_MatKhau, editText_MaSoBiMat;
     private Animation animation;
@@ -51,7 +51,7 @@ public class DangkyActivity extends AppCompatActivity {
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
         c.moveToFirst();
         while (c.isAfterLast()==false) {
-            if (c.getString(c.getColumnIndex("mataikhoan")).equals(editText_MaSoBiMat.getText().toString())) {
+            if (c.getString(c.getColumnIndex("masobimat")).equals(editText_MaSoBiMat.getText().toString())) {
                 mk = false;
             } else if (c.getString(c.getColumnIndex("tentaikhoan")).equals(editText_TenTaiKhoan.getText().toString())) {
                 tk = false;
@@ -75,7 +75,7 @@ public class DangkyActivity extends AppCompatActivity {
             editText_TenTaiKhoan.startAnimation(animation);
         } else {
             ContentValues values = new ContentValues();
-            values.put("mataikhoan", editText_MaSoBiMat.getText().toString());
+            values.put("masobimat", editText_MaSoBiMat.getText().toString());
             values.put("tentaikhoan", editText_TenTaiKhoan.getText().toString());
             values.put("matkhau", editText_MatKhau.getText().toString());
             if (data.insert("tbltaikhoan", null, values)!=-1) {

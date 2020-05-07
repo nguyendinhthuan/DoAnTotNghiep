@@ -15,7 +15,7 @@
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ThuChiActivity" />
-        <activity android:name=".DangkyActivity" />
+        <activity android:name=".DangKyActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
