@@ -25,7 +25,7 @@ public class ViActivity extends AppCompatActivity {
     private Button button_LuuVi, button_ThoatVi;
     private EditText editText_TenVi, editText_MoTaVi, editText_SoTienVi;
     private Animation animation;
-
+    Database database;
     ArrayVi arrayVi;
 
     @Override
@@ -38,6 +38,7 @@ public class ViActivity extends AppCompatActivity {
         AnhXa();
         ThemMoiVi();
         ThoatThemVi();
+
     }
 
     public void AnhXa() {

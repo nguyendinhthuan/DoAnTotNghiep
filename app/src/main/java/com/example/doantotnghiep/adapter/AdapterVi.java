@@ -14,28 +14,31 @@ import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.model.ArrayVi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterVi extends ArrayAdapter<ArrayVi> {
-    private Activity activity;
+    private Activity context = null;
     private int mavi;
-    private ArrayList<ArrayVi> arr;
-    private TextView textView_TenVi, textView_SoTien;
+    private List<ArrayVi> arr = null;
+    private TextView textView_TenVi, textView_MoTaVi ,textView_SoTien;
 
-    public AdapterVi(@NonNull Context context, int resource, @NonNull ArrayList<ArrayVi> objects) {
+    public AdapterVi(@NonNull Context context, int resource, @NonNull List<ArrayVi> objects) {
         super(context, resource, objects);
-        this.activity = (Activity) context;
+        this.context = (Activity) context;
         this.mavi = resource;
         this.arr = objects;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater in = activity.getLayoutInflater();
-        view = in.inflate(mavi, null);
+        LayoutInflater inflater = context.getLayoutInflater();
+        view = inflater.inflate(mavi, null);
         if (arr.size() > 0 && position >= 0) {
             textView_TenVi = (TextView) view.findViewById(R.id.textView_TenVi);
             textView_SoTien = (TextView) view.findViewById(R.id.textView_SoTien);
+            textView_MoTaVi = (TextView) view.findViewById(R.id.textView_MoTaVi);
             textView_TenVi.setText(arr.get(position).tenvi);
+            textView_MoTaVi.setText(arr.get(position).motavi);
             textView_SoTien.setText(arr.get(position).sotien);
         }
         return view;

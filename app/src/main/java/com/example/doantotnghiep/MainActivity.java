@@ -166,12 +166,12 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean DoiMatKhau() {
         String thongbao = "";
-        boolean ms = false;
+        boolean tk = false;
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            if (c.getString(c.getColumnIndex("masobimat")).equals(maso.getText().toString())) {
-                ms = true;
+            if (c.getString(c.getColumnIndex("tentaikhoan")).equals(taikhoan.getText().toString())) {
+                tk = true;
             }
             c.moveToNext();
         }
@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (matkhau2.getText().toString().equals("")) {
             thongbao = "Bạn chưa nhập mật khẩu mới";
             matkhau2.startAnimation(animation);
-        } else if (ms == false) {
-            thongbao = "Sai mã số bí mật";
-            maso.startAnimation(animation);
+        } else if (tk == false) {
+            thongbao = "Sai tai khoan";
+            taikhoan.startAnimation(animation);
         } else if (matkhau1.getText().toString().equals(matkhau2.getText().toString()) == false) {
             thongbao = "Mật khẩu không khớp";
             matkhau1.startAnimation(animation);

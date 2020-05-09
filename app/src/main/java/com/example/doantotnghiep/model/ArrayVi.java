@@ -13,6 +13,10 @@ public class ArrayVi {
         this.sotien = sotien;
     }
 
+    public ArrayVi() {
+
+    }
+
     public int getMavi() {
         return mavi;
     }

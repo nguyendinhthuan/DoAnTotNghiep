@@ -13,6 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
+        <Button
+            android:id="@+id/button_Reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <ImageButton
             android:id="@+id/button_ThemVi"
             android:layout_width="48dp"
