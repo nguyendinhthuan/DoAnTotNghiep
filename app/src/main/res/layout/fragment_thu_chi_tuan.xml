@@ -22,7 +22,7 @@
         android:layout_alignParentBottom="true">
 
         <ImageButton
-            android:id="@+id/button_ThemThuChiTuan"
+            android:id="@+id/imageButton_ThemThuChiTuan"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentRight="true"

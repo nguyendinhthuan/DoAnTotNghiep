@@ -41,46 +41,4 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("drop table if exists tbltaikhoan");
         onCreate(db);
     }
-
-//    public ArrayList<ArrayVi> LayDanhSachVi() {
-//        ArrayList<ArrayVi> danhsachvi = new ArrayList<ArrayVi>();
-//        SQLiteDatabase database = this.getReadableDatabase();
-//        String query = "select * from tblvi";
-//        Cursor cursor = database.rawQuery(query, null);
-//        if (cursor != null)
-//            cursor.moveToFirst();
-//        while (cursor.isAfterLast() == false) {
-//            danhsachvi.add(new ArrayVi(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
-//            cursor.moveToNext();
-//        }
-//        cursor.close();
-//        database.close();
-//        return danhsachvi;
-//    }
-
-    public List<ArrayVi> LayDanhSachVi() {
-        List<ArrayVi> listVi = new ArrayList<ArrayVi>();
-        String query = "select * from tblvi";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ArrayVi arrayVi = new ArrayVi();
-                arrayVi.setMavi(Integer.parseInt(cursor.getString(0)));
-                arrayVi.setTenvi(cursor.getString(1));
-                arrayVi.setMotavi(cursor.getString(2));
-                arrayVi.setSotien(cursor.getString(3));
-
-                listVi.add(arrayVi);
-            } while (cursor.moveToNext());
-        }
-        return listVi;
-    }
-
-    public Cursor viewData() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "select * from tblvi";
-        Cursor cursor = db.rawQuery(query, null);
-        return cursor;
-    }
 }
