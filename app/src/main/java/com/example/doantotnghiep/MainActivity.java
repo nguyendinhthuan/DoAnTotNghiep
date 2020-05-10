@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    //Dang fix loi
     public boolean DoiMatKhau() {
         String thongbao = "";
         boolean tk = false;

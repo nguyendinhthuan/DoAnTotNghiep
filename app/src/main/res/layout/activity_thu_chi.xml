@@ -29,35 +29,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:text="Loại thu chi:"
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="23dp"/>
         <Spinner
             android:id="@+id/spinner_LoaiThuChi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="160dp"
+            android:layout_height="40dp"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:text="Chọn ví:"
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="23dp"/>
         <Spinner
             android:id="@+id/spinner_Vi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_width="160dp"
+            android:layout_height="40dp"/>
         <Button
             android:id="@+id/button_ThemViNong"
             android:text="Thêm ví"
@@ -68,14 +70,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:text="Nhập số tiền:"
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="23dp"/>
         <EditText
             android:id="@+id/editText_SoTienThuChi"
             android:layout_width="135dp"
@@ -86,14 +89,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:text="Nhập mô tả:"
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="23dp"/>
         <EditText
             android:id="@+id/editText_MoTaThuChi"
             android:layout_width="135dp"
@@ -104,14 +108,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:text="Thời gian:"
-            android:layout_width="120dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="23dp"/>
         <Button
             android:id="@+id/button_NgayThuChi"
             android:layout_width="100dp"

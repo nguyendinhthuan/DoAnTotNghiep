@@ -39,18 +39,7 @@
         <item>Thoát</item>
     </string-array>
 
-    <string-array name="taikhoan">
-        <item>Tiền mặt</item>
-        <item>Tiết kiệm</item>
-        <item>Thẻ tín dụng</item>
-    </string-array>
-
-    <string-array name="trangthai">
-        <item>Đã trả</item>
-        <item>Còn nợ</item>
-    </string-array>
-
-    <string-array name="giaodich">
+    <string-array name="loaithuchi">
         <item>Khoản thu</item>
         <item>Khoản chi</item>
     </string-array>
