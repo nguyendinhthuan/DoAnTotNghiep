@@ -16,7 +16,7 @@
 
     <!--Đăng ký-->
     <string name="xoatrang">Xóa trắng</string>
-    <string name="luuy">Lưu ý: Mã số này được dùng để khôi phục mật khẩu!</string>
+    <string name="luuy">Lưu ý: Bạn nên ghi nhớ kỹ mã số này, mã số này được dùng để khôi phục mật khẩu!</string>
     <string name="title_activity_giaodien">GiaodienActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

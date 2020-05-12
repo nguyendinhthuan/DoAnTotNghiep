@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content">
 
                         <CheckBox
-                            android:id="@+id/chkGhinhomain"
+                            android:id="@+id/checkBox_GhiNho"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"

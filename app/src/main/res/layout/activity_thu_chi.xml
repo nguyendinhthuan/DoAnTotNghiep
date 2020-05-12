@@ -101,8 +101,7 @@
         <EditText
             android:id="@+id/editText_MoTaThuChi"
             android:layout_width="135dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout

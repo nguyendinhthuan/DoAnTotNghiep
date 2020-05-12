@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/main_edittext"
-        android:inputType="textPassword" />
+        android:inputType="numberPassword" />
 
     <TextView
         android:id="@+id/txtMatkhauquen"

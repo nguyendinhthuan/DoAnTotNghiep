@@ -38,7 +38,7 @@ public class DangKyActivity extends AppCompatActivity {
     public void XoaTrang(View v) {
         editText_TenTaiKhoan.setText(null);
         editText_MatKhau.setText(null);
-        editText_MatKhau.setText(null);
+        editText_MaSoBiMat.setText(null);
     }
 
     public void ThoatDangKy(View v){
