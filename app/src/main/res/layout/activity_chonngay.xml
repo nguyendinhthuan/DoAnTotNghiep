@@ -7,8 +7,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="Chon ngay"
-        android:gravity="center"/>
+        android:text="Chọn ngày"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="24dp"/>
     <DatePicker
         android:id="@+id/datePicker"
         android:layout_width="wrap_content"

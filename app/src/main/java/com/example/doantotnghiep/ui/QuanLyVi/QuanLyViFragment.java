@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.example.doantotnghiep.Database;
 import com.example.doantotnghiep.MainActivity;
 import com.example.doantotnghiep.R;
+import com.example.doantotnghiep.ThuChiActivity;
 import com.example.doantotnghiep.ViActivity;
 import com.example.doantotnghiep.adapter.AdapterVi;
 import com.example.doantotnghiep.model.ArrayVi;
@@ -135,10 +136,11 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void SuaVi() {
-        gridView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        gridView_Vi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                return true;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent i = new Intent(getContext(), ThuChiActivity.class);
+//                startActivity(i);
             }
         });
     }
@@ -150,7 +152,7 @@ public class QuanLyViFragment extends Fragment {
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                data.rawQuery("delete from tblvi where tenvi = '" +tenvi+ "'", null).moveToFirst();
+                data.rawQuery("delete from tblvi where tenvi = '" + tenvi + "'", null).moveToFirst();
                 LayDanhSachVi();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }

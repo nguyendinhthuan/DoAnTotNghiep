@@ -126,7 +126,7 @@
             android:textColor="#FFFFFF" />
         <Button
             android:id="@+id/button_GioThuchi"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:background="#FF0000"
