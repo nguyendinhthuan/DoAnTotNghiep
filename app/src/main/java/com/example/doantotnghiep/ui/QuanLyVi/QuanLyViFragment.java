@@ -144,39 +144,23 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void XoaVi(final String tenvi) {
-        gridView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Thông báo !");
+        builder.setMessage("Bạn có chắc chắn muốn xóa ví này ?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final ArrayVi arrayVi = list.get(position);
-                final int pos = position;
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle("Xoa vi");
-                builder.setPositiveButton("Co", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //int n = data.delete("tblvi", "tenvi", new String[]{arrayVi.getTenvi().toString()});
-//                        int n = data.delete("tblvi", "tenvi", new String[]{arrayVi.getTenvi().toString()});
-//                        if (n > 0) {
-//                            Toast.makeText(activity, "Xoa ok", Toast.LENGTH_SHORT).show();
-//                            list.remove(pos);
-//                            adapterVi.notifyDataSetChanged();
-//                        } else {
-//                            Toast.makeText(activity, "Xoa ko dc", Toast.LENGTH_SHORT).show();
-//                        }
-                        data.rawQuery("delete from tblvi where tenvi = '" +tenvi+ "'", null).moveToFirst();
-                        LayDanhSachVi();
-                        Toast.makeText(activity, "Xoa ok", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.setNegativeButton("Khong", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-                return false;
+            public void onClick(DialogInterface dialog, int which) {
+                data.rawQuery("delete from tblvi where tenvi = '" +tenvi+ "'", null).moveToFirst();
+                LayDanhSachVi();
+                Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 }
