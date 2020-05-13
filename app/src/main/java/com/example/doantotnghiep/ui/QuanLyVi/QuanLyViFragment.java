@@ -1,6 +1,8 @@
 package com.example.doantotnghiep.ui.QuanLyVi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,12 +77,7 @@ public class QuanLyViFragment extends Fragment {
         TaiDanhSachVi();
         SuaVi();
         LayDanhSachVi();
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void ThemVi() {
@@ -127,6 +125,13 @@ public class QuanLyViFragment extends Fragment {
         cursor.close();
         adapterVi = new AdapterVi(getContext(), R.layout.fragment_quanlyvi_item, list);
         gridView_Vi.setAdapter(adapterVi);
+        gridView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                XoaVi(list.get(position).tenvi);
+                return false;
+            }
+        });
     }
 
     public void SuaVi() {
@@ -138,4 +143,40 @@ public class QuanLyViFragment extends Fragment {
         });
     }
 
+    public void XoaVi(final String tenvi) {
+        gridView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                final ArrayVi arrayVi = list.get(position);
+                final int pos = position;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Xoa vi");
+                builder.setPositiveButton("Co", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //int n = data.delete("tblvi", "tenvi", new String[]{arrayVi.getTenvi().toString()});
+//                        int n = data.delete("tblvi", "tenvi", new String[]{arrayVi.getTenvi().toString()});
+//                        if (n > 0) {
+//                            Toast.makeText(activity, "Xoa ok", Toast.LENGTH_SHORT).show();
+//                            list.remove(pos);
+//                            adapterVi.notifyDataSetChanged();
+//                        } else {
+//                            Toast.makeText(activity, "Xoa ko dc", Toast.LENGTH_SHORT).show();
+//                        }
+                        data.rawQuery("delete from tblvi where tenvi = '" +tenvi+ "'", null).moveToFirst();
+                        LayDanhSachVi();
+                        Toast.makeText(activity, "Xoa ok", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton("Khong", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+                return false;
+            }
+        });
+    }
 }

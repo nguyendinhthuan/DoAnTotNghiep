@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.doantotnghiep.model.ArrayVi;
+import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
 
 public class ViActivity extends AppCompatActivity {
     private SQLiteDatabase data;
@@ -27,6 +28,8 @@ public class ViActivity extends AppCompatActivity {
     private Animation animation;
     Database database;
     ArrayVi arrayVi;
+
+    private QuanLyViFragment quanLyViFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
