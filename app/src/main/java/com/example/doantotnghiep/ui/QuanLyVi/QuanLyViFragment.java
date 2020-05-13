@@ -73,6 +73,7 @@ public class QuanLyViFragment extends Fragment {
         ThemVi();
         TaiDanhSachVi();
         SuaVi();
+        LayDanhSachVi();
     }
 
     @Override
@@ -96,7 +97,7 @@ public class QuanLyViFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LayDanhSachVi();
-                Toast.makeText(activity, "Load thanh cong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Tải danh sách ví thành công", Toast.LENGTH_SHORT).show();
             }
         });
     }

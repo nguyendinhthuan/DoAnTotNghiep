@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void AnhXa() {
-        //test
-        //Thuan testtttt
         database = new Database(this);
 
         imglogo = (ImageView) findViewById(R.id.imgLogo);
@@ -102,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("matk", c.getString(c.getColumnIndex("masobimat")));
                     startActivityForResult(intent, 2);
+                    Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {
                     mk = false;
                 }

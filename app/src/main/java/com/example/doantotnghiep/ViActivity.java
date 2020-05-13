@@ -91,7 +91,7 @@ public class ViActivity extends AppCompatActivity {
                 values.put("motavi", editText_MoTaVi.getText().toString());
                 values.put("sotien", editText_SoTienVi.getText().toString());
                 if (data.insert("tblvi", null, values) != -1) {
-                    thongbao = "Thêm ví thành công";
+                    thongbao = "Thêm ví thành công, vui lòng nhấn Tải lại";
                     finish();
                 } else {
                     thongbao = "Thêm ví không thành công";
