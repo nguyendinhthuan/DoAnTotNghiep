@@ -2,16 +2,21 @@ package com.example.doantotnghiep;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +24,7 @@ import java.util.Date;
 
 public class ThuChiActivity extends AppCompatActivity {
     private Button button_ThoatThuChi, button_LuuThuChi, button_NgayThuChi, button_GioThuChi, button_ThemViNong;
+    private Button button_ThoiGianHienTai;
     private Spinner spinner_LoaiThuChi, spinner_Vi;
     private Calendar today;
     private String gio;
@@ -30,6 +36,7 @@ public class ThuChiActivity extends AppCompatActivity {
     private ArrayList<String> arrTenVi;
     private Cursor cursor;
     private SQLiteDatabase data;
+    private DatePicker datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,8 @@ public class ThuChiActivity extends AppCompatActivity {
 
         button_NgayThuChi = (Button) findViewById(R.id.button_NgayThuChi);
         button_GioThuChi = (Button) findViewById(R.id.button_GioThuchi);
+
+        button_ThoiGianHienTai = (Button) findViewById(R.id.button_ThoiGianHienTai);
 
         spinner_LoaiThuChi = (Spinner) findViewById(R.id.spinner_LoaiThuChi);
         spinner_Vi = (Spinner) findViewById(R.id.spinner_Vi);
@@ -89,6 +98,33 @@ public class ThuChiActivity extends AppCompatActivity {
         date = today.getTime();
         button_NgayThuChi.setText(simpleDateFormat.format(date));
         button_GioThuChi.setText(gio);
+    }
+
+    public void ChonNgay(View v) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_chonngay);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+
+        final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
+        Button button_ChonNgayXong = (Button) dialog.findViewById(R.id.button_ChonNgayXong);
+        button_ChonNgayXong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    date = simpleDateFormat.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                button_NgayThuChi.setText(simpleDateFormat.format(date));
+                dialog.cancel();
+            }
+        });
+    }
+
+    public void LayNgayHienTai(View v) {
+        HienThiThoiGian();
     }
 
     public void LoadSpinner() {
@@ -128,4 +164,6 @@ public class ThuChiActivity extends AppCompatActivity {
         }
         adapterVi.notifyDataSetChanged();
     }
+
+
 }
