@@ -7,22 +7,6 @@
     android:padding="13dp">
 
     <TextView
-        android:id="@+id/txtUsenamequen"
-        style="@style/WhiteText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tên tài khoản"
-        android:textAppearance="?android:attr/textAppearance"
-        android:textColor="#000000" />
-
-    <EditText
-        android:id="@+id/txtNhapusernamequen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/main_edittext" />
-
-    <TextView
         android:id="@+id/txtMasoquen"
         style="@style/WhiteText"
         android:layout_width="wrap_content"

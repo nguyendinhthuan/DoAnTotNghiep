@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase data;
     private SharedPreferences share;
     private LinearLayout layout;
-    private EditText editText_TenTaiKhoanDangNhap, editText_MatKhauDangNhap, taikhoan, maso, matkhau1, matkhau2;
+    private EditText editText_TenTaiKhoanDangNhap, editText_MatKhauDangNhap, maso, matkhau1, matkhau2;
     private Button thaydoi, huy;
     private ImageView imglogo;
     private Animation animation;
@@ -56,13 +56,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void LayDanhSachVi() {
-        ArrayList<ArrayVi> danhsachvi = new ArrayList<ArrayVi>();
-
-    }
-
     private void AnhXa() {
         //test
+        //Thuan testtttt
         database = new Database(this);
 
         imglogo = (ImageView) findViewById(R.id.imgLogo);
@@ -84,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void DangKyTaiKhoan(View v) {
-        clearData();
+        XoaTrang();
         Intent intent = new Intent(this, DangKyActivity.class);
         startActivity(intent);
     }
 
-    private void clearData() {
+    private void XoaTrang() {
         editText_TenTaiKhoanDangNhap.setText(null);
         editText_MatKhauDangNhap.setText(null);
     }
@@ -129,14 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void QuenMatKhau(View v) {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_edittext);
-        clearData();
+        XoaTrang();
         final Dialog d = new Dialog(MainActivity.this);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setContentView(R.layout.activity_quenmatkhau);
         d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         d.show();
 
-        taikhoan = (EditText) d.findViewById(R.id.txtNhapusernamequen);
         maso = (EditText) d.findViewById(R.id.txtNhapmasoquen);
         matkhau1 = (EditText) d.findViewById(R.id.txtNhapmatkhauquen);
         matkhau2 = (EditText) d.findViewById(R.id.txtNhapmatkhau2quen);
@@ -157,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //Dang fix loi
+
     public boolean DoiMatKhau() {
         String thongbao = "";
         boolean msbm = false;

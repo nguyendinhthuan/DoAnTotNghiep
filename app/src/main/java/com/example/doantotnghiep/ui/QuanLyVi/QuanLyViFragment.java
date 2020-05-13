@@ -5,11 +5,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -67,6 +72,13 @@ public class QuanLyViFragment extends Fragment {
         AnhXa();
         ThemVi();
         TaiDanhSachVi();
+        SuaVi();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void ThemVi() {
@@ -114,6 +126,15 @@ public class QuanLyViFragment extends Fragment {
         cursor.close();
         adapterVi = new AdapterVi(getContext(), R.layout.fragment_quanlyvi_item, list);
         gridView_Vi.setAdapter(adapterVi);
+    }
+
+    public void SuaVi() {
+        gridView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return true;
+            }
+        });
     }
 
 }
