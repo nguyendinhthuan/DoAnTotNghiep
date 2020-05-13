@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void AnhXa() {
+        //test
         database = new Database(this);
 
         imglogo = (ImageView) findViewById(R.id.imgLogo);
