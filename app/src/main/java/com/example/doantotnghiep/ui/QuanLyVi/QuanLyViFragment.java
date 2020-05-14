@@ -146,7 +146,7 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void XoaVi(final String tenvi) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         builder.setTitle("Thông báo !");
         builder.setMessage("Bạn có chắc chắn muốn xóa ví này ?");
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
