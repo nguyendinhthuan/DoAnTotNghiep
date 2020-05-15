@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 tk = true;
                 if (c.getString(c.getColumnIndex("matkhau")).equals(editText_MatKhauDangNhap.getText().toString())) {
                     Intent intent = new Intent(this, HomeActivity.class);
-                    intent.putExtra("matk", c.getString(c.getColumnIndex("masobimat")));
+                    intent.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
                     startActivityForResult(intent, 2);
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {

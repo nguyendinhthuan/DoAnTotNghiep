@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -133,13 +134,23 @@ public class ThuChiActivity extends AppCompatActivity {
         adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrSpinner);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_LoaiThuChi.setAdapter(adapterSpinner);
-        //SpinnerVi
+        //Spinner Vi
         arrMaVi = new ArrayList<Integer>();
         arrTenVi = new ArrayList<String>();
         adapterVi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenVi);
         adapterVi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_Vi.setAdapter(adapterVi);
-        //LoadDanhSachViLenSpinner();
+        spinner_Vi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LoadDanhSachViLenSpinner();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void ThemVi() {

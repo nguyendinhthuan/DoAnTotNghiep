@@ -31,6 +31,7 @@ public class ViActivity extends AppCompatActivity {
 
     private QuanLyViFragment quanLyViFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,19 @@ public class ViActivity extends AppCompatActivity {
     }
 
     public void ThemVi() {
-        if (editText_TenVi.getText().toString().equals("")) {
+        boolean tenvi = true;
+        cursor = data.rawQuery("select * from tblvi", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast()==false) {
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_TenVi.getText().toString())) {
+                tenvi = false;
+            }
+            cursor.moveToNext();
+        }
+        if (tenvi == false) {
+            Toast.makeText(this, "Tên ví này đã tồn tại", Toast.LENGTH_SHORT).show();
+            editText_TenVi.startAnimation(animation);
+        } else if (editText_TenVi.getText().toString().equals("")) {
             editText_TenVi.startAnimation(animation);
             Toast.makeText(this, "Bạn chưa nhập tên ví", Toast.LENGTH_SHORT).show();
         } else if (editText_MoTaVi.getText().toString().equals("")) {
