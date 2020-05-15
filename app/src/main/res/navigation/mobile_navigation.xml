@@ -6,9 +6,10 @@
     app:startDestination="@+id/nav_QuanLyThuChi">
 
     <fragment
-        android:id="@+id/nav_QuanLyNhomThuChi"
-        android:name="com.example.doantotnghiep.ui.QuanLyNhomThuChi.QuanLyNhomThuChiFragment"
-        tools:layout="@layout/fragment_quanlynhomthuchi" />
+        android:id="@+id/nav_QuanLyDanhMucThuChi"
+        android:name="com.example.doantotnghiep.ui.QuanLyDanhMucThuChi.QuanLyDanhMucThuChiFragment"
+        android:label="Quản lý danh mục thu chi"
+        tools:layout="@layout/fragment_quanlydanhmucthuchi" />
     <fragment
         android:id="@+id/nav_QuanLyThuChi"
         android:name="com.example.doantotnghiep.ui.QuanLyThuChi.QuanLyThuChiFragment"

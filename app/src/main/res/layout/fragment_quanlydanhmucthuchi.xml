@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <Spinner
-            android:id="@+id/spCaidatPhannhom"
+            android:id="@+id/spinner_LoaiThuChi2"
             android:layout_width="match_parent"
             android:layout_height="48dp" />
     </LinearLayout>
@@ -38,12 +38,12 @@
             android:id="@+id/txtCaidatTennhom"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_toLeftOf="@+id/spCaidatThuchi"
+            android:layout_toLeftOf="@+id/spinner_LoaiThuChi3"
             android:layout_alignParentLeft="true"
             android:singleLine="true" />
 
         <Spinner
-            android:id="@+id/spCaidatThuchi"
+            android:id="@+id/spinner_LoaiThuChi3"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_toLeftOf="@+id/btnCaidatThem" />
@@ -57,6 +57,6 @@
             android:background="@null"
             android:padding="4dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/add_icon_red" />
+            android:src="@mipmap/add_icon_green" />
     </RelativeLayout>
 </RelativeLayout>

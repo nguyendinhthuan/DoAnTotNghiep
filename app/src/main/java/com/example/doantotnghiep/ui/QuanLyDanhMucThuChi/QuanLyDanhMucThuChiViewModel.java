@@ -1,13 +1,13 @@
-package com.example.doantotnghiep.ui.QuanLyNhomThuChi;
+package com.example.doantotnghiep.ui.QuanLyDanhMucThuChi;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class QuanLyNhomThuChiViewModel extends ViewModel {
+public class QuanLyDanhMucThuChiViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public QuanLyNhomThuChiViewModel() {
+    public QuanLyDanhMucThuChiViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is nhom thu chi fragment");
     }
