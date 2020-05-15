@@ -17,7 +17,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/lvCaidat"
+        android:id="@+id/listView_DanhMucThuChi"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutCaidatBottom"
@@ -35,7 +35,7 @@
         android:layout_alignParentBottom="true">
 
         <EditText
-            android:id="@+id/txtCaidatTennhom"
+            android:id="@+id/editText_TenDanhMucThuChi"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_toLeftOf="@+id/spinner_LoaiThuChi3"
@@ -46,10 +46,10 @@
             android:id="@+id/spinner_LoaiThuChi3"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_toLeftOf="@+id/btnCaidatThem" />
+            android:layout_toLeftOf="@+id/button_ThemDanhMuc" />
 
         <ImageButton
-            android:id="@+id/btnCaidatThem"
+            android:id="@+id/button_ThemDanhMuc"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentRight="true"
@@ -58,5 +58,9 @@
             android:padding="4dp"
             android:scaleType="fitXY"
             android:src="@mipmap/add_icon_green" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/test"/>
     </RelativeLayout>
 </RelativeLayout>

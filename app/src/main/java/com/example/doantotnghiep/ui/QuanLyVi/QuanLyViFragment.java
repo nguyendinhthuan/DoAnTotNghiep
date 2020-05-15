@@ -49,7 +49,7 @@ public class QuanLyViFragment extends Fragment {
     private Activity activity;
     private ImageButton button_ThemVi;
     private Button button_Reload;
-    private GridView gridView_Vi;
+    private ListView listView_Vi;
     private View myFragment;
     private ArrayList<ArrayVi> arrayVi;
     private AdapterVi adapterVi;
@@ -106,7 +106,7 @@ public class QuanLyViFragment extends Fragment {
 
         button_Reload = (Button) myFragment.findViewById(R.id.button_Reload);
 
-        gridView_Vi = (GridView) myFragment.findViewById(R.id.gridView_Vi);
+        listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
     }
 
     public void LayDanhSachVi() {
@@ -125,8 +125,8 @@ public class QuanLyViFragment extends Fragment {
         }
         cursor.close();
         adapterVi = new AdapterVi(getContext(), R.layout.fragment_quanlyvi_item, list);
-        gridView_Vi.setAdapter(adapterVi);
-        gridView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView_Vi.setAdapter(adapterVi);
+        listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 XoaVi(list.get(position).tenvi);
@@ -136,7 +136,7 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void SuaVi() {
-        gridView_Vi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView_Vi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Intent i = new Intent(getContext(), ThuChiActivity.class);

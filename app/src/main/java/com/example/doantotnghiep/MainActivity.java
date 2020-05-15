@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             data.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text);");
             data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
+            data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, " +
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
