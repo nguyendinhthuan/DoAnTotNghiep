@@ -77,8 +77,8 @@ public class QuanLyViFragment extends Fragment {
         ThemVi();
         TaiDanhSachVi();
         SuaVi();
+        XoaVi();
         LayDanhSachVi();
-
     }
 
     public void ThemVi() {
@@ -126,13 +126,7 @@ public class QuanLyViFragment extends Fragment {
         cursor.close();
         adapterVi = new AdapterVi(getContext(), R.layout.fragment_quanlyvi_item, list);
         listView_Vi.setAdapter(adapterVi);
-        listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                XoaVi(list.get(position).tenvi);
-                return false;
-            }
-        });
+
     }
 
     public void SuaVi() {
@@ -145,7 +139,17 @@ public class QuanLyViFragment extends Fragment {
         });
     }
 
-    public void XoaVi(final String tenvi) {
+    public void XoaVi() {
+        listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                HamXoaVi(list.get(position).tenvi);
+                return false;
+            }
+        });
+    }
+
+    public void HamXoaVi(final String tenvi) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         builder.setTitle("Thông báo !");
         builder.setMessage("Bạn có chắc chắn muốn xóa ví này ?");

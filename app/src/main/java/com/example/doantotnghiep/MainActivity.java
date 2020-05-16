@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout layout;
     private EditText editText_TenTaiKhoanDangNhap, editText_MatKhauDangNhap, maso, matkhau1, matkhau2;
     private Button thaydoi, huy;
-    private ImageView imglogo;
+    private ImageView imglogo, imglogo1;
     private Animation animation;
     private CheckBox checkBox_GhiNho;
     Database database;
@@ -76,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
         database = new Database(this);
 
         imglogo = (ImageView) findViewById(R.id.imgLogo);
+        imglogo1 = (ImageView) findViewById(R.id.imgLogo1);
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_logo);
         imglogo.startAnimation(animation);
+        imglogo1.startAnimation(animation);
         layout = (LinearLayout) findViewById(R.id.layoutDangnhap);
         layout.setVisibility(View.GONE);
         editText_TenTaiKhoanDangNhap = (EditText) findViewById(R.id.editText_TenTaiKhoanDangNhap);
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
+                imglogo1.setVisibility(View.VISIBLE);
                 imglogo.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.VISIBLE);
             }

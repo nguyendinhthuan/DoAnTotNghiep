@@ -14,12 +14,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.doantotnghiep.model.ArrayVi;
 import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class ViActivity extends AppCompatActivity {
     private SQLiteDatabase data;

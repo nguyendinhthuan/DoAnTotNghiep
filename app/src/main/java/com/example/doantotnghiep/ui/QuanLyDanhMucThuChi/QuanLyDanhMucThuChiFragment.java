@@ -71,6 +71,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         AnhXa();
         LoadSpinner();
         LayDanhSachDanhMucThuChi();
+        XoaDanhMuc();
     }
 
     public void AnhXa() {
@@ -173,16 +174,20 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
         adapterDanhMucThuChi = new AdapterDanhMucThuChi(getContext(), R.layout.fragment_quanlydanhmuc_item, list);
         listView_DanhMucThuChi.setAdapter(adapterDanhMucThuChi);
+
+    }
+
+    public void XoaDanhMuc() {
         listView_DanhMucThuChi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                XoaDanhMuc(list.get(position).tendanhmuc);
+                HamXoaDanhMuc(list.get(position).tendanhmuc);
                 return false;
             }
         });
     }
 
-    public void XoaDanhMuc(final String tendanhmuc) {
+    public void HamXoaDanhMuc(final String tendanhmuc) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         builder.setTitle("Thông báo !");
         builder.setMessage("Bạn có chắc chắn muốn xóa danh mục này ?");
