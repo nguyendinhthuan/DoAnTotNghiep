@@ -36,7 +36,7 @@ import java.util.List;
 
 public class QuanLyDanhMucThuChiFragment extends Fragment {
     private View myFragment;
-    private String tentaikhoan;
+    private String tentk;
     private Activity activity;
     private SQLiteDatabase data;
     private Animation animation;
@@ -49,10 +49,10 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     private AdapterDanhMucThuChi adapterDanhMucThuChi;
     private List<ArrayDanhMucThuChi> list = null;
     private ListView listView_DanhMucThuChi;
-    private Button test;
 
-//    public QuanLyDanhMucThuChiFragment(String tentaikhoan) {
-//        this.tentaikhoan = tentaikhoan;
+//    public static QuanLyDanhMucThuChiFragment newInstance(String tentk) {
+//        Bundle args = new Bundle();
+//        args.putString();
 //    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,13 +74,6 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     }
 
     public void AnhXa() {
-        test = (Button) myFragment.findViewById(R.id.test);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayDanhSachDanhMucThuChi();
-            }
-        });
         listView_DanhMucThuChi = (ListView) myFragment.findViewById(R.id.listView_DanhMucThuChi);
 
         spinner_LoaiThuChi2 = (Spinner) myFragment.findViewById(R.id.spinner_LoaiThuChi2);
@@ -103,17 +96,17 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         adapterSpinner = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, arrSpinner);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_LoaiThuChi2.setAdapter(adapterSpinner);
-//        spinner_LoaiThuChi2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                LayDanhSachDanhMucThuChi();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        spinner_LoaiThuChi2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LayDanhSachDanhMucThuChi();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         spinner_LoaiThuChi3.setAdapter(adapterSpinner);
     }
 
@@ -144,12 +137,13 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                     contentValues.put("madanhmuc", madanhmuc);
                     contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
                     contentValues.put("loaikhoan", spinner_LoaiThuChi3.getSelectedItem().toString());
-                    contentValues.put("tentaikhoan", tentaikhoan);
+                    contentValues.put("tentaikhoan", tentk);
 
                     if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
                         thongbao = "Thêm danh mục thành công";
                         editText_TenDanhMucThuChi.setText(null);
                         //load list view o day
+                        LayDanhSachDanhMucThuChi();
                     } else {
                         thongbao = "Thêm danh mục thất bại";
                     }
@@ -162,8 +156,8 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     public void LayDanhSachDanhMucThuChi() {
         String dieukien = "= '" + spinner_LoaiThuChi2.getSelectedItem().toString() + "'";
-        //Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi where loaikhoan" + dieukien + "and tentaikhoan = '" + tentaikhoan + "'", null);
-        Cursor cursor = data.query("tbldanhmucthuchi", null, null, null, null, null, null);
+        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi where loaikhoan" + dieukien + "", null);
+        //Cursor cursor = data.query("tbldanhmucthuchi", null, null, null, null, null, null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayDanhMucThuChi>();
         while (cursor.isAfterLast() == false) {
@@ -176,8 +170,36 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             cursor.moveToNext();
         }
         cursor.close();
-        //adapterDanhMucThuChi.notifyDataSetChanged();
+
         adapterDanhMucThuChi = new AdapterDanhMucThuChi(getContext(), R.layout.fragment_quanlydanhmuc_item, list);
         listView_DanhMucThuChi.setAdapter(adapterDanhMucThuChi);
+        listView_DanhMucThuChi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                XoaDanhMuc(list.get(position).tendanhmuc);
+                return false;
+            }
+        });
+    }
+
+    public void XoaDanhMuc(final String tendanhmuc) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        builder.setTitle("Thông báo !");
+        builder.setMessage("Bạn có chắc chắn muốn xóa danh mục này ?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                data.rawQuery("delete from tbldanhmucthuchi where tendanhmuc = '" + tendanhmuc + "'", null).moveToFirst();
+                LayDanhSachDanhMucThuChi();
+                Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 }

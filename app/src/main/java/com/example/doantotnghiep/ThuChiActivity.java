@@ -17,27 +17,35 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.example.doantotnghiep.adapter.AdapterDanhMucThuChi;
+import com.example.doantotnghiep.adapter.AdapterVi;
+import com.example.doantotnghiep.model.ArrayDanhMucThuChi;
+import com.example.doantotnghiep.model.ArrayVi;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ThuChiActivity extends AppCompatActivity {
     private Button button_ThoatThuChi, button_LuuThuChi, button_NgayThuChi, button_GioThuChi, button_ThemViNong;
     private Button button_ThoiGianHienTai;
-    private Spinner spinner_LoaiThuChi, spinner_Vi;
+    private Spinner spinner_LoaiThuChi, spinner_Vi, spinner_DanhMuc;
     private Calendar today;
     private String gio;
     private Date date;
     private SimpleDateFormat simpleDateFormat;
     private String[] arrSpinner;
-    private ArrayAdapter<String> adapterSpinner, adapterVi;
-    private ArrayList<Integer> arrMaVi;
-    private ArrayList<String> arrTenVi;
+    private ArrayAdapter<String> adapterSpinner, adapterVi, adapterDanhMuc;
+    private ArrayList<Integer> arrMaVi, arrMaDanhMuc;
+    private ArrayList<String> arrTenVi, arrTenDanhMuc;
     private Cursor cursor;
     private SQLiteDatabase data;
     private DatePicker datePicker;
+    private List<ArrayVi> list = null;
+    private AdapterVi adapterVi1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,7 @@ public class ThuChiActivity extends AppCompatActivity {
         HienThiThoiGian();
         ThemVi();
         LoadSpinner();
+        //LoadDanhSachViLenSpinner();
     }
 
     public void AnhXa() {
@@ -67,6 +76,7 @@ public class ThuChiActivity extends AppCompatActivity {
 
         spinner_LoaiThuChi = (Spinner) findViewById(R.id.spinner_LoaiThuChi);
         spinner_Vi = (Spinner) findViewById(R.id.spinner_Vi);
+        spinner_DanhMuc = (Spinner) findViewById(R.id.spinner_DanhMuc);
 
         today = Calendar.getInstance();
     }
@@ -143,7 +153,24 @@ public class ThuChiActivity extends AppCompatActivity {
         spinner_Vi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LoadDanhSachViLenSpinner();
+                //LoadDanhSachViLenSpinner();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //Spinner Danh muc
+        arrMaDanhMuc = new ArrayList<Integer>();
+        arrTenDanhMuc = new ArrayList<String>();
+        adapterDanhMuc = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenDanhMuc);
+        adapterDanhMuc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_DanhMuc.setAdapter(adapterDanhMuc);
+        spinner_DanhMuc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LoadDanhSachDanhMucLenSpinner();
             }
 
             @Override
@@ -166,15 +193,36 @@ public class ThuChiActivity extends AppCompatActivity {
     public void LoadDanhSachViLenSpinner() {
         arrMaVi.clear();
         arrTenVi.clear();
-        cursor = data.rawQuery("select mavi, ten vi from tblvi", null);
+        cursor = data.query("tblvi", null, null, null, null, null, null);
         cursor.moveToFirst();
+        list = new ArrayList<ArrayVi>();
         while (cursor.isAfterLast() == false) {
-            arrMaVi.add(cursor.getInt(cursor.getColumnIndex("mavi")));
-            arrTenVi.add(cursor.getString(cursor.getColumnIndex("tenvi")));
+            ArrayVi a = new ArrayVi();
+            a.setMavi(cursor.getInt(0));
+            a.setTenvi(cursor.getString(1));
+            a.setMotavi(cursor.getString(2));
+            a.setSotien(cursor.getString(3));
+            list.add(a);
+
             cursor.moveToNext();
         }
-        adapterVi.notifyDataSetChanged();
+        adapterVi1.notifyDataSetChanged();
+        adapterVi1 = new AdapterVi(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+        adapterVi1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_Vi.setAdapter(adapterVi1);
+
     }
 
-
+    public void LoadDanhSachDanhMucLenSpinner() {
+        arrMaDanhMuc.clear();
+        arrTenDanhMuc.clear();
+        cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arrMaDanhMuc.add(cursor.getInt(cursor.getColumnIndex("madanhmuc")));
+            arrTenDanhMuc.add(cursor.getString(cursor.getColumnIndex("tendanhmuc")));
+            cursor.moveToNext();
+        }
+        adapterDanhMuc.notifyDataSetChanged();
+    }
 }

@@ -18,6 +18,9 @@ import android.widget.Toast;
 import com.example.doantotnghiep.model.ArrayVi;
 import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class ViActivity extends AppCompatActivity {
     private SQLiteDatabase data;
     private Cursor cursor;
@@ -53,6 +56,10 @@ public class ViActivity extends AppCompatActivity {
         editText_MoTaVi = (EditText) findViewById(R.id.editText_MoTaVi);
         editText_SoTienVi = (EditText) findViewById(R.id.editText_SoTienVi);
     }
+//    public String DinhDangsoTien(String number) {
+//        DecimalFormat format = new DecimalFormat("###,###,###");
+//        return format.format(Double.parseDouble((number)));
+//    }
 
     public void ThoatThemVi() {
         button_ThoatVi.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +101,9 @@ public class ViActivity extends AppCompatActivity {
         } else if (editText_SoTienVi.getText().toString().equals("")) {
             editText_SoTienVi.startAnimation(animation);
             Toast.makeText(this, "Bạn chưa nhập số tiền ban đầu cho ví", Toast.LENGTH_SHORT).show();
+//        } else if (DinhDangsoTien() < 0) {
+//            editText_SoTienVi.setAnimation(animation);
+//            Toast.makeText(this, "Số tiền không được âm", Toast.LENGTH_SHORT).show();
         } else {
             int ma = 1;
             cursor = data.rawQuery("select mavi from tblvi", null);

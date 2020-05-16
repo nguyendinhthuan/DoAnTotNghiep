@@ -49,10 +49,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void TaoBangCoSoDuLieu() {
         try {
-            data.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text);");
-            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
-            data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, " +
+            //Table Tai khoan
+            data.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text, " +
+                    "hovaten text, diachi text, sodienthoai int, email text, ngaysinh numeric);");
+
+            //Table Vi
+            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi real, sodu real, " +
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
+
+            //Table Danh muc thu chi
+            data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaidanhmuc text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
+
+            //Table Thu chi
+            data.execSQL("create table if not exists tblthuchi(mathuchi text primary key, loaithuchi text, sotienthuchi real, mota text, " +
+                    "ngaythuchien numeric, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
+
+            //Table Ke hoach
         } catch (Exception ex) {
             ex.printStackTrace();
         }
