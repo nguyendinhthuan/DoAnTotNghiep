@@ -39,7 +39,7 @@ public class AdapterVi extends ArrayAdapter<ArrayVi> {
             textView_MoTaVi = (TextView) view.findViewById(R.id.textView_MoTaVi);
             textView_TenVi.setText(arr.get(position).tenvi);
             textView_MoTaVi.setText(arr.get(position).motavi);
-            textView_SoTien.setText(arr.get(position).sotien);
+            textView_SoTien.setText(Double.toString(arr.get(position).sotienvi));
         }
         return view;
     }

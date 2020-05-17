@@ -52,6 +52,7 @@ public class ThuChiActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thu_chi);
 
+        data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
 
@@ -61,7 +62,8 @@ public class ThuChiActivity extends AppCompatActivity {
         HienThiThoiGian();
         ThemVi();
         LoadSpinner();
-        //LoadDanhSachViLenSpinner();
+        LoadDanhSachViLenSpinner();
+        //LoadDanhSachDanhMucLenSpinner();
     }
 
     public void AnhXa() {
@@ -139,35 +141,18 @@ public class ThuChiActivity extends AppCompatActivity {
     }
 
     public void LoadSpinner() {
-        //Spinner Loai thu chi
-        arrSpinner = getResources().getStringArray(R.array.loaithuchi);
-        adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrSpinner);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_LoaiThuChi.setAdapter(adapterSpinner);
-        //Spinner Vi
-        arrMaVi = new ArrayList<Integer>();
-        arrTenVi = new ArrayList<String>();
-        adapterVi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenVi);
-        adapterVi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Vi.setAdapter(adapterVi);
-        spinner_Vi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //LoadDanhSachViLenSpinner();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //Spinner Danh muc
         arrMaDanhMuc = new ArrayList<Integer>();
         arrTenDanhMuc = new ArrayList<String>();
         adapterDanhMuc = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenDanhMuc);
         adapterDanhMuc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_DanhMuc.setAdapter(adapterDanhMuc);
-        spinner_DanhMuc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //Spinner Loai thu chi
+        arrSpinner = getResources().getStringArray(R.array.loaithuchi);
+        adapterSpinner = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrSpinner);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_LoaiThuChi.setAdapter(adapterSpinner);
+        spinner_LoaiThuChi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LoadDanhSachDanhMucLenSpinner();
@@ -178,6 +163,23 @@ public class ThuChiActivity extends AppCompatActivity {
 
             }
         });
+        //Spinner Vi
+        arrMaVi = new ArrayList<Integer>();
+        arrTenVi = new ArrayList<String>();
+        adapterVi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenVi);
+        adapterVi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_Vi.setAdapter(adapterVi);
+//        spinner_Vi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                LoadDanhSachViLenSpinner();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
     }
 
     public void ThemVi() {
@@ -193,30 +195,25 @@ public class ThuChiActivity extends AppCompatActivity {
     public void LoadDanhSachViLenSpinner() {
         arrMaVi.clear();
         arrTenVi.clear();
-        cursor = data.query("tblvi", null, null, null, null, null, null);
+        //cursor = data.query("tblvi", null, null, null, null, null, null);
+        Cursor cursor = data.rawQuery("select * from tblvi", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayVi>();
         while (cursor.isAfterLast() == false) {
-            ArrayVi a = new ArrayVi();
-            a.setMavi(cursor.getInt(0));
-            a.setTenvi(cursor.getString(1));
-            a.setMotavi(cursor.getString(2));
-            a.setSotien(cursor.getString(3));
-            list.add(a);
-
+            arrMaVi.add(cursor.getInt(cursor.getColumnIndex("mavi")));
+            arrTenVi.add(cursor.getString(cursor.getColumnIndex("tenvi")));
             cursor.moveToNext();
         }
-        adapterVi1.notifyDataSetChanged();
-        adapterVi1 = new AdapterVi(getApplicationContext(), android.R.layout.simple_list_item_1, list);
-        adapterVi1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_Vi.setAdapter(adapterVi1);
-
+        adapterVi.notifyDataSetChanged();
+//        adapterVi1 = new AdapterVi(getApplicationContext(), android.R.layout.simple_list_item_1, list);
+//        adapterVi1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_Vi.setAdapter(adapterVi1);
     }
 
     public void LoadDanhSachDanhMucLenSpinner() {
         arrMaDanhMuc.clear();
         arrTenDanhMuc.clear();
-        cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi", null);
+        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi where loaikhoan = '" + spinner_LoaiThuChi.getSelectedItem().toString() + "'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             arrMaDanhMuc.add(cursor.getInt(cursor.getColumnIndex("madanhmuc")));

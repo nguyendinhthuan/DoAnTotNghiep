@@ -1,11 +1,17 @@
 package com.example.doantotnghiep.ui.QuanLyThuChi;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,65 +28,40 @@ import com.google.android.material.tabs.TabLayout;
 
 public class QuanLyThuChiFragment extends Fragment {
     View myFragment;
-    ViewPager viewPager;
-    TabLayout tabLayout;
-    private Button button;
+    private Activity activity;
+    private SQLiteDatabase data;
+    private Animation animation;
+    private ImageButton imageButton_ThemThuChi;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         myFragment = inflater.inflate(R.layout.fragment_quanlythuchi, container, false);
-        viewPager = myFragment.findViewById(R.id.viewPager);
-        tabLayout = myFragment.findViewById(R.id.tabLayout);
-//        button = myFragment.findViewById(R.id.button);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(getContext(), "qwe", Toast.LENGTH_SHORT).show();
-//            }
-//        });
         return myFragment;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        activity = getActivity();
+        data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
+        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
-        setUpViewPager(viewPager);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getContext(), ThuChiActivity.class);
-//                startActivity(i);
-//            }
-//        });
+        AnhXa();
+        ThemThuChi();
     }
 
-    private void setUpViewPager(ViewPager viewPager) {
-        PagerAdapter adapter = new PagerAdapter(getChildFragmentManager());
+    public void AnhXa() {
+        imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
+    }
 
-        adapter.addFragment(new ThuChiNgayFragment(), "Ngày");
-        adapter.addFragment(new ThuChiTuanFragment(), "Tuần");
-        adapter.addFragment(new ThuChiThangFragment(), "Tháng");
-        adapter.addFragment(new ThuChiNamFragment(), "Năm");
-        
-        viewPager.setAdapter(adapter);
+    public void ThemThuChi() {
+        imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ThuChiActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

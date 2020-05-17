@@ -118,7 +118,8 @@ public class QuanLyViFragment extends Fragment {
             a.setMavi(cursor.getInt(0));
             a.setTenvi(cursor.getString(1));
             a.setMotavi(cursor.getString(2));
-            a.setSotien(cursor.getString(3));
+            a.setSotienvi(cursor.getDouble(3));
+            a.setSodu(cursor.getDouble(4));
             list.add(a);
 
             cursor.moveToNext();
