@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ThuChiActivity extends AppCompatActivity {
-    private Button button_ThoatThuChi, button_LuuThuChi, button_NgayThuChi, button_GioThuChi, button_ThemViNong;
+    private Button button_ThoatThuChi, button_LuuThuChi, button_NgayThuChi, button_GioThuChi;
     private Button button_ThoiGianHienTai;
     private Spinner spinner_LoaiThuChi, spinner_Vi, spinner_DanhMuc;
     private Calendar today;
@@ -60,7 +60,6 @@ public class ThuChiActivity extends AppCompatActivity {
         ThemMoiThuChi();
         ThoatThemThuChi();
         HienThiThoiGian();
-        ThemVi();
         LoadSpinner();
         LoadDanhSachViLenSpinner();
         //LoadDanhSachDanhMucLenSpinner();
@@ -69,7 +68,6 @@ public class ThuChiActivity extends AppCompatActivity {
     public void AnhXa() {
         button_ThoatThuChi = (Button) findViewById(R.id.button_ThoatThuChi);
         button_LuuThuChi = (Button) findViewById(R.id.button_LuuThuChi);
-        button_ThemViNong = (Button) findViewById(R.id.button_ThemViNong);
 
         button_NgayThuChi = (Button) findViewById(R.id.button_NgayThuChi);
         button_GioThuChi = (Button) findViewById(R.id.button_GioThuchi);
@@ -180,16 +178,6 @@ public class ThuChiActivity extends AppCompatActivity {
 //
 //            }
 //        });
-    }
-
-    public void ThemVi() {
-        button_ThemViNong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ViActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     public void LoadDanhSachViLenSpinner() {

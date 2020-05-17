@@ -60,11 +60,6 @@
             android:id="@+id/spinner_Vi"
             android:layout_width="160dp"
             android:layout_height="40dp"/>
-        <Button
-            android:id="@+id/button_ThemViNong"
-            android:text="Thêm ví"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
@@ -153,7 +148,8 @@
         <Button
             android:id="@+id/button_ThoiGianHienTai"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
             android:onClick="LayNgayHienTai"
             android:text="Hiện tại" />
     </LinearLayout>
