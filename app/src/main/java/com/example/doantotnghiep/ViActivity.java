@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -27,6 +28,7 @@ public class ViActivity extends AppCompatActivity {
     private Animation animation;
     Database database;
     ArrayVi arrayVi;
+    private String taikhoan;
 
     private QuanLyViFragment quanLyViFragment;
 
@@ -37,12 +39,24 @@ public class ViActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vi);
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation_edittext);
         data = openOrCreateDatabase("data.db", a.MODE_PRIVATE, null);
+        taikhoan = getIntent().getStringExtra("taikhoan");
 
         AnhXa();
         ThemMoiVi();
         ThoatThemVi();
-
+        //TruyenTenTaiKhoanSangVi();
     }
+
+    public void TruyenTenTaiKhoanSangVi() {
+        Cursor c = data.rawQuery("select * from tbltaikhoan", null);
+        c.moveToFirst();
+        while (c.isAfterLast() == false) {
+            Intent i = new Intent(this, QuanLyViFragment.class);
+            i.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
+            startActivityForResult(i, 2);
+        }
+    }
+
 
     public void AnhXa() {
         button_LuuVi = (Button) findViewById(R.id.button_LuuVi);
@@ -101,17 +115,18 @@ public class ViActivity extends AppCompatActivity {
 //            editText_SoTienVi.setAnimation(animation);
 //            Toast.makeText(this, "Số tiền không được âm", Toast.LENGTH_SHORT).show();
         } else {
-            int ma = 1;
+            int mavi = 1;
             cursor = data.rawQuery("select mavi from tblvi", null);
             if (cursor.moveToLast() == true) {
-                ma = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
+                mavi = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
             }
                 String thongbao = "";
                 ContentValues values = new ContentValues();
-                values.put("mavi", ma);
+                values.put("mavi", mavi);
                 values.put("tenvi", editText_TenVi.getText().toString());
                 values.put("motavi", editText_MoTaVi.getText().toString());
                 values.put("sotienvi", editText_SoTienVi.getText().toString());
+                values.put("tentaikhoan", taikhoan);
                 if (data.insert("tblvi", null, values) != -1) {
                     thongbao = "Thêm ví thành công, vui lòng nhấn Tải lại";
                     finish();

@@ -1,8 +1,11 @@
 package com.example.doantotnghiep;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.provider.MediaStore;
@@ -25,11 +28,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 public class HomeActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
+    private Animation animation;
+    private SQLiteDatabase data;
+    private String taikhoan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +45,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
+        taikhoan = getIntent().getStringExtra("taikhoan");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -49,26 +60,15 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        TruyenTenTaiKhoanSangViFragment();
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.home, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_settings:
-//                Intent i = new Intent(HomeActivity.this, ThuChiActivity.class);
-//                startActivity(i);
-//            default:
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    public void TruyenTenTaiKhoanSangViFragment() {
+            Intent i = new Intent(this, ViActivity.class);
+            i.putExtra("taikhoan", taikhoan);
+            startActivityForResult(i, 2);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -36,7 +36,7 @@ import java.util.List;
 
 public class QuanLyDanhMucThuChiFragment extends Fragment {
     private View myFragment;
-    private String tentk;
+    private String taikhoan;
     private Activity activity;
     private SQLiteDatabase data;
     private Animation animation;
@@ -50,9 +50,8 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     private List<ArrayDanhMucThuChi> list = null;
     private ListView listView_DanhMucThuChi;
 
-//    public static QuanLyDanhMucThuChiFragment newInstance(String tentk) {
-//        Bundle args = new Bundle();
-//        args.putString();
+//    public QuanLyDanhMucThuChiFragment(String taikhoan) {
+//        this.taikhoan = taikhoan;
 //    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -138,7 +137,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                     contentValues.put("madanhmuc", madanhmuc);
                     contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
                     contentValues.put("loaikhoan", spinner_LoaiThuChi3.getSelectedItem().toString());
-                    contentValues.put("tentaikhoan", tentk);
+                    contentValues.put("tentaikhoan", taikhoan);
 
                     if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
                         thongbao = "Thêm danh mục thành công";
