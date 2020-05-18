@@ -53,6 +53,7 @@ public class ThuChiActivity extends AppCompatActivity {
     private List<ArrayVi> list = null;
     private AdapterVi adapterVi1;
     private Animation animation;
+    private String taikhoan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class ThuChiActivity extends AppCompatActivity {
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation_edittext);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
+        taikhoan = getIntent().getStringExtra("taikhoan");
 
         AnhXa();
         ThemMoiThuChi();
@@ -222,7 +224,7 @@ public class ThuChiActivity extends AppCompatActivity {
         arrMaVi.clear();
         arrTenVi.clear();
         //cursor = data.query("tblvi", null, null, null, null, null, null);
-        Cursor cursor = data.rawQuery("select * from tblvi", null);
+        Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayVi>();
         while (cursor.isAfterLast() == false) {

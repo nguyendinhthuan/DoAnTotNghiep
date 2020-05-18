@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 if (c.getString(c.getColumnIndex("matkhau")).equals(editText_MatKhauDangNhap.getText().toString())) {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
-                    startActivityForResult(intent, 2);
+                    startActivityForResult(intent, 1);
 
 //                    Intent intent1 = new Intent(this, ViActivity.class);
 //                    intent1.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
