@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase data;
-    private SharedPreferences share;
+    private SharedPreferences share, sharetentaikhoan;
     private LinearLayout layout;
     private EditText editText_TenTaiKhoanDangNhap, editText_MatKhauDangNhap, maso, matkhau1, matkhau2;
     private Button thaydoi, huy;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
         share = getSharedPreferences("taikhoan", MODE_PRIVATE);
+        sharetentaikhoan = getSharedPreferences("tentaikhoan", MODE_PRIVATE);
 
         AnhXa();
         TaoBangCoSoDuLieu();
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 if (c.getString(c.getColumnIndex("matkhau")).equals(editText_MatKhauDangNhap.getText().toString())) {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, 2);
 
                     //Chuyen ten tai khoan di cac class
                     String tendangnhap = c.getString(c.getColumnIndex("tentaikhoan"));
@@ -131,12 +132,6 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor= sharedPreferences.edit();
                     editor.putString("taikhoancanchuyen",tendangnhap);
                     editor.commit();
-
-
-
-//                    Intent intent1 = new Intent(this, ViActivity.class);
-//                    intent1.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
-//                    startActivityForResult(intent1, 2);
 
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {
@@ -257,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         if (share.getBoolean("ghinho", false)) {
             editText_TenTaiKhoanDangNhap.setText(share.getString("user", null));
             editText_MatKhauDangNhap.setText(share.getString("pass", null));
-            DangNhap(null);
+            //DangNhap(null);
         } else {
             editText_TenTaiKhoanDangNhap.setText(null);
             editText_MatKhauDangNhap.setText(null);

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -29,6 +31,7 @@ public class ViActivity extends AppCompatActivity {
     Database database;
     ArrayVi arrayVi;
     private String taikhoan;
+    private SharedPreferences sharedPreferences;
 
     private QuanLyViFragment quanLyViFragment;
 
@@ -39,24 +42,14 @@ public class ViActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vi);
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation_edittext);
         data = openOrCreateDatabase("data.db", a.MODE_PRIVATE, null);
-        taikhoan = getIntent().getStringExtra("taikhoan");
+
+        sharedPreferences = getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
 
         AnhXa();
         ThemMoiVi();
         ThoatThemVi();
-        //TruyenTenTaiKhoanSangVi();
     }
-
-    public void TruyenTenTaiKhoanSangVi() {
-        Cursor c = data.rawQuery("select * from tbltaikhoan", null);
-        c.moveToFirst();
-        while (c.isAfterLast() == false) {
-            Intent i = new Intent(this, QuanLyViFragment.class);
-            i.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
-            startActivityForResult(i, 2);
-        }
-    }
-
 
     public void AnhXa() {
         button_LuuVi = (Button) findViewById(R.id.button_LuuVi);

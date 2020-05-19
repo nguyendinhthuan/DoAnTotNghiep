@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -54,6 +56,7 @@ public class ThuChiActivity extends AppCompatActivity {
     private AdapterVi adapterVi1;
     private Animation animation;
     private String taikhoan;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,9 @@ public class ThuChiActivity extends AppCompatActivity {
         animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation_edittext);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
-        taikhoan = getIntent().getStringExtra("taikhoan");
+
+        sharedPreferences = getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
 
         AnhXa();
         ThemMoiThuChi();

@@ -2,8 +2,10 @@ package com.example.doantotnghiep.ui.QuanLyVi;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -59,6 +61,7 @@ public class QuanLyViFragment extends Fragment {
     private Animation animation;
     private List<ArrayVi> list = null;
     private String taikhoan;
+    private SharedPreferences sharedPreferences;
 
 //    public QuanLyViFragment(String taikhoan) {
 //        this.taikhoan = taikhoan;
@@ -77,7 +80,9 @@ public class QuanLyViFragment extends Fragment {
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
-        taikhoan = getActivity().getIntent().getStringExtra("taikhoan");
+
+        sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
 
         AnhXa();
         ThemVi();
@@ -85,18 +90,7 @@ public class QuanLyViFragment extends Fragment {
         SuaVi();
         XoaVi();
         LayDanhSachVi();
-        //TruyenTenTaiKhoanSangVi();
     }
-
-//    public void TruyenTenTaiKhoanSangVi() {
-//        Cursor c = data.rawQuery("select * from tbltaikhoan", null);
-//        c.moveToFirst();
-//        while (c.isAfterLast() == false) {
-//            Intent i = new Intent(getContext(), ViActivity.class);
-//            i.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
-//            startActivityForResult(i, 2);
-//        }
-//    }
 
     public void ThemVi() {
         button_ThemVi.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +122,7 @@ public class QuanLyViFragment extends Fragment {
 
     public void LayDanhSachVi() {
         //Cursor cursor = data.query("tblvi", null, null, null, null, null, null);
-        Cursor cursor = data.rawQuery("select mavi, tenvi, motavi, sotienvi, sodu from tblvi where tentaikhoan = '" + taikhoan +"'", null);
+        Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayVi>();
         while (cursor.isAfterLast() == false) {
