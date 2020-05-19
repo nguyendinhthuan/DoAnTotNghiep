@@ -125,6 +125,15 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
                     startActivityForResult(intent, 1);
 
+                    //Chuyen ten tai khoan di cac class
+                    String tendangnhap = c.getString(c.getColumnIndex("tentaikhoan"));
+                    SharedPreferences sharedPreferences = getSharedPreferences("tendangnhap",MODE_PRIVATE);
+                    SharedPreferences.Editor editor= sharedPreferences.edit();
+                    editor.putString("taikhoancanchuyen",tendangnhap);
+                    editor.commit();
+
+
+
 //                    Intent intent1 = new Intent(this, ViActivity.class);
 //                    intent1.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
 //                    startActivityForResult(intent1, 2);
@@ -164,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         matkhau1 = (EditText) d.findViewById(R.id.txtNhapmatkhauquen);
         matkhau2 = (EditText) d.findViewById(R.id.txtNhapmatkhau2quen);
         thaydoi = (Button) d.findViewById(R.id.btnThaydoiquen);
-        huy = (Button) d.findViewById((R.id.btnHuy));
+        huy = (Button) d.findViewById((R.id.btnHuyQuenMatKhau));
         thaydoi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

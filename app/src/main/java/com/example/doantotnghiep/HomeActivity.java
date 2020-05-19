@@ -61,21 +61,10 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        TruyenTenTaiKhoanSangViFragment();
-        TruyenTenTaiKhoanSangThuChiActivity();
+
     }
 
-    public void TruyenTenTaiKhoanSangViFragment() {
-            Intent i = new Intent(this, ViActivity.class);
-            i.putExtra("taikhoan", taikhoan);
-            startActivityForResult(i, 2);
-    }
 
-    public void TruyenTenTaiKhoanSangThuChiActivity() {
-        Intent i2 = new Intent(this, ThuChiActivity.class);
-        i2.putExtra("taikhoan", taikhoan);
-        startActivityForResult(i2, 3);
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
