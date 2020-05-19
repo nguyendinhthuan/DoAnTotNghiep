@@ -77,7 +77,6 @@ public class ThuChiActivity extends AppCompatActivity {
         HienThiThoiGian();
         LoadSpinner();
         LoadDanhSachViLenSpinner();
-        //LoadDanhSachDanhMucLenSpinner();
     }
 
     public void AnhXa() {

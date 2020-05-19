@@ -3,7 +3,9 @@ package com.example.doantotnghiep.ui.QuanLyDanhMucThuChi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -49,6 +51,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     private AdapterDanhMucThuChi adapterDanhMucThuChi;
     private List<ArrayDanhMucThuChi> list = null;
     private ListView listView_DanhMucThuChi;
+    private SharedPreferences sharedPreferences;
 
 //    public QuanLyDanhMucThuChiFragment(String taikhoan) {
 //        this.taikhoan = taikhoan;
@@ -66,6 +69,9 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+
+        sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
 
         AnhXa();
         LoadSpinner();
@@ -156,7 +162,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     public void LayDanhSachDanhMucThuChi() {
         String dieukien = "= '" + spinner_LoaiThuChi2.getSelectedItem().toString() + "'";
-        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi where loaikhoan" + dieukien + "", null);
+        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi where loaikhoan" + dieukien + " and tentaikhoan = '" + taikhoan + "'", null);
         //Cursor cursor = data.query("tbldanhmucthuchi", null, null, null, null, null, null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayDanhMucThuChi>();
