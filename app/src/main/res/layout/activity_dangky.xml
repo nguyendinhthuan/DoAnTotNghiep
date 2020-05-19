@@ -103,7 +103,7 @@
                 android:text="@string/dangky" />
 
             <Button
-                android:id="@+id/btnHuy"
+                android:id="@+id/btnHuyDangKy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"

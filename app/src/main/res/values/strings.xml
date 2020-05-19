@@ -92,4 +92,5 @@
         <item>Tổng thu</item>
         <item>Tổng chi</item>
     </string-array>
+    <string name="title_activity_tai_khoan">TaiKhoanActivity</string>
 </resources>
