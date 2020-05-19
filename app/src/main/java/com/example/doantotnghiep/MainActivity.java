@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.doantotnghiep.model.ArrayVi;
+import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
 
 import java.util.ArrayList;
 
@@ -65,9 +66,10 @@ public class MainActivity extends AppCompatActivity {
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Thu chi
-            data.execSQL("create table if not exists tblthuchi(mathuchi text primary key, loaithuchi text, sotienthuchi real, mota text, " +
+            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +
                     "ngaythuchien numeric, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
-                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
+                    "madanhmuc int constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
 
             //Table Ke hoach
         } catch (Exception ex) {
@@ -121,7 +123,12 @@ public class MainActivity extends AppCompatActivity {
                 if (c.getString(c.getColumnIndex("matkhau")).equals(editText_MatKhauDangNhap.getText().toString())) {
                     Intent intent = new Intent(this, HomeActivity.class);
                     intent.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
-                    startActivityForResult(intent, 2);
+                    startActivityForResult(intent, 1);
+
+//                    Intent intent1 = new Intent(this, ViActivity.class);
+//                    intent1.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
+//                    startActivityForResult(intent1, 2);
+
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {
                     mk = false;

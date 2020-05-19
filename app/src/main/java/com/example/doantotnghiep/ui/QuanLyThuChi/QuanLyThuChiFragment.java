@@ -33,6 +33,11 @@ public class QuanLyThuChiFragment extends Fragment {
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
+    private String taikhoan;
+
+//    public QuanLyThuChiFragment(String taikhoan) {
+//        this.taikhoan = taikhoan;
+//    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

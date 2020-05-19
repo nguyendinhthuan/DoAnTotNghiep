@@ -5,15 +5,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.doantotnghiep.ui.QuanLyDanhMucThuChi.QuanLyDanhMucThuChiFragment;
+import com.example.doantotnghiep.ui.QuanLyTaiKhoan.QuanLyTaiKhoanFragment;
+import com.example.doantotnghiep.ui.QuanLyThuChi.QuanLyThuChiFragment;
+import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
+    private String taikhoan;
 
-    public PagerAdapter(FragmentManager fm) {
+    public PagerAdapter(FragmentManager fm, String taikhoan) {
         super(fm);
+        this.taikhoan = taikhoan;
     }
 
 

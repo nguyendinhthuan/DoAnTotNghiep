@@ -3,19 +3,24 @@ package com.example.doantotnghiep;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.doantotnghiep.adapter.AdapterDanhMucThuChi;
 import com.example.doantotnghiep.adapter.AdapterVi;
@@ -33,6 +38,7 @@ public class ThuChiActivity extends AppCompatActivity {
     private Button button_ThoatThuChi, button_LuuThuChi, button_NgayThuChi, button_GioThuChi;
     private Button button_ThoiGianHienTai;
     private Spinner spinner_LoaiThuChi, spinner_Vi, spinner_DanhMuc;
+    private EditText editText_SoTienThuChi, editText_MoTaThuChi;
     private Calendar today;
     private String gio;
     private Date date;
@@ -46,6 +52,8 @@ public class ThuChiActivity extends AppCompatActivity {
     private DatePicker datePicker;
     private List<ArrayVi> list = null;
     private AdapterVi adapterVi1;
+    private Animation animation;
+    private String taikhoan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +61,10 @@ public class ThuChiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_thu_chi);
 
         data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
+        animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animation_edittext);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
+        taikhoan = getIntent().getStringExtra("taikhoan");
 
         AnhXa();
         ThemMoiThuChi();
@@ -73,6 +83,9 @@ public class ThuChiActivity extends AppCompatActivity {
         button_GioThuChi = (Button) findViewById(R.id.button_GioThuchi);
 
         button_ThoiGianHienTai = (Button) findViewById(R.id.button_ThoiGianHienTai);
+
+        editText_SoTienThuChi = (EditText) findViewById(R.id.editText_SoTienThuChi);
+        editText_MoTaThuChi = (EditText) findViewById(R.id.editText_MoTaThuChi);
 
         spinner_LoaiThuChi = (Spinner) findViewById(R.id.spinner_LoaiThuChi);
         spinner_Vi = (Spinner) findViewById(R.id.spinner_Vi);
@@ -99,9 +112,47 @@ public class ThuChiActivity extends AppCompatActivity {
         });
     }
 
-    public void ThemThuChi() {
+    public boolean ThemThuChi() {
+        if (editText_SoTienThuChi.getText().toString().equals("")) {
+            editText_SoTienThuChi.startAnimation(animation);
+            Toast.makeText(this, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
+        } else if (editText_MoTaThuChi.getText().toString().equals("")) {
+            editText_MoTaThuChi.startAnimation(animation);
+            Toast.makeText(this, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
+        } else {
+            int mathuchi = 1;
+            int sotienthuchi = 0;
+            cursor = data.rawQuery("select mathuchi from tblthuchi", null);
+            if (cursor.moveToLast() == true) {
+                mathuchi = cursor.getInt(cursor.getColumnIndex("mathuchi")) + 1;
+            }
+            String thongbao = "";
+            ContentValues values = new ContentValues();
+            values.put("mathuchi", mathuchi);
+            values.put("mota", editText_MoTaThuChi.getText().toString());
+            values.put("loaithuchi", spinner_LoaiThuChi.getSelectedItem().toString());
+            if (spinner_LoaiThuChi.getSelectedItem().toString().equals("Khoản thu")) {
+                sotienthuchi = Integer.parseInt(editText_SoTienThuChi.getText().toString());
+            } else {
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChi.getText().toString());
+            }
+            values.put("sotienthuchi", sotienthuchi);
+            values.put("mavi", spinner_Vi.getSelectedItem().toString());
+            values.put("ngaythuchien", simpleDateFormat.format(date));
+            values.put("madanhmuc", spinner_DanhMuc.getSelectedItem().toString());
 
+            if (data.insert("tblthuchi", null, values) == -1) {
+                return false;
+            }
+            thongbao = "Lưu thành công";
+            finish();
+
+            Toast.makeText(this, thongbao, Toast.LENGTH_SHORT).show();
+        }
+        return true;
     }
+
+
 
     public void HienThiThoiGian() {
         int thang = today.get(Calendar.MONTH) + 1;
@@ -167,24 +218,13 @@ public class ThuChiActivity extends AppCompatActivity {
         adapterVi = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenVi);
         adapterVi.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_Vi.setAdapter(adapterVi);
-//        spinner_Vi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                LoadDanhSachViLenSpinner();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
     }
 
     public void LoadDanhSachViLenSpinner() {
         arrMaVi.clear();
         arrTenVi.clear();
         //cursor = data.query("tblvi", null, null, null, null, null, null);
-        Cursor cursor = data.rawQuery("select * from tblvi", null);
+        Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayVi>();
         while (cursor.isAfterLast() == false) {
@@ -193,9 +233,6 @@ public class ThuChiActivity extends AppCompatActivity {
             cursor.moveToNext();
         }
         adapterVi.notifyDataSetChanged();
-//        adapterVi1 = new AdapterVi(getApplicationContext(), android.R.layout.simple_list_item_1, list);
-//        adapterVi1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_Vi.setAdapter(adapterVi1);
     }
 
     public void LoadDanhSachDanhMucLenSpinner() {
