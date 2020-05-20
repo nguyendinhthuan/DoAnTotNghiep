@@ -40,6 +40,8 @@ public class AdapterVi extends ArrayAdapter<ArrayVi> {
             textView_TenVi.setText(arr.get(position).tenvi);
             textView_MoTaVi.setText(arr.get(position).motavi);
             textView_SoTien.setText(Double.toString(arr.get(position).sotienvi));
+
+
         }
         return view;
     }

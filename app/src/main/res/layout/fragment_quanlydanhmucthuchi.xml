@@ -40,7 +40,8 @@
             android:layout_height="48dp"
             android:layout_toLeftOf="@+id/spinner_LoaiThuChi3"
             android:layout_alignParentLeft="true"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:hint="Nhập tên danh mục"/>
 
         <Spinner
             android:id="@+id/spinner_LoaiThuChi3"

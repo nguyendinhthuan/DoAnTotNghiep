@@ -22,14 +22,28 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 //        try {
-//            db.execSQL("create table tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text);");
-//            db.execSQL("create table tblphannhom(manhom int primary key, tennhom text, tenkhoan text, " +
-//                    "mataikhoan text constraint mataikhoan references tbltaikhoan(mataikhoan) on delete cascade);");
-//            db.execSQL("create table tblthuchi(mathuchi int primary key, loaitaikhoan text, sotien int, ngay date, " +
-//                    "tuan int, manhom int constraint manhom references tblphannhom(manhom) on delete cascade);");
-//            db.execSQL("create table tblgiaodich(magiaodich int primary key, lydo text, trangthai text, gio time, " +
-//                    "mathuchi int constraint mathuchi references tblthuchi(mathuchi) on delete cascade);");
-//            db.execSQL("create table tblvi(mavi int primary key, tenvi text, motavi text, sotien text);");
+//            //Table Tai khoan
+//            db.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text, " +
+//                    "hovaten text, diachi text, sodienthoai int, email text, ngaysinh numeric);");
+//
+//            //Table Sinh vien
+//            //data.execSQL("create table if not exists tblsinhvien()");
+//
+//            //Table Vi
+//            db.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi real, sodu real, " +
+//                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
+//
+//            //Table Danh muc thu chi
+//            db.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, " +
+//                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
+//
+//            //Table Thu chi
+//            db.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +
+//                    "ngaythuchien numeric, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
+//                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
+//                    "madanhmuc int constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
+//
+//            //Table Ke hoach
 //        } catch (Exception ex) {
 //            ex.printStackTrace();
 //        }

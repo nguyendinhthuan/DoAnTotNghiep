@@ -80,9 +80,8 @@
     <string name="action_settings">Them thu chi</string>
 
     <!--Spinner chọn loại thống kê-->
-    <string-array name="chonloaithongke">
+    <string-array name="chonloailichsuthuchi">
         <item>HÔM NAY</item>
-        <item>TUẦN NÀY</item>
         <item>THÁNG NÀY</item>
         <item>NĂM NAY</item>
     </string-array>

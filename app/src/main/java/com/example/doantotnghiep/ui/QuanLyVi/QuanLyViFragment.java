@@ -1,7 +1,9 @@
 package com.example.doantotnghiep.ui.QuanLyVi;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,11 +18,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -50,7 +54,7 @@ public class QuanLyViFragment extends Fragment {
     private QuanLyViViewModel galleryViewModel;
     private Activity activity;
     private ImageButton button_ThemVi;
-    private Button button_Reload;
+    private Button button_Reload, button_LuuCapNhatVi, button_HuyCapNhatVi;
     private ListView listView_Vi;
     private View myFragment;
     private ArrayList<ArrayVi> arrayVi;
@@ -62,6 +66,7 @@ public class QuanLyViFragment extends Fragment {
     private List<ArrayVi> list = null;
     private String taikhoan;
     private SharedPreferences sharedPreferences;
+    private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat;
 
 //    public QuanLyViFragment(String taikhoan) {
 //        this.taikhoan = taikhoan;
@@ -139,15 +144,40 @@ public class QuanLyViFragment extends Fragment {
         cursor.close();
         adapterVi = new AdapterVi(getContext(), R.layout.fragment_quanlyvi_item, list);
         listView_Vi.setAdapter(adapterVi);
-
     }
 
     public void SuaVi() {
         listView_Vi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent i = new Intent(getContext(), ThuChiActivity.class);
-//                startActivity(i);
+                final Dialog d = new Dialog(getContext());
+                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                d.setContentView(R.layout.activity_capnhatvi);
+                d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                d.show();
+
+                Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan + "'", null);
+                cursor.moveToFirst();
+                String tenvi1 = cursor.getString(1);
+                String motavi1 = cursor.getString(2);
+                String sotienvi1 = cursor.getString(3);
+
+//                editText_NhapTenViCapNhat.setText(tenvi1);
+//                editText_NhapMoTaViCapNhat.setText(motavi1);
+//                editText_NhapSoTienViCapNhat.setText(sotienvi1);
+
+                editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
+                editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
+                editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
+                editText_NhapSoTienViCapNhat.setEnabled(false);
+                button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
+                button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
+                button_HuyCapNhatVi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
             }
         });
     }
