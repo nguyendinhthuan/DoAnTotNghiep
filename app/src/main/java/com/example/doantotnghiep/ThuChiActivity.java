@@ -143,7 +143,8 @@ public class ThuChiActivity extends AppCompatActivity {
             values.put("sotienthuchi", sotienthuchi);
             values.put("mavi", spinner_Vi.getSelectedItem().toString());
             values.put("ngaythuchien", simpleDateFormat.format(date));
-            values.put("madanhmuc", spinner_DanhMuc.getSelectedItem().toString());
+            values.put("madanhmuc", arrMaDanhMuc.get(spinner_DanhMuc.getSelectedItemPosition()));
+            values.put("tentaikhoan", taikhoan);
 
             if (data.insert("tblthuchi", null, values) == -1) {
                 return false;

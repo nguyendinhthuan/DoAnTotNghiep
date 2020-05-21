@@ -111,6 +111,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                
             }
         });
     }

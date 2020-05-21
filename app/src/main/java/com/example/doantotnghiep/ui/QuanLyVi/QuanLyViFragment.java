@@ -158,9 +158,9 @@ public class QuanLyViFragment extends Fragment {
 
                 Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan + "'", null);
                 cursor.moveToFirst();
-                String tenvi1 = cursor.getString(1);
-                String motavi1 = cursor.getString(2);
-                String sotienvi1 = cursor.getString(3);
+                String tenvi1 = cursor.getString(2);
+                String motavi1 = cursor.getString(3);
+                String sotienvi1 = cursor.getString(4);
 
 //                editText_NhapTenViCapNhat.setText(tenvi1);
 //                editText_NhapMoTaViCapNhat.setText(motavi1);

@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -27,10 +28,12 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.doantotnghiep.HomeActivity;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.ThuChiActivity;
+import com.example.doantotnghiep.adapter.AdapterThongKe;
 import com.example.doantotnghiep.adapter.PagerAdapter;
 import com.example.doantotnghiep.model.ArrayThongKe;
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -47,8 +50,10 @@ public class QuanLyThuChiFragment extends Fragment {
     private Calendar today;
     private int thang, nam;
     private ArrayList<ArrayThongKe> arrthu, arrchi;
-    private String[] arrSpinner;
+    private String[] arrSpinner, arrGroup;
     private ArrayAdapter<String> adapterSpinner;
+    private ExpandableListView listView_LichSuThuChi;
+    private AdapterThongKe adapterThongKe;
 
 //    public QuanLyThuChiFragment(String taikhoan) {
 //        this.taikhoan = taikhoan;
@@ -70,12 +75,16 @@ public class QuanLyThuChiFragment extends Fragment {
         AnhXa();
         ThemThuChi();
         setSpinner();
+        setListview();
+        //LocCoSoDuLieu();
     }
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
 
         spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
+
+        listView_LichSuThuChi = (ExpandableListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
     }
 
     public void ThemThuChi() {
@@ -89,7 +98,11 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public void setListview() {
-
+        arrGroup = getResources().getStringArray(R.array.thongketong);
+        arrthu = new ArrayList<ArrayThongKe>();
+        arrchi = new ArrayList<ArrayThongKe>();
+        adapterThongKe = new AdapterThongKe(this.activity, arrGroup, arrthu, arrchi);
+        listView_LichSuThuChi.setAdapter(adapterThongKe);
     }
 
     public void setSpinner() {
@@ -113,19 +126,29 @@ public class QuanLyThuChiFragment extends Fragment {
     public void LocTheoLuaChon(int position) {
         switch (position) {
             case 0:
-                setToday();
+                //setToday();
                 break;
         }
     }
 
     public void setToday() {
         ngaythang = today.get(Calendar.DAY_OF_MONTH) + "/" + thang +"/" + nam;
-        LocCoSoDuLieu(ngaythang, "is not null");
+        //LocCoSoDuLieu(ngaythang, "is not null");
     }
 
-    public void LocCoSoDuLieu(String date, String tuan) {
+    public void LocCoSoDuLieu() {
         arrthu.clear();
         arrchi.clear();
-        //Cursor cursor = data.rawQuery("select tennhom")
+        Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {
+                arrthu.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getInt(cursor.getColumnIndex("tien"))));
+            } else {
+                arrchi.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getInt(cursor.getColumnIndex("tien"))));
+            }
+            cursor.moveToNext();
+        }
+        adapterThongKe.notifyDataSetChanged();
     }
 }

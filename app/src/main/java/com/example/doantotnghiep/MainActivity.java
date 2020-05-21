@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +
                     "ngaythuchien numeric, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
-                    "madanhmuc int constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
+                    "madanhmuc text constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
 
             //Table Ke hoach
         } catch (Exception ex) {
