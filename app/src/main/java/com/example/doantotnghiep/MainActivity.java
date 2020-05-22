@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             //Table Tai khoan
             data.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text, " +
-                    "hovaten text, diachi text, sodienthoai int, email text, ngaysinh numeric);");
+                    "hovaten text, diachi text, sodienthoai int, email text);");
 
             //Table Sinh vien
             //data.execSQL("create table if not exists tblsinhvien()");

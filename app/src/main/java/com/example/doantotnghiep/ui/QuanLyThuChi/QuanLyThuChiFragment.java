@@ -76,7 +76,7 @@ public class QuanLyThuChiFragment extends Fragment {
         ThemThuChi();
         setSpinner();
         setListview();
-        //LocCoSoDuLieu();
+        LocCoSoDuLieu();
     }
 
     public void AnhXa() {
@@ -139,7 +139,7 @@ public class QuanLyThuChiFragment extends Fragment {
     public void LocCoSoDuLieu() {
         arrthu.clear();
         arrchi.clear();
-        Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc", null);
+        Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc group by tbldanhmucthuchi.madanhmuc", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {
