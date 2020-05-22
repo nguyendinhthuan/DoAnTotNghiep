@@ -43,6 +43,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private SQLiteDatabase data;
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
+    private Button button_ReloadThuChi;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LichSuThuChi;
@@ -77,14 +78,28 @@ public class QuanLyThuChiFragment extends Fragment {
         setSpinner();
         setListview();
         LocCoSoDuLieu();
+        TaiDanhSachThuChi();
     }
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
 
+        button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
+
+
         spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
 
         listView_LichSuThuChi = (ExpandableListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
+    }
+
+    public void TaiDanhSachThuChi() {
+        button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocCoSoDuLieu();
+                Toast.makeText(activity, "Tải lịch sử thu chi thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void ThemThuChi() {
