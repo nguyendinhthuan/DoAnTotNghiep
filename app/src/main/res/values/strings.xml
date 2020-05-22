@@ -27,6 +27,7 @@
     <string name="menu_QuanLyVi">Quản lý ví</string>
     <string name="menu_QuanLyTaiKhoan">Quản lý tài khoản</string>
     <string name="menu_QuanLyNhomThuChi">Quản lý danh mục thu chi</string>
+    <string name="menu_ThongKeThuChi">Thống kê thu chi</string>
 
 
     <string-array name="navigation">

@@ -28,4 +28,9 @@
         android:label="@string/menu_QuanLyTaiKhoan"
         tools:layout="@layout/fragment_quanlytaikhoan" />
 
+    <fragment
+        android:id="@+id/nav_ThongKeThuChi"
+        android:name="com.example.doantotnghiep.ui.ThongKeThuChi.ThongKeThuChiFragment"
+        android:label="Thống kê thu chi"
+        tools:layout="@layout/fragment_thongkethuchi" />
 </navigation>

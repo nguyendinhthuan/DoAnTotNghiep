@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white_listview_item">
+
+    <TextView
+        android:id="@+id/txtNgay"
+        android:layout_width="wrap_content"
+        android:layout_toLeftOf="@+id/txtTien"
+        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/txtTien"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="hello"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/txtDanhMucThuChi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNgay"
+        android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/txtVi"
+        android:layout_alignParentLeft="true"
+        android:text="hello"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/txtVi"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/txtNgay"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtDanhMucThuChi"
+        android:layout_alignParentRight="true"
+        android:text="hello"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+</RelativeLayout>
