@@ -53,7 +53,7 @@ public class ThongKeThuChiFragment extends Fragment {
     private ArrayList<ArrayThongKe> arrthu, arrchi;
     private String[] arrSpinner, arrGroup;
     private ArrayAdapter<String> adapterSpinner;
-    private ExpandableListView listView_LichSuThuChi;
+    private ExpandableListView listView_ThongKeThuChi;
     private AdapterThongKe adapterThongKe;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -85,7 +85,7 @@ public class ThongKeThuChiFragment extends Fragment {
 
         spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
 
-        listView_LichSuThuChi = (ExpandableListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
+        listView_ThongKeThuChi = (ExpandableListView) myFragment.findViewById(R.id.listView_ThongKeThuChi);
     }
 
     public void TaiDanhSachThuChi() {
@@ -113,7 +113,7 @@ public class ThongKeThuChiFragment extends Fragment {
         arrthu = new ArrayList<ArrayThongKe>();
         arrchi = new ArrayList<ArrayThongKe>();
         adapterThongKe = new AdapterThongKe(this.activity, arrGroup, arrthu, arrchi);
-        listView_LichSuThuChi.setAdapter(adapterThongKe);
+        listView_ThongKeThuChi.setAdapter(adapterThongKe);
     }
 
     public void setSpinner() {
@@ -150,7 +150,9 @@ public class ThongKeThuChiFragment extends Fragment {
     public void LocCoSoDuLieu() {
         arrthu.clear();
         arrchi.clear();
-        Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc group by tbldanhmucthuchi.madanhmuc", null);
+        Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien " +
+                " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
+                " group by tbldanhmucthuchi.madanhmuc", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {

@@ -34,7 +34,7 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
             tien = (TextView) view.findViewById(R.id.txtTien);
             danhmucthuchi = (TextView) view.findViewById(R.id.txtDanhMucThuChi);
             vi = (TextView) view.findViewById(R.id.txtVi);
-            date.setText(arr.get(position).date + " " + arr.get(position).time);
+            date.setText(" " + arr.get(position).time);
             tien.setText(""+arr.get(position).tien);
             danhmucthuchi.setText(arr.get(position).danhmucthuchi);
             vi.setText(arr.get(position).vi);

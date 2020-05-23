@@ -1,7 +1,9 @@
 package com.example.doantotnghiep.ui.QuanLyThuChi;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
@@ -16,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,8 +32,10 @@ import com.example.doantotnghiep.HomeActivity;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.ThuChiActivity;
 import com.example.doantotnghiep.adapter.AdapterThongKe;
+import com.example.doantotnghiep.adapter.AdapterThuChi;
 import com.example.doantotnghiep.adapter.PagerAdapter;
 import com.example.doantotnghiep.model.ArrayThongKe;
+import com.example.doantotnghiep.model.ArrayThuChi;
 import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.Array;
@@ -53,8 +58,11 @@ public class QuanLyThuChiFragment extends Fragment {
     private ArrayList<ArrayThongKe> arrthu, arrchi;
     private String[] arrSpinner, arrGroup;
     private ArrayAdapter<String> adapterSpinner;
-    private ExpandableListView listView_LichSuThuChi;
+    private ListView listView_LichSuThuChi;
     private AdapterThongKe adapterThongKe;
+    private ArrayList<ArrayThuChi> arr;
+    private AdapterThuChi adapterThuChi;
+    private SharedPreferences sharedPreferences;
 
 //    public QuanLyThuChiFragment(String taikhoan) {
 //        this.taikhoan = taikhoan;
@@ -73,24 +81,28 @@ public class QuanLyThuChiFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
-//        AnhXa();
-//        ThemThuChi();
+        sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
+
+        AnhXa();
+        ThemThuChi();
 //        setSpinner();
-//        setListview();
+        setListview();
 //        LocCoSoDuLieu();
 //        TaiDanhSachThuChi();
+        LocCoSoDuLieu();
     }
 
-//    public void AnhXa() {
-//        imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
-//
-//        button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
-//
-//
-//        spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
-//
-//        listView_LichSuThuChi = (ExpandableListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
-//    }
+    public void AnhXa() {
+        imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
+
+        //button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
+
+
+        //spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
+
+        listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
+    }
 //
 //    public void TaiDanhSachThuChi() {
 //        button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
@@ -102,23 +114,21 @@ public class QuanLyThuChiFragment extends Fragment {
 //        });
 //    }
 //
-//    public void ThemThuChi() {
-//        imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getContext(), ThuChiActivity.class);
-//                startActivity(i);
-//            }
-//        });
-//    }
-//
-//    public void setListview() {
-//        arrGroup = getResources().getStringArray(R.array.thongketong);
-//        arrthu = new ArrayList<ArrayThongKe>();
-//        arrchi = new ArrayList<ArrayThongKe>();
-//        adapterThongKe = new AdapterThongKe(this.activity, arrGroup, arrthu, arrchi);
-//        listView_LichSuThuChi.setAdapter(adapterThongKe);
-//    }
+    public void ThemThuChi() {
+        imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), ThuChiActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    public void setListview() {
+        arr = new ArrayList<ArrayThuChi>();
+        adapterThuChi = new AdapterThuChi(getActivity(), R.layout.activity_thuchi_item, arr);
+        listView_LichSuThuChi.setAdapter(adapterThuChi);
+    }
 //
 //    public void setSpinner() {
 //        arrSpinner = getResources().getStringArray(R.array.chonloailichsuthuchi);
@@ -150,20 +160,18 @@ public class QuanLyThuChiFragment extends Fragment {
 //        ngaythang = today.get(Calendar.DAY_OF_MONTH) + "/" + thang +"/" + nam;
 //        //LocCoSoDuLieu(ngaythang, "is not null");
 //    }
-//
-//    public void LocCoSoDuLieu() {
-//        arrthu.clear();
-//        arrchi.clear();
-//        Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc group by tbldanhmucthuchi.madanhmuc", null);
-//        cursor.moveToFirst();
-//        while (cursor.isAfterLast() == false) {
-//            if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {
-//                arrthu.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getInt(cursor.getColumnIndex("tien"))));
-//            } else {
-//                arrchi.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getInt(cursor.getColumnIndex("tien"))));
-//            }
-//            cursor.moveToNext();
-//        }
-//        adapterThongKe.notifyDataSetChanged();
-//    }
+
+    public void LocCoSoDuLieu() {
+        //arr.clear();
+        Cursor cursor = data.rawQuery("select mathuchi, ngaythuchien, sotienthuchi, tendanhmuc, tenvi " +
+                " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
+                " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
+                " where tbldanhmucthuchi.tentaikhoan = '" + taikhoan + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi"))));
+            cursor.moveToNext();
+        }
+        adapterThuChi.notifyDataSetChanged();
+    }
 }
