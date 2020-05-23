@@ -42,8 +42,6 @@ public class ThongKeThuChiFragment extends Fragment {
     private Activity activity;
     private SQLiteDatabase data;
     private Animation animation;
-    private ImageButton imageButton_ThemThuChi;
-    private Button button_ReloadThuChi;
     private ThongKeThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LichSuThuChi;
@@ -70,42 +68,15 @@ public class ThongKeThuChiFragment extends Fragment {
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
         AnhXa();
-        ThemThuChi();
         setSpinner();
         setListview();
         LocCoSoDuLieu();
-        TaiDanhSachThuChi();
     }
 
     public void AnhXa() {
-        imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
-
-        button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
-
-
         spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
 
         listView_ThongKeThuChi = (ExpandableListView) myFragment.findViewById(R.id.listView_ThongKeThuChi);
-    }
-
-    public void TaiDanhSachThuChi() {
-        button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LocCoSoDuLieu();
-                Toast.makeText(activity, "Tải lịch sử thu chi thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void ThemThuChi() {
-        imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), ThuChiActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     public void setListview() {

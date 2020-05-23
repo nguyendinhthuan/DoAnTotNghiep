@@ -1,7 +1,9 @@
 package com.example.doantotnghiep.ui.QuanLyThuChi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -41,6 +43,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class QuanLyThuChiFragment extends Fragment {
     View myFragment;
@@ -63,10 +66,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private ArrayList<ArrayThuChi> arr;
     private AdapterThuChi adapterThuChi;
     private SharedPreferences sharedPreferences;
-
-//    public QuanLyThuChiFragment(String taikhoan) {
-//        this.taikhoan = taikhoan;
-//    }
+    private List<ArrayThuChi> list = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -89,31 +89,32 @@ public class QuanLyThuChiFragment extends Fragment {
 //        setSpinner();
         setListview();
 //        LocCoSoDuLieu();
-//        TaiDanhSachThuChi();
+        TaiDanhSachThuChi();
         LocCoSoDuLieu();
+        XoaThuChi();
     }
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
 
-        //button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
+        button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
 
 
         //spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
 
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
     }
-//
-//    public void TaiDanhSachThuChi() {
-//        button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                LocCoSoDuLieu();
-//                Toast.makeText(activity, "Tải lịch sử thu chi thành công", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
+
+    public void TaiDanhSachThuChi() {
+        button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocCoSoDuLieu();
+                Toast.makeText(activity, "Tải lịch sử thu chi thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void ThemThuChi() {
         imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,16 +163,48 @@ public class QuanLyThuChiFragment extends Fragment {
 //    }
 
     public void LocCoSoDuLieu() {
-        //arr.clear();
+        arr.clear();
         Cursor cursor = data.rawQuery("select mathuchi, ngaythuchien, sotienthuchi, tendanhmuc, tenvi " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
                 " where tbldanhmucthuchi.tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi"))));
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi"))));
             cursor.moveToNext();
         }
+        cursor.close();
         adapterThuChi.notifyDataSetChanged();
+    }
+
+    public void XoaThuChi() {
+        listView_LichSuThuChi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                HamXoaThuChi(position);
+                return false;
+            }
+        });
+    }
+
+    public void HamXoaThuChi(final int mathuchi) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_DayNight_Dialog_Alert);
+        builder.setTitle("Thông báo !");
+        builder.setMessage("Bạn có chắc chắn muốn xóa khoản này ?");
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                data.rawQuery("delete from tblthuchi where mathuchi = '" + arr.get(mathuchi).ma + "'", null).moveToFirst();
+                LocCoSoDuLieu();
+                Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
     }
 }
