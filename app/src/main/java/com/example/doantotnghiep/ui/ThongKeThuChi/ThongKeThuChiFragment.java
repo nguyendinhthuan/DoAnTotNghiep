@@ -56,13 +56,9 @@ public class ThongKeThuChiFragment extends Fragment {
     private ExpandableListView listView_LichSuThuChi;
     private AdapterThongKe adapterThongKe;
 
-//    public QuanLyThuChiFragment(String taikhoan) {
-//        this.taikhoan = taikhoan;
-//    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        myFragment = inflater.inflate(R.layout.fragment_quanlythuchi, container, false);
+        myFragment = inflater.inflate(R.layout.fragment_thongkethuchi, container, false);
         return myFragment;
     }
 
