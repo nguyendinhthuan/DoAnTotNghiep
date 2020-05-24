@@ -86,15 +86,22 @@ public class QuanLyViFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
-        sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
-        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
+
 
         AnhXa();
         ThemVi();
         TaiDanhSachVi();
-        SuaVi();
+        //SuaVi();
         XoaVi();
         LayDanhSachVi();
+        LayTenTaiKhoan();
+        //LayThongTinVi();
+    }
+
+    public void LayTenTaiKhoan()
+    {
+        sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
     }
 
     public void ThemVi() {
@@ -146,7 +153,7 @@ public class QuanLyViFragment extends Fragment {
         listView_Vi.setAdapter(adapterVi);
     }
 
-    public void SuaVi() {
+    public void LayThongTinVi() { //SuaVi
         listView_Vi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -156,7 +163,7 @@ public class QuanLyViFragment extends Fragment {
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
 
-                Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan + "'", null);
+                Cursor cursor = data.rawQuery("select * from tblvi where mavi = '" + position + "'", null);
                 cursor.moveToFirst();
                 String tenvi1 = cursor.getString(2);
                 String motavi1 = cursor.getString(3);

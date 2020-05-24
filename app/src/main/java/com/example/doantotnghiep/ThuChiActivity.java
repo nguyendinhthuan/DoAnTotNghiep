@@ -112,6 +112,8 @@ public class ThuChiActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ThemThuChi();
+               // TinhSoDuVi();
+                finish();
             }
         });
     }
@@ -141,7 +143,7 @@ public class ThuChiActivity extends AppCompatActivity {
                 sotienthuchi = -Integer.parseInt(editText_SoTienThuChi.getText().toString());
             }
             values.put("sotienthuchi", sotienthuchi);
-            values.put("mavi", spinner_Vi.getSelectedItem().toString());
+            values.put("mavi", arrMaVi.get(spinner_Vi.getSelectedItemPosition()));
             values.put("ngaythuchien", simpleDateFormat.format(date));
             values.put("madanhmuc", arrMaDanhMuc.get(spinner_DanhMuc.getSelectedItemPosition()));
             values.put("tentaikhoan", taikhoan);
@@ -150,7 +152,8 @@ public class ThuChiActivity extends AppCompatActivity {
                 return false;
             }
             thongbao = "Lưu thành công";
-            finish();
+
+            //finish();
 
             Toast.makeText(this, thongbao, Toast.LENGTH_SHORT).show();
         }
@@ -251,5 +254,26 @@ public class ThuChiActivity extends AppCompatActivity {
             cursor.moveToNext();
         }
         adapterDanhMuc.notifyDataSetChanged();
+    }
+
+    public void TinhSoDuVi()
+    {
+        int mavithem = arrMaVi.get(spinner_Vi.getSelectedItemPosition());
+        Cursor cursor =  data.rawQuery("select* from tblvi where mavi = "+ mavithem,null);
+
+        int sotienthuchi = Integer.parseInt(editText_SoTienThuChi.getText().toString());
+        int sotientuvi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+        //Tinh
+        int sodu = sotientuvi + sotienthuchi;
+        // gan lai
+        ContentValues values = new ContentValues();
+        values.put("sotienvi",sodu);
+        data.update("tblvi",values,"mavi="+ mavithem,null);
+        //finish();
+    }
+
+    public void TruTienVi()
+    {
+
     }
 }

@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.se.omapi.Session;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     "ngaythuchien numeric, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
                     "madanhmuc text constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
+
 
             //Table Ke hoach
         } catch (Exception ex) {

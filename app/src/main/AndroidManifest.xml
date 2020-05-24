@@ -16,7 +16,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ThuChiActivity" />
         <activity android:name=".DangKyActivity" />
-        <activity android:name=".TaiKhoanActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
