@@ -78,7 +78,6 @@ public class QuanLyViFragment extends Fragment {
         return myFragment;
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -86,15 +85,14 @@ public class QuanLyViFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
-
-
         AnhXa();
         ThemVi();
+        LayTenTaiKhoan();
+        LayDanhSachVi();
         TaiDanhSachVi();
         //SuaVi();
         XoaVi();
-        LayDanhSachVi();
-        LayTenTaiKhoan();
+
         //LayThongTinVi();
     }
 
