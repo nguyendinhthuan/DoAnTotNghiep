@@ -212,12 +212,17 @@ public class QuanLyTaiKhoanFragment extends Fragment {
 
     public boolean DoiMatKhau() {
         String thongbao = "";
+        String matkhauht = "";
         boolean msbm = false;
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
         c.moveToFirst();
         while (c.isAfterLast() == false) {
-            if (c.getString(c.getColumnIndex("masobimat")).equals(maso.getText().toString())) {
-                msbm = true;
+            if(c.getString(c.getColumnIndex("tentaikhoan")).equals(taikhoan))
+            {
+                if (c.getString(c.getColumnIndex("masobimat")).equals(maso.getText().toString())) {
+                    msbm = true;
+                    matkhauht = c.getString(c.getColumnIndex("matkhau"));
+                }
             }
             c.moveToNext();
         }
@@ -237,10 +242,15 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             thongbao = "Mật khẩu không khớp";
             matkhau1.startAnimation(animation);
             matkhau2.startAnimation(animation);
-        } else {
+        } else if(matkhau1.getText().toString().equals(matkhauht)){
+            thongbao = "Mật khẩu này hiện đang được sử dụng vui lòng nhập mật khẩu khác";
+            matkhau1.startAnimation(animation);
+            matkhau1.setText("");
+            matkhau2.setText("");
+        }else {
             ContentValues values = new ContentValues();
             values.put("matkhau", matkhau1.getText().toString());
-            data.update("tbltaikhoan", values, "masobimat=?", new String[]{maso.getText().toString()});
+            data.update("tbltaikhoan", values, "tentaikhoan like '"+ taikhoan+"'", null);
             thongbao = "Lưu thành công";
             Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
             return true;

@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -67,10 +69,7 @@ public class QuanLyViFragment extends Fragment {
     private String taikhoan;
     private SharedPreferences sharedPreferences;
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat;
-
-//    public QuanLyViFragment(String taikhoan) {
-//        this.taikhoan = taikhoan;
-//    }
+    private int vitri = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -85,17 +84,46 @@ public class QuanLyViFragment extends Fragment {
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
-
-
-
         AnhXa();
         ThemVi();
-        TaiDanhSachVi();
-        //SuaVi();
-        XoaVi();
-        LayDanhSachVi();
         LayTenTaiKhoan();
-        //LayThongTinVi();
+        LayDanhSachVi();
+        TaiDanhSachVi();
+        listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                vitri = position;
+                return false;
+            }
+        });
+        registerForContextMenu(listView_Vi);
+
+
+
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        activity.getMenuInflater().inflate(R.menu.menu_vi, menu);
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.option_Sua:{
+                SuaVi();
+                return true;
+            }
+            case R.id.option_Xoa:{
+                XoaVi(vitri);
+                return true;
+            }
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void LayTenTaiKhoan()
@@ -153,32 +181,42 @@ public class QuanLyViFragment extends Fragment {
         listView_Vi.setAdapter(adapterVi);
     }
 
-    public void LayThongTinVi() { //SuaVi
-        listView_Vi.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void SuaVi() {
+                final String tenviht = list.get(vitri).tenvi; // lay ten vi de cap nhat
                 final Dialog d = new Dialog(getContext());
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 d.setContentView(R.layout.activity_capnhatvi);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
-
-                Cursor cursor = data.rawQuery("select * from tblvi where mavi = '" + position + "'", null);
-                cursor.moveToFirst();
-                String tenvi1 = cursor.getString(2);
-                String motavi1 = cursor.getString(3);
-                String sotienvi1 = cursor.getString(4);
-
-//                editText_NhapTenViCapNhat.setText(tenvi1);
-//                editText_NhapMoTaViCapNhat.setText(motavi1);
-//                editText_NhapSoTienViCapNhat.setText(sotienvi1);
-
+                //AnhXa
                 editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
                 editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
                 editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
                 editText_NhapSoTienViCapNhat.setEnabled(false);
                 button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
                 button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
+                //LayThongTinViLenDialog
+                Cursor cursor = data.rawQuery("select * from tblvi where tenvi like '"+ tenviht +"'" , null);
+                cursor.moveToFirst();
+                String tenvi1 = cursor.getString(1);
+                String motavi1 = cursor.getString(2);
+                String sotienvi1 = String.valueOf(cursor.getDouble(3));
+
+                editText_NhapTenViCapNhat.setText(tenvi1);
+                editText_NhapMoTaViCapNhat.setText(motavi1);
+                editText_NhapSoTienViCapNhat.setText(sotienvi1);
+
+                //XuLy
+                button_LuuCapNhatVi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(CapNhatVi())
+                        {
+                            d.dismiss();
+                            LayDanhSachVi();
+                        }
+                    }
+                });
                 button_HuyCapNhatVi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -186,17 +224,37 @@ public class QuanLyViFragment extends Fragment {
                     }
                 });
             }
-        });
+//        });
+//    }
+
+    public boolean CapNhatVi()
+    {
+        String thongbao = "";
+        final String tenviht = list.get(vitri).tenvi;
+       if(editText_NhapTenViCapNhat.getText().toString().equals(""))
+       {
+           editText_NhapTenViCapNhat.startAnimation(animation);
+           Toast.makeText(activity,"Bạn chưa nhập tên ví",Toast.LENGTH_LONG).show();
+       }else if(editText_NhapMoTaViCapNhat.getText().toString().equals(""))
+       {
+           editText_NhapMoTaViCapNhat.startAnimation(animation);
+           Toast.makeText(activity,"Bạn chưa nhập mô tả ví",Toast.LENGTH_LONG).show();
+       }else {
+           ContentValues values = new ContentValues();
+           values.put("tenvi",editText_NhapTenViCapNhat.getText().toString());
+           values.put("motavi",editText_NhapMoTaViCapNhat.getText().toString());
+           data.update("tblvi",values,"tenvi like '"+ tenviht + "'",null);
+           thongbao = "Cập nhật thành công";
+           Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+           return true;
+       }
+       thongbao = "Cập nhật không thành công";
+       Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+       return false;
     }
 
-    public void XoaVi() {
-        listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                HamXoaVi(list.get(position).tenvi);
-                return false;
-            }
-        });
+    public void XoaVi(int vitri1) {
+        HamXoaVi(list.get(vitri1).tenvi);
     }
 
     public void HamXoaVi(final String tenvi) {

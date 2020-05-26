@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/main_edittext"
-        android:inputType="textPassword" />
+        />
 
     <TextView
         android:id="@+id/textView_NhapSoTienCapNhat"
@@ -57,7 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@drawable/main_edittext"
-        android:inputType="textPassword" />
+        android:inputType="number"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
