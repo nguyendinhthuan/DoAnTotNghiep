@@ -243,7 +243,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             matkhau1.startAnimation(animation);
             matkhau2.startAnimation(animation);
         } else if(matkhau1.getText().toString().equals(matkhauht)){
-            thongbao = "Mật khẩu này hiện đang được sử dụng vui lòng nhập mật khẩu khác";
+            thongbao = "Mật khẩu này hiện đang được sử dụng";
             matkhau1.startAnimation(animation);
             matkhau1.setText("");
             matkhau2.setText("");

@@ -77,18 +77,19 @@ public class QuanLyViFragment extends Fragment {
         return myFragment;
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+
         AnhXa();
         ThemVi();
         LayTenTaiKhoan();
         LayDanhSachVi();
         TaiDanhSachVi();
+
         listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -124,6 +125,7 @@ public class QuanLyViFragment extends Fragment {
             default:
                 return super.onContextItemSelected(item);
         }
+
     }
 
     public void LayTenTaiKhoan()
