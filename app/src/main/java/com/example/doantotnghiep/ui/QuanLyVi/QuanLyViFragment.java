@@ -7,44 +7,32 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.example.doantotnghiep.Database;
-import com.example.doantotnghiep.MainActivity;
 import com.example.doantotnghiep.R;
-import com.example.doantotnghiep.ThuChiActivity;
-import com.example.doantotnghiep.ViActivity;
 import com.example.doantotnghiep.adapter.AdapterVi;
 import com.example.doantotnghiep.model.ArrayVi;
 
@@ -68,8 +56,10 @@ public class QuanLyViFragment extends Fragment {
     private List<ArrayVi> list = null;
     private String taikhoan;
     private SharedPreferences sharedPreferences;
-    private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat;
+    private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,editText_TenVi,editText_MoTaVi,editText_SoTienVi;
+    private Button button_LuuVi,button_ThoatVi;
     private int vitri = 0;
+    private Cursor cursor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -88,7 +78,7 @@ public class QuanLyViFragment extends Fragment {
         ThemVi();
         LayTenTaiKhoan();
         LayDanhSachVi();
-        TaiDanhSachVi();
+        //TaiDanhSachVi();
 
         listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -138,18 +128,79 @@ public class QuanLyViFragment extends Fragment {
         button_ThemVi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ViActivity.class);
-                startActivity(i);
-            }
-        });
-    }
+                final Dialog d = new Dialog(getContext());
+                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                d.setContentView(R.layout.activity_vi);
+                d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                d.show();
 
-    public void TaiDanhSachVi() {
-        button_Reload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LayDanhSachVi();
-                Toast.makeText(activity, "Tải danh sách ví thành công", Toast.LENGTH_SHORT).show();
+                //AnhXa
+                button_LuuVi = (Button) d.findViewById(R.id.button_LuuVi);
+                button_ThoatVi = (Button) d.findViewById(R.id.button_ThoatVi);
+                editText_TenVi = (EditText) d.findViewById(R.id.editText_TenVi);
+                editText_MoTaVi = (EditText) d.findViewById(R.id.editText_MoTaVi);
+                editText_SoTienVi = (EditText) d.findViewById(R.id.editText_SoTienVi);
+
+                //Xuly
+               button_LuuVi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean tenvi = true;
+                        String thongbao = "";
+                        cursor = data.rawQuery("select * from tblvi", null);
+                        cursor.moveToFirst();
+                        while (cursor.isAfterLast()==false) {
+                            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_TenVi.getText().toString())) {
+                                tenvi = false;
+                            }
+                            cursor.moveToNext();
+                        }
+                        if (tenvi == false) {
+                            Toast.makeText(activity, "Tên ví này đã tồn tại", Toast.LENGTH_SHORT).show();
+                            editText_TenVi.startAnimation(animation);
+                        } else if (editText_TenVi.getText().toString().equals("")) {
+                            editText_TenVi.startAnimation(animation);
+                            Toast.makeText(activity, "Bạn chưa nhập tên ví", Toast.LENGTH_SHORT).show();
+                        } else if (editText_MoTaVi.getText().toString().equals("")) {
+                            editText_MoTaVi.startAnimation(animation);
+                            Toast.makeText(activity, "Bạn chưa nhập mô tả cho ví", Toast.LENGTH_SHORT).show();
+                        } else if (editText_SoTienVi.getText().toString().equals("")) {
+                            editText_SoTienVi.startAnimation(animation);
+                            Toast.makeText(activity, "Bạn chưa nhập số tiền ban đầu cho ví", Toast.LENGTH_SHORT).show();
+//        } else if (DinhDangsoTien() < 0) {
+//            editText_SoTienVi.setAnimation(animation);
+//            Toast.makeText(this, "Số tiền không được âm", Toast.LENGTH_SHORT).show();
+                        } else {
+                            int mavi = 1;
+                            cursor = data.rawQuery("select mavi from tblvi", null);
+                            if (cursor.moveToLast() == true) {
+                                mavi = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
+                            }
+
+                            ContentValues values = new ContentValues();
+                            values.put("mavi", mavi);
+                            values.put("tenvi", editText_TenVi.getText().toString());
+                            values.put("motavi", editText_MoTaVi.getText().toString());
+                            values.put("sotienvi", editText_SoTienVi.getText().toString());
+                            values.put("tentaikhoan", taikhoan);
+                            if(data.insert("tblvi", null, values)!= -1){
+                                thongbao = "Thêm ví thành công";
+                                d.dismiss();
+                            }else {
+                                thongbao = "Thêm ví không thành công";
+                            }
+                            Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
+                        }
+
+                            LayDanhSachVi();
+                    }
+                });
+                button_ThoatVi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        d.dismiss();
+                    }
+                });
             }
         });
     }
