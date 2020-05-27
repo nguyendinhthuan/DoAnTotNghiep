@@ -41,8 +41,10 @@ import com.example.doantotnghiep.model.ArrayThuChi;
 import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class QuanLyThuChiFragment extends Fragment {
@@ -54,19 +56,20 @@ public class QuanLyThuChiFragment extends Fragment {
     private Button button_ReloadThuChi;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
-    private Spinner spinner_LichSuThuChi;
+    private Spinner spinner_LocThuChi;
     private String ngaythang;
     private Calendar today;
     private int thang, nam;
     private ArrayList<ArrayThongKe> arrthu, arrchi;
-    private String[] arrSpinner, arrGroup;
-    private ArrayAdapter<String> adapterSpinner;
+    private String[] arrGroup;
     private ListView listView_LichSuThuChi;
     private AdapterThongKe adapterThongKe;
     private ArrayList<ArrayThuChi> arr;
     private AdapterThuChi adapterThuChi;
     private SharedPreferences sharedPreferences;
     private List<ArrayThuChi> list = null;
+    private ArrayList<String> arrSpinner;
+    private ArrayAdapter<String> adapterSpinner;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,12 +89,13 @@ public class QuanLyThuChiFragment extends Fragment {
 
         AnhXa();
         ThemThuChi();
-//        setSpinner();
         setListview();
 //        LocCoSoDuLieu();
         TaiDanhSachThuChi();
         LocCoSoDuLieu();
         XoaThuChi();
+        setSpinner();
+        LoadNgayLenSpinner();
     }
 
     public void AnhXa() {
@@ -100,7 +104,7 @@ public class QuanLyThuChiFragment extends Fragment {
         button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
 
 
-        //spinner_LichSuThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LichSuThuChi);
+        spinner_LocThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LocThuChi);
 
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
     }
@@ -109,7 +113,8 @@ public class QuanLyThuChiFragment extends Fragment {
         button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocCoSoDuLieu();
+                LoadNgayLenSpinner();
+                LoadThuChiTheoSpinner();
                 Toast.makeText(activity, "Tải lịch sử thu chi thành công", Toast.LENGTH_SHORT).show();
             }
         });
@@ -130,37 +135,50 @@ public class QuanLyThuChiFragment extends Fragment {
         adapterThuChi = new AdapterThuChi(getActivity(), R.layout.activity_thuchi_item, arr);
         listView_LichSuThuChi.setAdapter(adapterThuChi);
     }
-//
-//    public void setSpinner() {
-//        arrSpinner = getResources().getStringArray(R.array.chonloailichsuthuchi);
-//        adapterSpinner = new ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, arrSpinner);
-//        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_LichSuThuChi.setAdapter(adapterSpinner);
-//        spinner_LichSuThuChi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                //LocTheoLuaChon(position);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//    }
-//
-//    public void LocTheoLuaChon(int position) {
-//        switch (position) {
-//            case 0:
-//                //setToday();
-//                break;
-//        }
-//    }
-//
-//    public void setToday() {
-//        ngaythang = today.get(Calendar.DAY_OF_MONTH) + "/" + thang +"/" + nam;
-//        //LocCoSoDuLieu(ngaythang, "is not null");
-//    }
+
+    public void setSpinner() {
+        arrSpinner = new ArrayList<String>();
+        adapterSpinner = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, arrSpinner);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_LocThuChi.setAdapter(adapterSpinner);
+        spinner_LocThuChi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LoadThuChiTheoSpinner();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    public void LoadNgayLenSpinner() {
+        arrSpinner.clear();
+        Cursor cursor = data.rawQuery("select ngaythuchien from tblthuchi group by ngaythuchien", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arrSpinner.add(cursor.getString(cursor.getColumnIndex("ngaythuchien")));
+            cursor.moveToNext();
+        }
+        adapterSpinner.notifyDataSetChanged();
+    }
+
+    public void LoadThuChiTheoSpinner() {
+        arr.clear();
+        Cursor cursor = data.rawQuery("select mathuchi, ngaythuchien, sotienthuchi, tendanhmuc, tenvi " +
+                " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
+                " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
+                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and ngaythuchien = '" + spinner_LocThuChi.getSelectedItem().toString() + "' ", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi"))));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        adapterThuChi.notifyDataSetChanged();
+    }
 
     public void LocCoSoDuLieu() {
         arr.clear();
@@ -195,7 +213,8 @@ public class QuanLyThuChiFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 data.rawQuery("delete from tblthuchi where mathuchi = '" + arr.get(mathuchi).ma + "'", null).moveToFirst();
-                LocCoSoDuLieu();
+                LoadNgayLenSpinner();
+                LoadThuChiTheoSpinner();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });

@@ -47,7 +47,7 @@ public class ThongKeThuChiFragment extends Fragment {
     private Spinner spinner_LichSuThuChi;
     private String ngaythang;
     private Calendar today;
-    private int thang, nam;
+    private int ngay, thang, nam;
     private ArrayList<ArrayThongKe> arrthu, arrchi;
     private String[] arrSpinner, arrGroup;
     private ArrayAdapter<String> adapterSpinner;
@@ -67,10 +67,15 @@ public class ThongKeThuChiFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
+        today = Calendar.getInstance();
+        //ngay = today.get(Calendar.DAY_OF_MONTH);
+        thang = today.get(Calendar.MONTH) + 1;
+        nam = today.get(Calendar.YEAR);
+
         AnhXa();
         setSpinner();
         setListview();
-        LocCoSoDuLieu();
+        //LocCoSoDuLieu();
     }
 
     public void AnhXa() {
@@ -95,7 +100,7 @@ public class ThongKeThuChiFragment extends Fragment {
         spinner_LichSuThuChi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //LocTheoLuaChon(position);
+                LocTheoLuaChon(position);
             }
 
             @Override
@@ -108,22 +113,29 @@ public class ThongKeThuChiFragment extends Fragment {
     public void LocTheoLuaChon(int position) {
         switch (position) {
             case 0:
-                //setToday();
+                setToday();
+                break;
+            case 1:
+                ngaythang = thang + "/" + nam;
+                LocCoSoDuLieu(ngaythang);
+                break;
+            case 2:
+                LocCoSoDuLieu(String.valueOf(nam));
                 break;
         }
     }
 
     public void setToday() {
-        ngaythang = today.get(Calendar.DAY_OF_MONTH) + "/" + thang +"/" + nam;
-        //LocCoSoDuLieu(ngaythang, "is not null");
+        ngaythang = today.get(Calendar.DAY_OF_MONTH) + "/" + thang + "/" + nam;
+        LocCoSoDuLieu(ngaythang);
     }
 
-    public void LocCoSoDuLieu() {
+    public void LocCoSoDuLieu(String date) {
         arrthu.clear();
         arrchi.clear();
         Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
-                " group by tbldanhmucthuchi.madanhmuc", null);
+                " where ngaythuchien like '%" + date + "%' group by tbldanhmucthuchi.madanhmuc", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {
@@ -134,5 +146,11 @@ public class ThongKeThuChiFragment extends Fragment {
             cursor.moveToNext();
         }
         adapterThongKe.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setToday();
     }
 }

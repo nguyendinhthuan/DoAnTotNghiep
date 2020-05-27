@@ -264,11 +264,8 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         button_DangXuat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
-
-
             }
         });
     }
