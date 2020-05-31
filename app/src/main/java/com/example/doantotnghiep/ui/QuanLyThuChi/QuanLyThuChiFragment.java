@@ -1,7 +1,10 @@
 package com.example.doantotnghiep.ui.QuanLyThuChi;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,13 +16,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -38,9 +45,11 @@ import com.example.doantotnghiep.adapter.AdapterThuChi;
 import com.example.doantotnghiep.adapter.PagerAdapter;
 import com.example.doantotnghiep.model.ArrayThongKe;
 import com.example.doantotnghiep.model.ArrayThuChi;
+import com.example.doantotnghiep.model.ArrayVi;
 import com.google.android.material.tabs.TabLayout;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,12 +62,12 @@ public class QuanLyThuChiFragment extends Fragment {
     private SQLiteDatabase data;
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
-    private Button button_ReloadThuChi;
+    private Button button_ReloadThuChi, button_ThoatThuChiDialog,button_LuuThuChiDialog,button_NgayThuChiDialog,button_GioThuChiDialog,button_ThoiGianHienTaiDialog;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
-    private Spinner spinner_LocThuChi;
+    private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
     private String ngaythang;
-    private Calendar today;
+    private Calendar today,todayDialog;
     private int thang, nam;
     private ArrayList<ArrayThongKe> arrthu, arrchi;
     private String[] arrGroup;
@@ -70,6 +79,18 @@ public class QuanLyThuChiFragment extends Fragment {
     private List<ArrayThuChi> list = null;
     private ArrayList<String> arrSpinner;
     private ArrayAdapter<String> adapterSpinner;
+
+    //DialogThem
+    private EditText editText_SoTienThuChiDialog,editText_MoTaThuChiDialog;
+    private SimpleDateFormat simpleDateFormatDialog;
+    private Date dateDialog;
+    private ArrayList<Integer> arrMaViDialog, arrMaDanhMucDialog;
+    private ArrayList<String> arrTenViDialog, arrTenDanhMucDialog;
+    private ArrayAdapter<String> adapterSpinnerDialog, adapterViDialog, adapterDanhMucDialog;
+    private String[] arrSpinnerDialog;
+    private List<ArrayVi> listDialog = null;
+    private String gioDialog;
+    private Cursor cursor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +104,8 @@ public class QuanLyThuChiFragment extends Fragment {
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+        simpleDateFormatDialog = new SimpleDateFormat("dd/MM/yyyy");
+        dateDialog = new Date();
 
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
         taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
@@ -91,45 +114,220 @@ public class QuanLyThuChiFragment extends Fragment {
         ThemThuChi();
         setListview();
 //        LocCoSoDuLieu();
-        TaiDanhSachThuChi();
         LocCoSoDuLieu();
         XoaThuChi();
         setSpinner();
         LoadNgayLenSpinner();
+
     }
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
-
         button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
-
-
         spinner_LocThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LocThuChi);
-
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
     }
 
-    public void TaiDanhSachThuChi() {
-        button_ReloadThuChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoadNgayLenSpinner();
-                LoadThuChiTheoSpinner();
-                Toast.makeText(activity, "Tải lịch sử thu chi thành công", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
     public void ThemThuChi() {
         imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), ThuChiActivity.class);
-                startActivity(i);
+                animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+                final Dialog d = new Dialog(getActivity());
+                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                d.setContentView(R.layout.activity_thu_chi);
+                d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                d.show();
+
+                //AnhXa
+                button_ThoatThuChiDialog = (Button) d.findViewById(R.id.button_ThoatThuChi);
+                button_LuuThuChiDialog = (Button) d.findViewById(R.id.button_LuuThuChi);
+                button_NgayThuChiDialog = (Button) d.findViewById(R.id.button_NgayThuChi);
+                button_GioThuChiDialog = (Button) d.findViewById(R.id.button_GioThuchi);
+                button_ThoiGianHienTaiDialog = (Button) d.findViewById(R.id.button_ThoiGianHienTai);
+
+                editText_SoTienThuChiDialog = (EditText) d.findViewById(R.id.editText_SoTienThuChi);
+                editText_MoTaThuChiDialog = (EditText) d.findViewById(R.id.editText_MoTaThuChi);
+
+                spinner_LoaiThuChiDialog = (Spinner) d.findViewById(R.id.spinner_LoaiThuChi);
+                spinner_ViDialog = (Spinner) d.findViewById(R.id.spinner_Vi);
+                spinner_DanhMucDialog = (Spinner) d.findViewById(R.id.spinner_DanhMuc);
+
+                todayDialog = Calendar.getInstance();
+
+                //Xu ly
+                HienThiThoiGian();
+                LoadSpinnerDialog();
+                LoadDanhSachViLenSpinnerDialog();
+                button_ThoatThuChiDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        d.dismiss();
+                    }
+                });
+                button_NgayThuChiDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ChonNgay();
+                    }
+                });
+                button_ThoiGianHienTaiDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        HienThiThoiGian();
+                    }
+                });
+                button_LuuThuChiDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ThemThuChiDialog();
+                        d.dismiss();
+                        LoadNgayLenSpinner();
+                        LoadThuChiTheoSpinner();
+                    }
+                });
+
+
             }
         });
     }
 
+    //Dialog Them Thu Chi
+    public void LoadSpinnerDialog() {
+        //Spinner Danh muc
+        arrMaDanhMucDialog = new ArrayList<Integer>();
+        arrTenDanhMucDialog = new ArrayList<String>();
+        adapterDanhMucDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenDanhMucDialog);
+        adapterDanhMucDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_DanhMucDialog.setAdapter(adapterDanhMucDialog);
+        //Spinner Loai thu chi
+        arrSpinnerDialog = getResources().getStringArray(R.array.loaithuchi);
+        adapterSpinnerDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrSpinnerDialog);
+        adapterSpinnerDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_LoaiThuChiDialog.setAdapter(adapterSpinnerDialog);
+        spinner_LoaiThuChiDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LoadDanhSachDanhMucLenSpinnerDialog();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //Spinner Vi
+        arrMaViDialog = new ArrayList<Integer>();
+        arrTenViDialog = new ArrayList<String>();
+        adapterViDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenViDialog);
+        adapterViDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_ViDialog.setAdapter(adapterViDialog);
+    }
+
+    public void LoadDanhSachDanhMucLenSpinnerDialog() {
+        arrMaDanhMucDialog.clear();
+        arrTenDanhMucDialog.clear();
+        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi where loaikhoan = '" + spinner_LoaiThuChiDialog.getSelectedItem().toString() + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arrMaDanhMucDialog.add(cursor.getInt(cursor.getColumnIndex("madanhmuc")));
+            arrTenDanhMucDialog.add(cursor.getString(cursor.getColumnIndex("tendanhmuc")));
+            cursor.moveToNext();
+        }
+        adapterDanhMucDialog.notifyDataSetChanged();
+    }
+
+    public void LoadDanhSachViLenSpinnerDialog() {
+        arrMaViDialog.clear();
+        arrTenViDialog.clear();
+        //cursor = data.query("tblvi", null, null, null, null, null, null);
+        Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
+        cursor.moveToFirst();
+        listDialog = new ArrayList<ArrayVi>();
+        while (cursor.isAfterLast() == false) {
+            arrMaViDialog.add(cursor.getInt(cursor.getColumnIndex("mavi")));
+            arrTenViDialog.add(cursor.getString(cursor.getColumnIndex("tenvi")));
+            cursor.moveToNext();
+        }
+        adapterViDialog.notifyDataSetChanged();
+    }
+
+    public void ChonNgay() {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.activity_chonngay);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+
+        final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
+        Button button_ChonNgayXong = (Button) dialog.findViewById(R.id.button_ChonNgayXong);
+        button_ChonNgayXong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    dateDialog = simpleDateFormatDialog.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(dateDialog));
+                dialog.cancel();
+            }
+        });
+    }
+
+    public void HienThiThoiGian() {
+        int thang = todayDialog.get(Calendar.MONTH) + 1;
+        gioDialog = todayDialog.get(Calendar.HOUR_OF_DAY) + ":"+ todayDialog.get(Calendar.MINUTE) + ":" +todayDialog.get(Calendar.SECOND);
+        dateDialog = todayDialog.getTime();
+        button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(dateDialog));
+        button_GioThuChiDialog.setText(gioDialog);
+    }
+
+    public boolean ThemThuChiDialog() {
+        if (editText_SoTienThuChiDialog.getText().toString().equals("")) {
+            editText_SoTienThuChiDialog.startAnimation(animation);
+            Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
+        } else if (editText_MoTaThuChiDialog.getText().toString().equals("")) {
+            editText_MoTaThuChiDialog.startAnimation(animation);
+            Toast.makeText(activity, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
+        } else {
+            int mathuchi = 1;
+            int sotienthuchi = 0;
+            cursor = data.rawQuery("select mathuchi from tblthuchi", null);
+            if (cursor.moveToLast() == true) {
+                mathuchi = cursor.getInt(cursor.getColumnIndex("mathuchi")) + 1;
+            }
+            String thongbao = "";
+            ContentValues values = new ContentValues();
+            values.put("mathuchi", mathuchi);
+            values.put("mota", editText_MoTaThuChiDialog.getText().toString());
+            values.put("loaithuchi", spinner_LoaiThuChiDialog.getSelectedItem().toString());
+            if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
+                sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            } else {
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            }
+            values.put("sotienthuchi", sotienthuchi);
+            values.put("mavi", arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition()));
+            values.put("ngaythuchien", simpleDateFormatDialog.format(dateDialog));
+            values.put("madanhmuc", arrMaDanhMucDialog.get(spinner_DanhMucDialog.getSelectedItemPosition()));
+            values.put("tentaikhoan", taikhoan);
+
+            if (data.insert("tblthuchi", null, values) == -1) {
+                return false;
+            }
+            thongbao = "Lưu thành công";
+
+            //finish();
+
+            Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+
+    //Thu Chi Fragment
     public void setListview() {
         arr = new ArrayList<ArrayThuChi>();
         adapterThuChi = new AdapterThuChi(getActivity(), R.layout.activity_thuchi_item, arr);
