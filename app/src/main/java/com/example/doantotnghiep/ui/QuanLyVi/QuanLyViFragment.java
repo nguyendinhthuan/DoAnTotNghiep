@@ -44,7 +44,7 @@ public class QuanLyViFragment extends Fragment {
     private QuanLyViViewModel galleryViewModel;
     private Activity activity;
     private ImageButton button_ThemVi;
-    private Button button_Reload, button_LuuCapNhatVi, button_HuyCapNhatVi;
+    private Button button_LuuCapNhatVi, button_HuyCapNhatVi;
     private ListView listView_Vi;
     private View myFragment;
     private ArrayList<ArrayVi> arrayVi;
@@ -207,8 +207,6 @@ public class QuanLyViFragment extends Fragment {
 
     public void AnhXa() {
         button_ThemVi = (ImageButton) myFragment.findViewById(R.id.button_ThemVi);
-
-        button_Reload = (Button) myFragment.findViewById(R.id.button_Reload);
 
         listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
     }

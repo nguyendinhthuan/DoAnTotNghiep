@@ -26,10 +26,5 @@
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textAlignment="center"/>
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_more_vert_black_24dp"
-            android:layout_alignParentRight="true"/>
     </LinearLayout>
 </LinearLayout>

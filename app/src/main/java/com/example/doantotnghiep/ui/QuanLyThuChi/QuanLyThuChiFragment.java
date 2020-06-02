@@ -7,11 +7,9 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,21 +31,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.doantotnghiep.HomeActivity;
 import com.example.doantotnghiep.R;
-import com.example.doantotnghiep.ThuChiActivity;
 import com.example.doantotnghiep.adapter.AdapterThongKe;
 import com.example.doantotnghiep.adapter.AdapterThuChi;
-import com.example.doantotnghiep.adapter.PagerAdapter;
 import com.example.doantotnghiep.model.ArrayThongKe;
 import com.example.doantotnghiep.model.ArrayThuChi;
 import com.example.doantotnghiep.model.ArrayVi;
-import com.google.android.material.tabs.TabLayout;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +52,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private SQLiteDatabase data;
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
-    private Button button_ReloadThuChi, button_ThoatThuChiDialog,button_LuuThuChiDialog,button_NgayThuChiDialog,button_GioThuChiDialog,button_ThoiGianHienTaiDialog;
+    private Button button_ThoatThuChiDialog,button_LuuThuChiDialog,button_NgayThuChiDialog,button_GioThuChiDialog,button_ThoiGianHienTaiDialog;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
@@ -114,7 +104,7 @@ public class QuanLyThuChiFragment extends Fragment {
         ThemThuChi();
         setListview();
 //        LocCoSoDuLieu();
-        LocCoSoDuLieu();
+        //LocCoSoDuLieu();
         XoaThuChi();
         setSpinner();
         LoadNgayLenSpinner();
@@ -123,7 +113,6 @@ public class QuanLyThuChiFragment extends Fragment {
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
-        button_ReloadThuChi = (Button) myFragment.findViewById(R.id.button_ReloadThuChi);
         spinner_LocThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LocThuChi);
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
     }
@@ -365,10 +354,10 @@ public class QuanLyThuChiFragment extends Fragment {
 
     public void LoadThuChiTheoSpinner() {
         arr.clear();
-        Cursor cursor = data.rawQuery("select mathuchi, ngaythuchien, sotienthuchi, tendanhmuc, tenvi " +
+        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
-                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and ngaythuchien = '" + spinner_LocThuChi.getSelectedItem().toString() + "' ", null);
+                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + spinner_LocThuChi.getSelectedItem().toString() + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi"))));
@@ -411,9 +400,9 @@ public class QuanLyThuChiFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 data.rawQuery("delete from tblthuchi where mathuchi = '" + arr.get(mathuchi).ma + "'", null).moveToFirst();
+                Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
                 LoadNgayLenSpinner();
                 LoadThuChiTheoSpinner();
-                Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {

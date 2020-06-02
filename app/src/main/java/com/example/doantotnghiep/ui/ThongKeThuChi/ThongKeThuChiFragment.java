@@ -1,10 +1,8 @@
 package com.example.doantotnghiep.ui.ThongKeThuChi;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +11,17 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.doantotnghiep.HomeActivity;
 import com.example.doantotnghiep.R;
-import com.example.doantotnghiep.ThuChiActivity;
 import com.example.doantotnghiep.adapter.AdapterThongKe;
-import com.example.doantotnghiep.adapter.PagerAdapter;
 import com.example.doantotnghiep.model.ArrayThongKe;
-import com.google.android.material.tabs.TabLayout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 

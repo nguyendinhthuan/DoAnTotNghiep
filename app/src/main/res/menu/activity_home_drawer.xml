@@ -21,6 +21,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_QuanLyNhomThuChi" />
         <item
+            android:id="@+id/nav_KeHoachTietKiem"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Kế hoạch tiết kiệm" />
+        <item
             android:id="@+id/nav_ThongKeThuChi"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Thống kê thu chi" />

@@ -147,17 +147,26 @@
 
         <Button
             android:id="@+id/btnCapNhatTaiKhoan"
-            android:layout_width="202dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="30dp"
             android:background="@drawable/confirm_button"
+            android:ems="8"
             android:text="Cập nhật" />
 
         <Button
             android:id="@+id/btnDoiMatKhauTaiKhoan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="60dp"
             android:background="@drawable/cancel_button"
+            android:ems="8"
             android:text="Đổi mật khẩu" />
     </LinearLayout>
 
