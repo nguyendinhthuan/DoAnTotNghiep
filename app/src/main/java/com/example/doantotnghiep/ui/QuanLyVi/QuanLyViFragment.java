@@ -170,13 +170,13 @@ public class QuanLyViFragment extends Fragment {
 //        } else if (DinhDangsoTien() < 0) {
 //            editText_SoTienVi.setAnimation(animation);
 //            Toast.makeText(this, "Số tiền không được âm", Toast.LENGTH_SHORT).show();
-                        } else {
+                        } else if(GioiHanSoVi()){
+
                             int mavi = 1;
                             cursor = data.rawQuery("select mavi from tblvi", null);
                             if (cursor.moveToLast() == true) {
                                 mavi = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
                             }
-
                             ContentValues values = new ContentValues();
                             values.put("mavi", mavi);
                             values.put("tenvi", editText_TenVi.getText().toString());
@@ -190,9 +190,16 @@ public class QuanLyViFragment extends Fragment {
                                 thongbao = "Thêm ví không thành công";
                             }
                             Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
+                        }else {
+                            editText_TenVi.startAnimation(animation);
+                            editText_MoTaVi.startAnimation(animation);
+                            editText_SoTienVi.startAnimation(animation);
+                            thongbao="Số ví đã đạt tối đa";
+                            Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
                         }
 
-                            LayDanhSachVi();
+
+                        LayDanhSachVi();
                     }
                 });
                 button_ThoatVi.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +210,22 @@ public class QuanLyViFragment extends Fragment {
                 });
             }
         });
+    }
+
+    public boolean GioiHanSoVi()
+    {
+        int count = 0;
+        cursor = data.rawQuery("select * from tblvi", null);
+        while (cursor.isAfterLast() == false){
+            count++;
+
+            cursor.moveToNext();
+        }
+        if(count <6){
+            return true;
+        }
+
+        return false;
     }
 
     public void AnhXa() {
@@ -275,8 +298,7 @@ public class QuanLyViFragment extends Fragment {
                     }
                 });
             }
-//        });
-//    }
+
 
     public boolean CapNhatVi()
     {

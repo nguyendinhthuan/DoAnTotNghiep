@@ -79,8 +79,9 @@ public class QuanLyThuChiFragment extends Fragment {
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViDialog, adapterDanhMucDialog;
     private String[] arrSpinnerDialog;
     private List<ArrayVi> listDialog = null;
-    private String gioDialog;
+    private String gioDialog,tenVi;
     private Cursor cursor;
+    private int sotientuvi,sotienthuchi,sotienchi;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -108,6 +109,7 @@ public class QuanLyThuChiFragment extends Fragment {
         XoaThuChi();
         setSpinner();
         LoadNgayLenSpinner();
+
 
     }
 
@@ -149,6 +151,18 @@ public class QuanLyThuChiFragment extends Fragment {
                 HienThiThoiGian();
                 LoadSpinnerDialog();
                 LoadDanhSachViLenSpinnerDialog();
+                //KiemTraChiTieuMax();
+
+
+                editText_SoTienThuChiDialog.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean b) {
+                        if(!b && editText_SoTienThuChiDialog.getText().toString()!= null)
+                        {
+                          KiemTraChiTieuMax();
+                        }
+                    }
+                });
                 button_ThoatThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -170,8 +184,16 @@ public class QuanLyThuChiFragment extends Fragment {
                 button_LuuThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ThemThuChiDialog();
-                        d.dismiss();
+                        if (editText_SoTienThuChiDialog.getText().toString().equals("")) {
+                            editText_SoTienThuChiDialog.startAnimation(animation);
+                            Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
+                        } else if (editText_MoTaThuChiDialog.getText().toString().equals("")) {
+                            editText_MoTaThuChiDialog.startAnimation(animation);
+                            Toast.makeText(activity, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
+                        } else {
+                            ThemThuChiDialog();
+                            d.dismiss();
+                        }
                         LoadNgayLenSpinner();
                         LoadThuChiTheoSpinner();
                     }
@@ -212,6 +234,7 @@ public class QuanLyThuChiFragment extends Fragment {
         adapterViDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenViDialog);
         adapterViDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_ViDialog.setAdapter(adapterViDialog);
+
     }
 
     public void LoadDanhSachDanhMucLenSpinnerDialog() {
@@ -274,15 +297,9 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public boolean ThemThuChiDialog() {
-        if (editText_SoTienThuChiDialog.getText().toString().equals("")) {
-            editText_SoTienThuChiDialog.startAnimation(animation);
-            Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
-        } else if (editText_MoTaThuChiDialog.getText().toString().equals("")) {
-            editText_MoTaThuChiDialog.startAnimation(animation);
-            Toast.makeText(activity, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
-        } else {
+
             int mathuchi = 1;
-            int sotienthuchi = 0;
+            //int sotienthuchi = 0;
             cursor = data.rawQuery("select mathuchi from tblthuchi", null);
             if (cursor.moveToLast() == true) {
                 mathuchi = cursor.getInt(cursor.getColumnIndex("mathuchi")) + 1;
@@ -292,11 +309,7 @@ public class QuanLyThuChiFragment extends Fragment {
             values.put("mathuchi", mathuchi);
             values.put("mota", editText_MoTaThuChiDialog.getText().toString());
             values.put("loaithuchi", spinner_LoaiThuChiDialog.getSelectedItem().toString());
-            if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
-                sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
-            } else {
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
-            }
+
             values.put("sotienthuchi", sotienthuchi);
             values.put("mavi", arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition()));
             values.put("ngaythuchien", simpleDateFormatDialog.format(dateDialog));
@@ -307,12 +320,53 @@ public class QuanLyThuChiFragment extends Fragment {
                 return false;
             }
             thongbao = "Lưu thành công";
-
-            //finish();
-
             Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
-        }
+            TinhSoDu();
+
         return true;
+    }
+
+    public void KiemTraChiTieuMax()
+    {
+        int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
+        Cursor cursor =  data.rawQuery("select * from tblvi" ,null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast()==false)
+        {
+            if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem)
+            {
+                sotientuvi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+
+            }
+            cursor.moveToNext();
+        }
+
+        if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
+            sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+        } else {
+            int sotienthu = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            if(sotientuvi < sotienthu){
+                editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
+                editText_SoTienThuChiDialog.startAnimation(animation);
+                Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            }else {
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            }
+        }
+    }
+
+    public void TinhSoDu()
+    {
+        int sodu = 0;
+        int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
+        //Tinh
+        sodu = sotientuvi + sotienthuchi;
+
+        // gan lai
+        ContentValues values1 = new ContentValues();
+        values1.put("sotienvi",sodu);
+        data.update("tblvi",values1,"mavi = " + mavithem,null);
     }
 
 
