@@ -11,7 +11,10 @@ import android.widget.TextView;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.model.ArrayThongKe;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdapterThongKe extends BaseExpandableListAdapter {
     private Context C;
@@ -88,11 +91,11 @@ public class AdapterThongKe extends BaseExpandableListAdapter {
         txtTien = (TextView) view.findViewById(R.id.txtTien);
         if (groupPosition == 0) {
             txtTenNhomNho.setText(arrthu.get(childPosition).TenThongKe);
-            txtTien.setText("" + arrthu.get(childPosition).TienThongKe);
+            txtTien.setText(DoiSoSangTien(arrthu.get(childPosition).TienThongKe));
             view.setBackgroundColor(Color.parseColor("#EEEEEE"));
         } else {
             txtTenNhomNho.setText(arrchi.get(childPosition).TenThongKe);
-            txtTien.setText("" + arrchi.get(childPosition).TienThongKe);
+            txtTien.setText(DoiSoSangTien(arrchi.get(childPosition).TienThongKe));
         }
         return view;
     }
@@ -100,5 +103,11 @@ public class AdapterThongKe extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
+    }
+
+    public static String DoiSoSangTien(Double so) {
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        decimalFormat.applyPattern("#,###,###,###");
+        return decimalFormat.format((so)) + " đ";
     }
 }

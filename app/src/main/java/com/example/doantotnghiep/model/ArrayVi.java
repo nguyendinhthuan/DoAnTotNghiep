@@ -4,8 +4,7 @@ public class ArrayVi {
     public int mavi;
     public String tenvi;
     public String motavi;
-    public Double sotienvi;
-    public Double sodu;
+    public Double sotienvi, sodu;
 
     public ArrayVi(int mavi, String tenvi, String motavi, Double sotienvi, Double sodu) {
         this.mavi = mavi;

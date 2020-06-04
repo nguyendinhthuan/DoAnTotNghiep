@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.model.ArrayThuChi;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
     private Activity a;
@@ -34,11 +37,17 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
             tien = (TextView) view.findViewById(R.id.txtTien);
             danhmucthuchi = (TextView) view.findViewById(R.id.txtDanhMucThuChi);
             vi = (TextView) view.findViewById(R.id.txtVi);
-            date.setText(" " + arr.get(position).time);
-            tien.setText(""+arr.get(position).tien);
+            date.setText(""+ arr.get(position).time);
+            tien.setText(DoiSoSangTien(arr.get(position).tien));
             danhmucthuchi.setText(arr.get(position).danhmucthuchi);
             vi.setText(arr.get(position).vi);
         }
         return view;
+    }
+
+    public static String DoiSoSangTien(Double so) {
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        decimalFormat.applyPattern("#,###,###,###");
+        return decimalFormat.format((so)) + " đ";
     }
 }

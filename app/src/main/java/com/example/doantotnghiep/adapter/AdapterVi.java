@@ -13,8 +13,11 @@ import androidx.annotation.NonNull;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.model.ArrayVi;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterVi extends ArrayAdapter<ArrayVi> {
     private Activity context = null;
@@ -39,10 +42,14 @@ public class AdapterVi extends ArrayAdapter<ArrayVi> {
             textView_MoTaVi = (TextView) view.findViewById(R.id.textView_MoTaVi);
             textView_TenVi.setText(arr.get(position).tenvi);
             textView_MoTaVi.setText(arr.get(position).motavi);
-            textView_SoTien.setText(Double.toString(arr.get(position).sotienvi));
-
-
+            textView_SoTien.setText(DoiSoSangTien(arr.get(position).sotienvi));
         }
         return view;
+    }
+
+    public static String DoiSoSangTien(Double so) {
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        decimalFormat.applyPattern("#,###,###,###");
+        return decimalFormat.format((so)) + " đ";
     }
 }

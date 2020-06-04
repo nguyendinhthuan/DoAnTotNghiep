@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             //data.execSQL("create table if not exists tblsinhvien()");
 
             //Table Vi
-            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi real, sodu real, " +
+            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi double, sodu real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
 
             //Table Danh muc thu chi
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Thu chi
             data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +
-                    "ngaythuchien numeric, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
+                    "ngaythuchien date, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
                     "madanhmuc text constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
 

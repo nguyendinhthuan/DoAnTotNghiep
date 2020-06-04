@@ -56,7 +56,7 @@ public class ThongKeThuChiFragment extends Fragment {
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
         today = Calendar.getInstance();
-        //ngay = today.get(Calendar.DAY_OF_MONTH);
+        ngay = today.get(Calendar.DATE);
         thang = today.get(Calendar.MONTH) + 1;
         nam = today.get(Calendar.YEAR);
 
@@ -114,7 +114,7 @@ public class ThongKeThuChiFragment extends Fragment {
     }
 
     public void setToday() {
-        ngaythang = today.get(Calendar.DAY_OF_MONTH) + "/" + thang + "/" + nam;
+        ngaythang = ngay + "/" + thang + "/" + nam;
         LocCoSoDuLieu(ngaythang);
     }
 
@@ -127,9 +127,9 @@ public class ThongKeThuChiFragment extends Fragment {
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {
-                arrthu.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getInt(cursor.getColumnIndex("tien"))));
+                arrthu.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getDouble(cursor.getColumnIndex("tien"))));
             } else {
-                arrchi.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getInt(cursor.getColumnIndex("tien"))));
+                arrchi.add(new ArrayThongKe(cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getDouble(cursor.getColumnIndex("tien"))));
             }
             cursor.moveToNext();
         }
