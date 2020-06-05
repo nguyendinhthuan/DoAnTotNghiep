@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:text="Tên ví: "
             android:textColor="#000000"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"/>
 
         <EditText
             android:id="@+id/editText_TenVi"
@@ -43,7 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Nhập tên ví" />
+            android:hint="Nhập tên ví"
+            android:background="@drawable/main_edittext"
+            android:layout_marginTop="15dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,14 +58,18 @@
             android:layout_height="wrap_content"
             android:text="Mô tả: "
             android:textColor="#000000"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"/>
+
         <EditText
             android:id="@+id/editText_MoTaVi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Nhập mô tả cho ví"/>
+            android:hint="Nhập mô tả cho ví"
+            android:background="@drawable/main_edittext"
+            android:layout_marginTop="15dp"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -74,7 +81,8 @@
             android:layout_height="wrap_content"
             android:text="Số tiền: "
             android:textColor="#000000"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:layout_marginTop="15dp"/>
         <EditText
             android:id="@+id/editText_SoTienVi"
             android:layout_width="wrap_content"
@@ -82,13 +90,16 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Nhập số tiền ban đầu cho ví"
-            android:inputType="numberDecimal"/>
+            android:inputType="numberDecimal"
+            android:background="@drawable/main_edittext"
+            android:layout_marginTop="15dp"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="68dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
 
         <Button
             android:id="@+id/button_LuuVi"

@@ -19,7 +19,7 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
     private Activity a;
     private int id;
     private ArrayList<ArrayThuChi> arr;
-    private TextView date, tien, danhmucthuchi, vi;
+    private TextView date, tien, danhmucthuchi, vi, loaikhoan;
 
     public AdapterThuChi(Activity context, int resource, ArrayList<ArrayThuChi> objects) {
         super(context, resource, objects);
@@ -37,10 +37,13 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
             tien = (TextView) view.findViewById(R.id.txtTien);
             danhmucthuchi = (TextView) view.findViewById(R.id.txtDanhMucThuChi);
             vi = (TextView) view.findViewById(R.id.txtVi);
+            loaikhoan = (TextView) view.findViewById(R.id.txtLoaiKhoan);
+
             date.setText(""+ arr.get(position).time);
             tien.setText(DoiSoSangTien(arr.get(position).tien));
             danhmucthuchi.setText(arr.get(position).danhmucthuchi);
             vi.setText(arr.get(position).vi);
+            loaikhoan.setText(arr.get(position).loaikhoan + ":");
         }
         return view;
     }

@@ -22,15 +22,25 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
+        android:id="@+id/txtLoaiKhoan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtNgay"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentLeft="true"
+        android:text="Khoan thu"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
         android:id="@+id/txtDanhMucThuChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtNgay"
         android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@+id/txtVi"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@+id/txtLoaiKhoan"
         android:text="hello"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
         android:id="@+id/txtVi"

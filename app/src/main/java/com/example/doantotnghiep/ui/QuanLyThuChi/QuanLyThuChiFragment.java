@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -193,6 +194,7 @@ public class QuanLyThuChiFragment extends Fragment {
                             ThemThuChiDialog();
                             d.dismiss();
                         }
+
                         LoadNgayLenSpinner();
                         LoadThuChiTheoSpinner();
                     }
@@ -406,13 +408,13 @@ public class QuanLyThuChiFragment extends Fragment {
 
     public void LoadThuChiTheoSpinner() {
         arr.clear();
-        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi " +
+        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
                 " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + spinner_LocThuChi.getSelectedItem().toString() + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi"))));
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -427,7 +429,7 @@ public class QuanLyThuChiFragment extends Fragment {
                 " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi  ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi"))));
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -453,10 +455,11 @@ public class QuanLyThuChiFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 data.rawQuery("delete from tblthuchi where mathuchi = '" + arr.get(mathuchi).ma + "'", null).moveToFirst();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                LoadNgayLenSpinner();
+                //LoadNgayLenSpinner();
+                LoadThuChiTheoSpinner();
             }
         });
-        LoadThuChiTheoSpinner();
+
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
