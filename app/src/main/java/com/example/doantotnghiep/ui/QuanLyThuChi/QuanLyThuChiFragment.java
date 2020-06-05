@@ -203,7 +203,7 @@ public class QuanLyThuChiFragment extends Fragment {
                             public void run() {
                                 LoadThuChiTheoSpinner();
                             }
-                        }, 2000 );
+                        }, 100 );
 
                     }
                 });
@@ -464,8 +464,14 @@ public class QuanLyThuChiFragment extends Fragment {
                 data.rawQuery("delete from tblthuchi where mathuchi = '" + arr.get(mathuchi).ma + "'", null).moveToFirst();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
                 //LoadNgayLenSpinner();
-
-                LoadThuChiTheoSpinner();
+                //Delay ham xuat du lieu de tranh bi crash app
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadThuChiTheoSpinner();
+                    }
+                }, 100 );
+                //LoadThuChiTheoSpinner();
             }
         });
 
