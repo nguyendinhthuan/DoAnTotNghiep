@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Danh muc thu chi
             data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, " +
-                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan), " +
+                    "mavi int constraint mavi references tblvi(mavi) on delete cascade)");
 
             //Table Thu chi
             data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +

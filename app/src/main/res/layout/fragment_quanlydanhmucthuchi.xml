@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <Spinner
-            android:id="@+id/spinner_LoaiThuChi2"
+            android:id="@+id/spinner_LoaiKhoan"
             android:layout_width="match_parent"
             android:layout_height="48dp" />
     </LinearLayout>
@@ -29,25 +29,9 @@
 
     <RelativeLayout
         android:id="@+id/layoutCaidatBottom"
-        style="@style/WhiteBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
-
-        <EditText
-            android:id="@+id/editText_TenDanhMucThuChi"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_toLeftOf="@+id/spinner_LoaiThuChi3"
-            android:layout_alignParentLeft="true"
-            android:singleLine="true"
-            android:hint="Nhập tên danh mục"/>
-
-        <Spinner
-            android:id="@+id/spinner_LoaiThuChi3"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_toLeftOf="@+id/button_ThemDanhMuc" />
 
         <ImageButton
             android:id="@+id/button_ThemDanhMuc"
