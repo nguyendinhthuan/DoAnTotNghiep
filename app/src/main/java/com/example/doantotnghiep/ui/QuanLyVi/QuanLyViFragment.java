@@ -315,7 +315,7 @@ public class QuanLyViFragment extends Fragment {
             public void onClick(View v) {
                 final Dialog d = new Dialog(getContext());
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.activity_vi);
+                d.setContentView(R.layout.dialog_themvi);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
 
@@ -444,7 +444,7 @@ public class QuanLyViFragment extends Fragment {
                 final String tenviht = list.get(vitri).tenvi; // lay ten vi de cap nhat
                 final Dialog d = new Dialog(getContext());
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.activity_capnhatvi);
+                d.setContentView(R.layout.dialog_capnhatvi);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
                 //AnhXa

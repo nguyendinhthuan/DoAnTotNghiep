@@ -32,7 +32,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterThongKe;
@@ -127,7 +126,7 @@ public class QuanLyThuChiFragment extends Fragment {
                 animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
                 final Dialog d = new Dialog(getActivity());
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.activity_thu_chi);
+                d.setContentView(R.layout.dialog_themthuchi);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
 
@@ -277,7 +276,7 @@ public class QuanLyThuChiFragment extends Fragment {
     public void ChonNgay() {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.activity_chonngay);
+        dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();
 

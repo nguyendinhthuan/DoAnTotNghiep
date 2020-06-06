@@ -11,7 +11,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.se.omapi.Session;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -22,11 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.example.doantotnghiep.model.ArrayVi;
-import com.example.doantotnghiep.ui.QuanLyVi.QuanLyViFragment;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase data;
@@ -162,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         XoaTrang();
         final Dialog d = new Dialog(MainActivity.this);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.activity_quenmatkhau);
+        d.setContentView(R.layout.dialog_quenmatkhau);
         d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         d.show();
 

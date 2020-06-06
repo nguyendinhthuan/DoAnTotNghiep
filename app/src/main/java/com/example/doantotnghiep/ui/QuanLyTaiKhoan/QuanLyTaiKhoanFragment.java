@@ -84,7 +84,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
                 animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
                 final Dialog d = new Dialog(getActivity());
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.activity_taikhoan);
+                d.setContentView(R.layout.dialog_capnhatthongtintaikhoan);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
                 //Anh xa
@@ -182,7 +182,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
                 //XoaTrang();
                 final Dialog d = new Dialog(getActivity());
                 d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.activity_quenmatkhau);
+                d.setContentView(R.layout.dialog_quenmatkhau);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
 
