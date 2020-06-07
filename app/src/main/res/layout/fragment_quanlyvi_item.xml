@@ -11,7 +11,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:text="hi"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/textView_MoTaVi"
@@ -19,12 +20,14 @@
             android:layout_height="wrap_content"
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:textColor="#000000"/>
         <TextView
             android:id="@+id/textView_SoTien"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:textColor="#000000"/>
 </LinearLayout>

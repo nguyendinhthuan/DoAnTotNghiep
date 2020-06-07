@@ -53,7 +53,8 @@ public class QuanLyThuChiFragment extends Fragment {
     private SQLiteDatabase data;
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
-    private Button button_ThoatThuChiDialog,button_LuuThuChiDialog,button_NgayThuChiDialog,button_GioThuChiDialog,button_ThoiGianHienTaiDialog;
+    private Button button_ThoatThuChiDialog, button_LuuThuChiDialog, button_NgayThuChiDialog,
+            button_GioThuChiDialog, button_ThoiGianHienTaiDialog, button_ChonNgay, button_ChonNgayTatCa;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
@@ -105,19 +106,17 @@ public class QuanLyThuChiFragment extends Fragment {
         AnhXa();
         ThemThuChi();
         setListview();
-//        LocCoSoDuLieu();
-        //LocCoSoDuLieu();
+        LocCoSoDuLieu();
         XoaThuChi();
-        setSpinner();
-        LoadNgayLenSpinner();
+        ChonNgayLocThuChi();
     }
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
-        spinner_LocThuChi = (Spinner) myFragment.findViewById(R.id.spinner_LocThuChi);
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
+        button_ChonNgay = (Button) myFragment.findViewById(R.id.button_ChonNgay);
+        button_ChonNgayTatCa = (Button) myFragment.findViewById(R.id.button_ChonNgayTatCa);
     }
-
 
     public void ThemThuChi() {
         imageButton_ThemThuChi.setOnClickListener(new View.OnClickListener() {
@@ -150,18 +149,17 @@ public class QuanLyThuChiFragment extends Fragment {
                 HienThiThoiGian();
                 LoadSpinnerDialog();
                 LoadDanhSachViLenSpinnerDialog();
+
                 //KiemTraChiTieuMax();
-
-
                 editText_SoTienThuChiDialog.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View view, boolean b) {
-                        if(!b && editText_SoTienThuChiDialog.getText().toString()!= null)
-                        {
+                        if (!b && editText_SoTienThuChiDialog.getText().toString()!= null) {
                           KiemTraChiTieuMax();
                         }
                     }
                 });
+
                 button_ThoatThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -171,15 +169,17 @@ public class QuanLyThuChiFragment extends Fragment {
                 button_NgayThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ChonNgay();
+                        ChonNgayThemThuChi();
                     }
                 });
+
                 button_ThoiGianHienTaiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         HienThiThoiGian();
                     }
                 });
+
                 button_LuuThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -193,21 +193,8 @@ public class QuanLyThuChiFragment extends Fragment {
                             ThemThuChiDialog();
                             d.dismiss();
                         }
-
-                        LoadNgayLenSpinner();
-
-                        //Delay ham xuat du lieu de tranh bi crash app
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                LoadThuChiTheoSpinner();
-                            }
-                        }, 100 );
-
                     }
                 });
-
-
             }
         });
     }
@@ -220,6 +207,7 @@ public class QuanLyThuChiFragment extends Fragment {
         adapterDanhMucDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenDanhMucDialog);
         adapterDanhMucDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_DanhMucDialog.setAdapter(adapterDanhMucDialog);
+
         //Spinner Loai thu chi
         arrSpinnerDialog = getResources().getStringArray(R.array.loaithuchi);
         adapterSpinnerDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrSpinnerDialog);
@@ -236,13 +224,13 @@ public class QuanLyThuChiFragment extends Fragment {
 
             }
         });
+
         //Spinner Vi
         arrMaViDialog = new ArrayList<Integer>();
         arrTenViDialog = new ArrayList<String>();
         adapterViDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenViDialog);
         adapterViDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_ViDialog.setAdapter(adapterViDialog);
-
     }
 
     public void LoadDanhSachDanhMucLenSpinnerDialog() {
@@ -261,7 +249,6 @@ public class QuanLyThuChiFragment extends Fragment {
     public void LoadDanhSachViLenSpinnerDialog() {
         arrMaViDialog.clear();
         arrTenViDialog.clear();
-        //cursor = data.query("tblvi", null, null, null, null, null, null);
         Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
         cursor.moveToFirst();
         listDialog = new ArrayList<ArrayVi>();
@@ -273,15 +260,17 @@ public class QuanLyThuChiFragment extends Fragment {
         adapterViDialog.notifyDataSetChanged();
     }
 
-    public void ChonNgay() {
+    public void ChonNgayThemThuChi() {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();
 
+        //Anh xa
         final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
         Button button_ChonNgayXong = (Button) dialog.findViewById(R.id.button_ChonNgayXong);
+
         button_ChonNgayXong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,6 +285,53 @@ public class QuanLyThuChiFragment extends Fragment {
         });
     }
 
+    public void ChonNgayLocThuChi() {
+        button_ChonNgayTatCa.setEnabled(false);
+        button_ChonNgay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadNgayLocThuChi();
+                button_ChonNgayTatCa.setEnabled(true);
+            }
+        });
+
+        button_ChonNgayTatCa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocCoSoDuLieu();
+                button_ChonNgay.setText("Chọn ngày");
+                button_ChonNgayTatCa.setEnabled(false);
+            }
+        });
+
+    }
+
+    public void LoadNgayLocThuChi() {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_chonngay);
+        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+
+        //Anh xa
+        final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.datePicker);
+        Button button_ChonNgayXong = (Button) dialog.findViewById(R.id.button_ChonNgayXong);
+
+        button_ChonNgayXong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    dateDialog = simpleDateFormatDialog.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                button_ChonNgay.setText(simpleDateFormatDialog.format(dateDialog));
+                dialog.cancel();
+                LoadThuChiTheoNgay();
+            }
+        });
+    }
+
     public void HienThiThoiGian() {
         int thang = todayDialog.get(Calendar.MONTH) + 1;
         gioDialog = todayDialog.get(Calendar.HOUR_OF_DAY) + ":"+ todayDialog.get(Calendar.MINUTE) + ":" +todayDialog.get(Calendar.SECOND);
@@ -305,7 +341,6 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public boolean ThemThuChiDialog() {
-
             int mathuchi = 1;
             //int sotienthuchi = 0;
             cursor = data.rawQuery("select mathuchi from tblthuchi", null);
@@ -317,7 +352,6 @@ public class QuanLyThuChiFragment extends Fragment {
             values.put("mathuchi", mathuchi);
             values.put("mota", editText_MoTaThuChiDialog.getText().toString());
             values.put("loaithuchi", spinner_LoaiThuChiDialog.getSelectedItem().toString());
-
             values.put("sotienthuchi", sotienthuchi);
             values.put("mavi", arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition()));
             values.put("ngaythuchien", simpleDateFormatDialog.format(dateDialog));
@@ -329,21 +363,20 @@ public class QuanLyThuChiFragment extends Fragment {
             }
             thongbao = "Lưu thành công";
             Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
+            LocCoSoDuLieu();
+            button_ChonNgay.setText("Chọn ngày");
+            button_ChonNgayTatCa.setEnabled(false);
             TinhSoDu();
         return true;
     }
 
-    public void KiemTraChiTieuMax()
-    {
+    public void KiemTraChiTieuMax() {
         int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
         Cursor cursor =  data.rawQuery("select * from tblvi" ,null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false)
-        {
-            if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem)
-            {
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem) {
                 sotientuvi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-
             }
             cursor.moveToNext();
         }
@@ -352,19 +385,18 @@ public class QuanLyThuChiFragment extends Fragment {
             sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
         } else {
             int sotienthu = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
-            if(sotientuvi < sotienthu){
+            if (sotientuvi < sotienthu) {
                 editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
                 editText_SoTienThuChiDialog.startAnimation(animation);
                 Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();
                 sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
-            }else {
+            } else {
                 sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
             }
         }
     }
 
-    public void TinhSoDu()
-    {
+    public void TinhSoDu() {
         int sodu = 0;
         int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
         //Tinh
@@ -384,41 +416,56 @@ public class QuanLyThuChiFragment extends Fragment {
         listView_LichSuThuChi.setAdapter(adapterThuChi);
     }
 
-    public void setSpinner() {
-        arrSpinner = new ArrayList<String>();
-        adapterSpinner = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, arrSpinner);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_LocThuChi.setAdapter(adapterSpinner);
-        spinner_LocThuChi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LoadThuChiTheoSpinner();
-            }
+//    public void setSpinner() {
+//        arrSpinner = new ArrayList<String>();
+//        adapterSpinner = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, arrSpinner);
+//        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_LocThuChi.setAdapter(adapterSpinner);
+//        spinner_LocThuChi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                LoadThuChiTheoSpinner();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+//    public void LoadNgayLenSpinner() {
+//        arrSpinner.clear();
+//        Cursor cursor = data.rawQuery("select ngaythuchien from tblthuchi group by ngaythuchien", null);
+//        cursor.moveToFirst();
+//        while (cursor.isAfterLast() == false) {
+//            arrSpinner.add(cursor.getString(cursor.getColumnIndex("ngaythuchien")));
+//            cursor.moveToNext();
+//        }
+//        adapterSpinner.notifyDataSetChanged();
+//    }
 
-            }
-        });
-    }
+//    public void LoadThuChiTheoSpinner() {
+//        arr.clear();
+//        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
+//                " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
+//                " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
+//                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + spinner_LocThuChi.getSelectedItem().toString() + "' ", null);
+//        cursor.moveToFirst();
+//        while (cursor.isAfterLast() == false) {
+//            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
+//            cursor.moveToNext();
+//        }
+//        cursor.close();
+//        adapterThuChi.notifyDataSetChanged();
+//    }
 
-    public void LoadNgayLenSpinner() {
-        arrSpinner.clear();
-        Cursor cursor = data.rawQuery("select ngaythuchien from tblthuchi group by ngaythuchien", null);
-        cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
-            arrSpinner.add(cursor.getString(cursor.getColumnIndex("ngaythuchien")));
-            cursor.moveToNext();
-        }
-        adapterSpinner.notifyDataSetChanged();
-    }
-
-    public void LoadThuChiTheoSpinner() {
+    public void LoadThuChiTheoNgay() {
         arr.clear();
         Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
-                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + spinner_LocThuChi.getSelectedItem().toString() + "' ", null);
+                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + simpleDateFormatDialog.format(dateDialog) + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
@@ -430,10 +477,10 @@ public class QuanLyThuChiFragment extends Fragment {
 
     public void LocCoSoDuLieu() {
         arr.clear();
-        Cursor cursor = data.rawQuery("select mathuchi, ngaythuchien, sotienthuchi, tendanhmuc, tenvi " +
+        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
-                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi  ", null);
+                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
@@ -443,6 +490,8 @@ public class QuanLyThuChiFragment extends Fragment {
         adapterThuChi.notifyDataSetChanged();
     }
 
+
+    //Chuc nang xoa thu chi
     public void XoaThuChi() {
         listView_LichSuThuChi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -462,15 +511,14 @@ public class QuanLyThuChiFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 data.rawQuery("delete from tblthuchi where mathuchi = '" + arr.get(mathuchi).ma + "'", null).moveToFirst();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
-                //LoadNgayLenSpinner();
+
                 //Delay ham xuat du lieu de tranh bi crash app
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        LoadThuChiTheoSpinner();
+                        LoadThuChiTheoNgay();
                     }
                 }, 100 );
-                //LoadThuChiTheoSpinner();
             }
         });
 
@@ -482,21 +530,4 @@ public class QuanLyThuChiFragment extends Fragment {
         });
         builder.show();
     }
-
-//    public void LayNgayLenTab() {
-//        arrTabNgay = new ArrayList<String>();
-////        Cursor cursor = data.rawQuery("select ngaythuchien from tblthuchi " +
-////                " inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc" +
-////                " where tentaikhoan = '" + taikhoan +"' group by ngaythuchien", null);
-//        Cursor cursor = data.rawQuery("select ngaythuchien from tblthuchi " +
-//                " where tentaikhoan = '" + taikhoan +"' group by ngaythuchien", null);
-//        if (cursor.moveToFirst() != true) {
-//            arrTabNgay.add("Nothing");
-//        } else {
-//            while (cursor.isAfterLast() == false) {
-//                arrTabNgay.add(cursor.getString(cursor.getColumnIndex("ngaythuchien")));
-//                cursor.moveToNext();
-//            }
-//        }
-//    }
 }

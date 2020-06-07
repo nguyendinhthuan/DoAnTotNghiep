@@ -17,7 +17,8 @@
             android:singleLine="true"
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textColor="#000000"/>
 
         <TextView
             android:id="@+id/textView_LoaiKhoan"
@@ -25,6 +26,7 @@
             android:layout_height="wrap_content"
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:textColor="#000000"/>
     </LinearLayout>
 </LinearLayout>

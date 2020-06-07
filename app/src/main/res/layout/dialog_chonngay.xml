@@ -16,11 +16,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="#93a3a4"
+        android:calendarTextColor="#000000" />
     <Button
         android:id="@+id/button_ChonNgayXong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Xong"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/confirm_button"
+        android:layout_marginTop="15dp"/>
 </LinearLayout>
