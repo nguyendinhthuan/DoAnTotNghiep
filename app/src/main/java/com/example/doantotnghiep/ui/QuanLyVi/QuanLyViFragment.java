@@ -98,9 +98,6 @@ public class QuanLyViFragment extends Fragment {
             }
         });
         registerForContextMenu(listView_Vi);
-
-
-
     }
 
     @Override
@@ -108,28 +105,26 @@ public class QuanLyViFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         activity.getMenuInflater().inflate(R.menu.menu_vi, menu);
-
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.option_Sua:{
+        switch (item.getItemId()) {
+            case R.id.option_Sua: {
                 SuaVi();
                 return true;
             }
-            case R.id.option_Xoa:{
+            case R.id.option_Xoa: {
                 XoaVi(vitri);
                 return true;
             }
-            case R.id.option_ChuyenTien:{
+            case R.id.option_ChuyenTien: {
                 ChuyenTien();
                 return true;
             }
             default:
                 return super.onContextItemSelected(item);
         }
-
     }
 
     public void ChuyenTien() {
@@ -160,28 +155,28 @@ public class QuanLyViFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 count++;
-                if(KiemTraChuyenTien()){
+                if (KiemTraChuyenTien()) {
                     Toast.makeText(activity,"Có thể thực hiện chuyển tiền",Toast.LENGTH_SHORT).show();
                     button_ChuyenTien.startAnimation(animation);
-                }else {
+                } else {
                     Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
                 }
 
             }
         });
+
         button_ChuyenTien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tenvichuyen.equals(tenvichuyentoi))
-                {
+                if (tenvichuyen.equals(tenvichuyentoi)) {
                     Toast.makeText(activity,"Tên ví chuyển tiền bị trùng",Toast.LENGTH_SHORT).show();
                     spinner_ViChuyenDialog.startAnimation(animation);
-                }else if (editText_SoTienChuyen.getText().toString().equals("")){
+                } else if (editText_SoTienChuyen.getText().toString().equals("")){
                     Toast.makeText(activity,"Bạn chưa nhập số tiền chuyển",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
                 }
-                else if(count>0){
+                else if (count > 0) {
                     XuLyChuyenTien();
                     d.dismiss();
                     count = 0;
@@ -198,19 +193,16 @@ public class QuanLyViFragment extends Fragment {
 
     }
 
-    public boolean KiemTraChuyenTien(){
-
+    public boolean KiemTraChuyenTien() {
         tenvichuyentoi = spinner_ViChuyenDialog.getSelectedItem().toString();
         sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
         cursor = data.rawQuery("select* from tblvi",null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
-            if(cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen))
-            {
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
             }
-            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyentoi))
-            {
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyentoi)) {
                 sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
             }
             cursor.moveToNext();
@@ -219,7 +211,7 @@ public class QuanLyViFragment extends Fragment {
         //tru tien tu vi chon
         //dieu kien khi so tien chuyen vuot qua so tien co trong vi
 
-        if(sotiencanchuyen > sotienvichon){
+        if (sotiencanchuyen > sotienvichon) {
 
             editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
             int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString());
@@ -355,35 +347,34 @@ public class QuanLyViFragment extends Fragment {
 //        } else if (DinhDangsoTien() < 0) {
 //            editText_SoTienVi.setAnimation(animation);
 //            Toast.makeText(this, "Số tiền không được âm", Toast.LENGTH_SHORT).show();
-                        } else if(GioiHanSoVi()){
-
+                        } else if (GioiHanSoVi()){
                             int mavi = 1;
                             cursor = data.rawQuery("select mavi from tblvi", null);
                             if (cursor.moveToLast() == true) {
                                 mavi = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
                             }
+
                             ContentValues values = new ContentValues();
                             values.put("mavi", mavi);
                             values.put("tenvi", editText_TenVi.getText().toString());
                             values.put("motavi", editText_MoTaVi.getText().toString());
                             values.put("sotienvi", editText_SoTienVi.getText().toString());
                             values.put("tentaikhoan", taikhoan);
-                            if(data.insert("tblvi", null, values)!= -1){
+
+                            if (data.insert("tblvi", null, values) != -1) {
                                 thongbao = "Thêm ví thành công";
                                 d.dismiss();
-                            }else {
+                            } else {
                                 thongbao = "Thêm ví không thành công";
                             }
                             Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
-                        }else {
+                        } else {
                             editText_TenVi.startAnimation(animation);
                             editText_MoTaVi.startAnimation(animation);
                             editText_SoTienVi.startAnimation(animation);
                             thongbao="Số ví đã đạt tối đa";
                             Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
                         }
-
-
                         LayDanhSachVi();
                     }
                 });
@@ -397,19 +388,17 @@ public class QuanLyViFragment extends Fragment {
         });
     }
 
-    public boolean GioiHanSoVi()
-    {
+    public boolean GioiHanSoVi() {
         int count = 0;
         cursor = data.rawQuery("select * from tblvi", null);
-        while (cursor.isAfterLast() == false){
+        while (cursor.isAfterLast() == false) {
             count++;
 
             cursor.moveToNext();
         }
-        if(count <6){
+        if (count < 6) {
             return true;
         }
-
         return false;
     }
 
@@ -485,30 +474,28 @@ public class QuanLyViFragment extends Fragment {
             }
 
 
-    public boolean CapNhatVi()
-    {
+    public boolean CapNhatVi() {
         String thongbao = "";
         final String tenviht = list.get(vitri).tenvi;
-       if(editText_NhapTenViCapNhat.getText().toString().equals(""))
-       {
-           editText_NhapTenViCapNhat.startAnimation(animation);
-           Toast.makeText(activity,"Bạn chưa nhập tên ví",Toast.LENGTH_LONG).show();
-       }else if(editText_NhapMoTaViCapNhat.getText().toString().equals(""))
-       {
-           editText_NhapMoTaViCapNhat.startAnimation(animation);
-           Toast.makeText(activity,"Bạn chưa nhập mô tả ví",Toast.LENGTH_LONG).show();
-       }else {
-           ContentValues values = new ContentValues();
-           values.put("tenvi",editText_NhapTenViCapNhat.getText().toString());
-           values.put("motavi",editText_NhapMoTaViCapNhat.getText().toString());
-           data.update("tblvi",values,"tenvi like '"+ tenviht + "'",null);
-           thongbao = "Cập nhật thành công";
-           Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
-           return true;
-       }
-       thongbao = "Cập nhật không thành công";
-       Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
-       return false;
+
+        if (editText_NhapTenViCapNhat.getText().toString().equals("")) {
+            editText_NhapTenViCapNhat.startAnimation(animation);
+            Toast.makeText(activity,"Bạn chưa nhập tên ví",Toast.LENGTH_LONG).show();
+        } else if (editText_NhapMoTaViCapNhat.getText().toString().equals("")) {
+            editText_NhapMoTaViCapNhat.startAnimation(animation);
+            Toast.makeText(activity,"Bạn chưa nhập mô tả ví",Toast.LENGTH_LONG).show();
+        } else {
+            ContentValues values = new ContentValues();
+            values.put("tenvi",editText_NhapTenViCapNhat.getText().toString());
+            values.put("motavi",editText_NhapMoTaViCapNhat.getText().toString());
+            data.update("tblvi",values,"tenvi like '"+ tenviht + "'",null);
+            thongbao = "Cập nhật thành công";
+            Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+            return true;
+        }
+        thongbao = "Cập nhật không thành công";
+        Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+        return false;
     }
 
     public void XoaVi(int vitri1) {

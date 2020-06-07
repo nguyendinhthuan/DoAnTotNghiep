@@ -80,7 +80,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         LoadSpinner();
         LayDanhSachDanhMucThuChi();
         XoaDanhMuc();
-        ThemDanhMucThuChi();
+        ThemDanhMucThuChiDialog();
     }
 
     public void AnhXa() {
@@ -126,43 +126,6 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         adapterViUuTienDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_ViUuTienChoDanhMuc.setAdapter(adapterViUuTienDialog);
     }
-
-    public void ThemDanhMucThuChiDialog() {
-        int madanhmuc = 1;
-        boolean tendanhmuc = true;
-        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi", null);
-        if (cursor.moveToLast() == true) {
-            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
-
-        }
-//                while (cursor.isAfterLast()==false) {
-//                    if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(editText_TenDanhMucThuChi.getText().toString())) {
-//                        tendanhmuc = false;
-//                    }
-//                }
-//                if (tendanhmuc == false) {
-//                    Toast.makeText(activity, "Tên danh mục này đã tồn tại", Toast.LENGTH_SHORT).show();
-//                    editText_TenDanhMucThuChi.startAnimation(animation);
-//                }
-        String thongbao = "";
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("madanhmuc", madanhmuc);
-        contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
-        contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
-        contentValues.put("mavi", spinner_ViUuTienChoDanhMuc.getSelectedItem().toString());
-        contentValues.put("tentaikhoan", taikhoan);
-
-        if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
-            thongbao = "Thêm danh mục thành công";
-
-            //load list view o day
-            LayDanhSachDanhMucThuChi();
-        } else {
-            thongbao = "Thêm danh mục thất bại";
-        }
-        Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
-    }
-
 
     public void LayDanhSachDanhMucThuChi() {
         String dieukien = "= '" + spinner_LoaiKhoan.getSelectedItem().toString() + "'";
@@ -231,7 +194,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         builder.show();
     }
 
-    public void ThemDanhMucThuChi() {
+    public void ThemDanhMucThuChiDialog() {
         button_ThemDanhMuc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,13 +226,42 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                 button_LuuThemDanhMucThuChi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (editText_TenDanhMucThuChi.getText().toString().equals("")) {
-                            editText_TenDanhMucThuChi.startAnimation(animation);
-                            Toast.makeText(activity, "Bạn chưa nhập tên danh mục", Toast.LENGTH_SHORT).show();
-                        } else {
-                            ThemDanhMucThuChiDialog();
-                            d.dismiss();
+                        String thongbao = "";
+                        int madanhmuc = 1;
+                        boolean tendanhmuc = true;
+                        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi", null);
+                        cursor.moveToFirst();
+                        while (cursor.isAfterLast()==false) {
+                            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(editText_TenDanhMucThuChi.getText().toString())) {
+                                tendanhmuc = false;
+                            }
+                            cursor.moveToNext();
                         }
+                        if (tendanhmuc == false) {
+                            thongbao = "Tên danh mục này đã tồn tại";
+                            editText_TenDanhMucThuChi.startAnimation(animation);
+                        } else if (editText_TenDanhMucThuChi.getText().toString().equals("")) {
+                            thongbao = "Bạn chưa nhập tên danh mục";
+                            editText_TenDanhMucThuChi.startAnimation(animation);
+                        } else if (cursor.moveToLast() == true) {
+                            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
+                        }
+
+
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("madanhmuc", madanhmuc);
+                        contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
+                        contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
+                        contentValues.put("mavi", spinner_ViUuTienChoDanhMuc.getSelectedItem().toString());
+                        contentValues.put("tentaikhoan", taikhoan);
+
+                        if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
+                            thongbao = "Thêm danh mục thành công";
+                            d.dismiss();
+                            //load list view o day
+                            LayDanhSachDanhMucThuChi();
+                        }
+                        Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
