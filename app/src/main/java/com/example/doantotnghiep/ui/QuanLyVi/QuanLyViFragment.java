@@ -45,7 +45,7 @@ public class QuanLyViFragment extends Fragment {
     private QuanLyViViewModel galleryViewModel;
     private Activity activity;
     private ImageButton button_ThemVi;
-    private Button button_LuuCapNhatVi, button_HuyCapNhatVi,button_ChuyenTien,button_KiemTraChuyenTien;
+    private Button button_LuuCapNhatVi, button_HuyCapNhatVi,button_ChuyenTien,button_HuyChuyenTien;
     private ListView listView_Vi;
     private View myFragment;
     private ArrayList<ArrayVi> arrayVi;
@@ -58,7 +58,7 @@ public class QuanLyViFragment extends Fragment {
     private String taikhoan,tenvichuyen,tenvichuyentoi;
     private SharedPreferences sharedPreferences;
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
-            editText_TenVi,editText_MoTaVi,editText_SoTienVi,editText_ViChon,editText_SoTienChuyen;
+            editText_TenVi,editText_MoTaVi,editText_SoTienVi,editText_ViChon,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
     private Button button_LuuVi,button_ThoatVi;
     private int vitri = 0;
     private Cursor cursor;
@@ -69,7 +69,7 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<String> arrTenViDialog;
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViChuyenDialog;
     private Spinner spinner_ViChuyenDialog;
-    private int sotiendacong,sotiendatru,count = 0,sotienvitoi,sotienvichon,sotiencanchuyen;
+    private int sotienvitoi,sotienvichon,sotiencanchuyen,mavi;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -139,32 +139,33 @@ public class QuanLyViFragment extends Fragment {
         //Anh Xa
         editText_ViChon = d.findViewById(R.id.edit_ViChonChuyen);
         editText_SoTienChuyen = d.findViewById(R.id.edit_SoTienChuyen);
+        editText_TienCuaViChuyen = d.findViewById(R.id.edit_TienCuaViChuyen);
+        editText_TienCuaViNhan = d.findViewById(R.id.edit_TienCuaViNhan);
         spinner_ViChuyenDialog = d.findViewById(R.id.spinner_ViChuyenToi);
         button_ChuyenTien = d.findViewById(R.id.btnChuyen);
-        button_KiemTraChuyenTien = d.findViewById(R.id.btnKiemTraChuyenTien);
 
+        button_HuyChuyenTien = d.findViewById(R.id.btnHuyChuyenTien);
         LoadSpinnerDialog();
+
         LoadDanhSachViLenSpinnerDialog();
 
-        tenvichuyen = list.get(vitri).tenvi;
-        editText_ViChon.setText(tenvichuyen);
-        editText_ViChon.setEnabled(false);
-
-        //Xu Ly
-        button_KiemTraChuyenTien.setOnClickListener(new View.OnClickListener() {
+        //Lay tien theo vi chon o spinner
+        spinner_ViChuyenDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                count++;
-                if (KiemTraChuyenTien()) {
-                    Toast.makeText(activity,"Có thể thực hiện chuyển tiền",Toast.LENGTH_SHORT).show();
-                    button_ChuyenTien.startAnimation(animation);
-                } else {
-                    Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
-                    editText_SoTienChuyen.startAnimation(animation);
-                }
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                mavi = position+1;
+                LayTienTuVi();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
+        //Xu Ly
+        editText_TienCuaViChuyen.setEnabled(false);
+        editText_TienCuaViNhan.setEnabled(false);
 
         button_ChuyenTien.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,45 +173,54 @@ public class QuanLyViFragment extends Fragment {
                 if (tenvichuyen.equals(tenvichuyentoi)) {
                     Toast.makeText(activity,"Tên ví chuyển tiền bị trùng",Toast.LENGTH_SHORT).show();
                     spinner_ViChuyenDialog.startAnimation(animation);
-                } else if (editText_SoTienChuyen.getText().toString().equals("")){
+                }else  if (editText_SoTienChuyen.getText().toString().equals("")){
                     Toast.makeText(activity,"Bạn chưa nhập số tiền chuyển",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
-                }
-                else if (count > 0) {
+                } else if (KiemTraChuyenTien() == false) {
+                    Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
+                    editText_SoTienChuyen.startAnimation(animation);
+                }else {
                     XuLyChuyenTien();
                     d.dismiss();
-                    count = 0;
                     LayDanhSachVi();
                 }
-                else {
-                    button_KiemTraChuyenTien.startAnimation(animation);
-                    Toast.makeText(activity,"Vui lòng nhấn kiểm tra trước khi chuyển tiền",Toast.LENGTH_SHORT).show();
-                }
+            }
+        });
 
-
+        button_HuyChuyenTien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.dismiss();
             }
         });
 
     }
 
-    public boolean KiemTraChuyenTien() {
+    public void LayTienTuVi(){
+        tenvichuyen = list.get(vitri).tenvi;
+        editText_ViChon.setText(tenvichuyen);
+        editText_ViChon.setEnabled(false);
         tenvichuyentoi = spinner_ViChuyenDialog.getSelectedItem().toString();
-        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
         cursor = data.rawQuery("select* from tblvi",null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+                editText_TienCuaViChuyen.setText(String.valueOf(sotienvichon));
+
             }
-            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyentoi)) {
+            if(cursor.getInt(cursor.getColumnIndex("mavi"))== mavi)
+            {
                 sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+                editText_TienCuaViNhan.setText(String.valueOf(sotienvitoi));
             }
             cursor.moveToNext();
         }
-        //Tinh tien
-        //tru tien tu vi chon
-        //dieu kien khi so tien chuyen vuot qua so tien co trong vi
+    }
 
+    public boolean KiemTraChuyenTien() {
+
+        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
         if (sotiencanchuyen > sotienvichon) {
 
             editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
@@ -226,32 +236,6 @@ public class QuanLyViFragment extends Fragment {
     public void XuLyChuyenTien(){
             int sotiendatru = 0;
             int sotiendacong = 0;
-
-//        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
-//        cursor = data.rawQuery("select* from tblvi",null);
-//        cursor.moveToFirst();
-//        while (cursor.isAfterLast()==false){
-//            if(cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen))
-//            {
-//                sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-//            }
-//            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyentoi))
-//            {
-//                sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-//            }
-//            cursor.moveToNext();
-//        }
-//        //Tinh tien
-//        //tru tien tu vi chon
-//        //dieu kien khi so tien chuyen vuot qua so tien co trong vi
-//
-//        if(sotiencanchuyen > sotienvichon){
-//            editText_SoTienChuyen.startAnimation(animation);
-//            editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
-//            Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
-//        }else {
-//            sotiendatru = sotienvichon - sotiencanchuyen;
-//        }
 
         //cong tien vao vi chuyen toi
         sotiendacong = sotienvitoi + sotiencanchuyen;
