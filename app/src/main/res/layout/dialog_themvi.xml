@@ -108,7 +108,8 @@
             android:layout_marginLeft="30dp"
             android:layout_weight="1"
             android:background="@drawable/confirm_button"
-            android:text="Lưu" />
+            android:text="Lưu"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/button_ThoatVi"
@@ -118,6 +119,7 @@
             android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:background="@drawable/cancel_button"
-            android:text="Hủy" />
+            android:text="Hủy"
+            android:textStyle="bold"/>
     </LinearLayout>
 </LinearLayout>

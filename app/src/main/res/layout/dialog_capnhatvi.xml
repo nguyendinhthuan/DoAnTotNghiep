@@ -90,7 +90,8 @@
             android:layout_marginLeft="30dp"
             android:background="@drawable/confirm_button"
             android:ems="8"
-            android:text="Lưu" />
+            android:text="Lưu"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/button_HuyCapNhatVi"
@@ -102,7 +103,8 @@
             android:layout_marginLeft="60dp"
             android:background="@drawable/cancel_button"
             android:ems="8"
-            android:text="Hủy" />
+            android:text="Hủy"
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -84,7 +84,8 @@
             android:background="@drawable/main_button"
             android:ems="6"
             android:onClick="XoaTrang"
-            android:text="@string/xoatrang" />
+            android:text="@string/xoatrang"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +101,8 @@
                 android:background="@drawable/confirm_button"
                 android:ems="9"
                 android:onClick="DangKy"
-                android:text="@string/dangky" />
+                android:text="@string/dangky"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btnHuyDangKy"
@@ -111,7 +113,8 @@
                 android:background="@drawable/cancel_button"
                 android:ems="9"
                 android:onClick="ThoatDangKy"
-                android:text="Hủy" />
+                android:text="Hủy"
+                android:textStyle="bold"/>
         </LinearLayout>
 
     </LinearLayout>

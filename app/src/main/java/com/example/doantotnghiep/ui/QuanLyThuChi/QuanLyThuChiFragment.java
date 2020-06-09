@@ -40,10 +40,13 @@ import com.example.doantotnghiep.model.ArrayThongKe;
 import com.example.doantotnghiep.model.ArrayThuChi;
 import com.example.doantotnghiep.model.ArrayVi;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -59,7 +62,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private String taikhoan;
     private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
     private String ngaythang;
-    private Calendar today,todayDialog;
+    private Calendar today, calendar;
     private int thang, nam;
     private ArrayList<ArrayThongKe> arrthu, arrchi;
     private String[] arrGroup;
@@ -75,7 +78,7 @@ public class QuanLyThuChiFragment extends Fragment {
     //DialogThem
     private EditText editText_SoTienThuChiDialog,editText_MoTaThuChiDialog;
     private SimpleDateFormat simpleDateFormatDialog;
-    private Date dateDialog;
+    private Date date;
     private ArrayList<Integer> arrMaViDialog, arrMaDanhMucDialog;
     private ArrayList<String> arrTenViDialog, arrTenDanhMucDialog;
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViDialog, adapterDanhMucDialog;
@@ -98,7 +101,7 @@ public class QuanLyThuChiFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
         simpleDateFormatDialog = new SimpleDateFormat("dd/MM/yyyy");
-        dateDialog = new Date();
+        date = new Date();
 
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
         taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
@@ -143,7 +146,7 @@ public class QuanLyThuChiFragment extends Fragment {
                 spinner_ViDialog = (Spinner) d.findViewById(R.id.spinner_Vi);
                 spinner_DanhMucDialog = (Spinner) d.findViewById(R.id.spinner_DanhMuc);
 
-                todayDialog = Calendar.getInstance();
+                calendar = Calendar.getInstance();
 
                 //Xu ly
                 HienThiThoiGian();
@@ -275,11 +278,11 @@ public class QuanLyThuChiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    dateDialog = simpleDateFormatDialog.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
+                    date = simpleDateFormatDialog.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(dateDialog));
+                button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(date));
                 dialog.cancel();
             }
         });
@@ -321,11 +324,11 @@ public class QuanLyThuChiFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    dateDialog = simpleDateFormatDialog.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
+                    date = simpleDateFormatDialog.parse(datePicker.getDayOfMonth() + "/" +(datePicker.getMonth() + 1) + "/" + datePicker.getYear());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                button_ChonNgay.setText(simpleDateFormatDialog.format(dateDialog));
+                button_ChonNgay.setText(simpleDateFormatDialog.format(date));
                 dialog.cancel();
                 LoadThuChiTheoNgay();
             }
@@ -333,10 +336,10 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public void HienThiThoiGian() {
-        int thang = todayDialog.get(Calendar.MONTH) + 1;
-        gioDialog = todayDialog.get(Calendar.HOUR_OF_DAY) + ":"+ todayDialog.get(Calendar.MINUTE) + ":" +todayDialog.get(Calendar.SECOND);
-        dateDialog = todayDialog.getTime();
-        button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(dateDialog));
+        int thang = calendar.get(Calendar.MONTH) + 1;
+        gioDialog = calendar.get(Calendar.HOUR_OF_DAY) + ":"+ calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
+        date = calendar.getTime();
+        button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(date));
         button_GioThuChiDialog.setText(gioDialog);
     }
 
@@ -354,7 +357,7 @@ public class QuanLyThuChiFragment extends Fragment {
             values.put("loaithuchi", spinner_LoaiThuChiDialog.getSelectedItem().toString());
             values.put("sotienthuchi", sotienthuchi);
             values.put("mavi", arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition()));
-            values.put("ngaythuchien", simpleDateFormatDialog.format(dateDialog));
+            values.put("ngaythuchien", simpleDateFormatDialog.format(date));
             values.put("madanhmuc", arrMaDanhMucDialog.get(spinner_DanhMucDialog.getSelectedItemPosition()));
             values.put("tentaikhoan", taikhoan);
 
@@ -465,7 +468,7 @@ public class QuanLyThuChiFragment extends Fragment {
         Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
-                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + simpleDateFormatDialog.format(dateDialog) + "' ", null);
+                " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + simpleDateFormatDialog.format(date) + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
@@ -489,7 +492,6 @@ public class QuanLyThuChiFragment extends Fragment {
         cursor.close();
         adapterThuChi.notifyDataSetChanged();
     }
-
 
     //Chuc nang xoa thu chi
     public void XoaThuChi() {

@@ -29,7 +29,7 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="wrap_content">
 
         <TableRow
             android:layout_width="match_parent"
@@ -41,17 +41,17 @@
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="Từ ví:"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/edit_ViChonChuyen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
                 android:background="@drawable/main_edittext"
-                android:layout_marginLeft="15dp"/>
+                android:ems="10"
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -64,17 +64,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Số tiền hiện có:"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/edit_TienCuaViChuyen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
                 android:background="@drawable/main_edittext"
-                android:layout_marginLeft="15dp"/>
+                android:ems="10"
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đến ví:"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <Spinner
                 android:id="@+id/spinner_ViChuyenToi"
@@ -107,17 +107,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Số tiền hiện có:"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/edit_TienCuaViNhan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
                 android:background="@drawable/main_edittext"
-                android:layout_marginLeft="15dp"/>
+                android:ems="10"
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
@@ -130,19 +130,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Số tiền chuyển:"
-                android:textColor="#000000"/>
+                android:textColor="#000000" />
 
             <EditText
                 android:id="@+id/edit_SoTienChuyen"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/main_edittext"
                 android:ems="10"
                 android:inputType="textPersonName" />
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày thực hiện:"
+                android:textColor="#000000" />
+
+            <TextView
+                android:id="@+id/tetxView_NgayThucHienChuyenTien"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textColor="#000000"/>
         </TableRow>
 
     </TableLayout>
@@ -159,7 +178,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/confirm_button"
-            android:text="Chuyển" />
+            android:text="Chuyển"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/btnHuyChuyenTien"
@@ -168,6 +188,7 @@
             android:layout_weight="1"
             android:background="@drawable/cancel_button"
             android:text="Hủy"
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold"/>
     </LinearLayout>
 </LinearLayout>

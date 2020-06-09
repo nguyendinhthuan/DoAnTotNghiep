@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -37,7 +38,10 @@ import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterVi;
 import com.example.doantotnghiep.model.ArrayVi;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class QuanLyViFragment extends Fragment {
@@ -60,8 +64,12 @@ public class QuanLyViFragment extends Fragment {
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
             editText_TenVi,editText_MoTaVi,editText_SoTienVi,editText_ViChon,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
     private Button button_LuuVi,button_ThoatVi;
+    private TextView textView_NgayThucHienChuyenTien;
     private int vitri = 0;
     private Cursor cursor;
+    private Date date;
+    private Calendar calendar;
+    private SimpleDateFormat simpleDateFormatDialog;
 
     //Chuyen tien
     private List<ArrayVi> listDialog = null;
@@ -83,6 +91,8 @@ public class QuanLyViFragment extends Fragment {
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+        simpleDateFormatDialog = new SimpleDateFormat("dd/MM/yyyy");
+        date = new Date();
 
         AnhXa();
         ThemVi();
@@ -141,13 +151,16 @@ public class QuanLyViFragment extends Fragment {
         editText_SoTienChuyen = d.findViewById(R.id.edit_SoTienChuyen);
         editText_TienCuaViChuyen = d.findViewById(R.id.edit_TienCuaViChuyen);
         editText_TienCuaViNhan = d.findViewById(R.id.edit_TienCuaViNhan);
+        textView_NgayThucHienChuyenTien = d.findViewById(R.id.tetxView_NgayThucHienChuyenTien);
         spinner_ViChuyenDialog = d.findViewById(R.id.spinner_ViChuyenToi);
         button_ChuyenTien = d.findViewById(R.id.btnChuyen);
-
         button_HuyChuyenTien = d.findViewById(R.id.btnHuyChuyenTien);
-        LoadSpinnerDialog();
 
+        calendar = Calendar.getInstance();
+
+        LoadSpinnerDialog();
         LoadDanhSachViLenSpinnerDialog();
+        HienThiThoiGian();
 
         //Lay tien theo vi chon o spinner
         spinner_ViChuyenDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -505,5 +518,10 @@ public class QuanLyViFragment extends Fragment {
             }
         });
         builder.show();
+    }
+
+    public void HienThiThoiGian() {
+        date = calendar.getTime();
+        textView_NgayThucHienChuyenTien.setText(simpleDateFormatDialog.format(date));
     }
 }
