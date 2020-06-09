@@ -144,7 +144,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         }
         cursor.close();
 
-        adapterDanhMucThuChi = new AdapterDanhMucThuChi(getContext(), R.layout.fragment_quanlydanhmuc_item, list);
+        adapterDanhMucThuChi = new AdapterDanhMucThuChi(getContext(), R.layout.adapter_quanlydanhmucthuchi_item, list);
         listView_DanhMucThuChi.setAdapter(adapterDanhMucThuChi);
     }
 

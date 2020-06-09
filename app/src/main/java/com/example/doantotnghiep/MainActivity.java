@@ -50,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
             data.execSQL("create table if not exists tbltaikhoan(tentaikhoan text primary key, masobimat text, matkhau text, " +
                     "hovaten text, diachi text, sodienthoai int, email text);");
 
-            //Table Sinh vien
-            //data.execSQL("create table if not exists tblsinhvien()");
-
             //Table Vi
             data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi double, sodu real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
@@ -70,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
 
 
             //Table Ke hoach
+            //data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key)");
+
+            //Table Lich su chuyen tien
+            data.execSQL("create table if not exists tbllichsuchuyentien(malichsuchuyentien int primary key, tenvichuyen text, tenvinhan text, sotienchuyen double, ngaythuchien date, " +
+                    "mavi int constraint mavi references tblvi(mavi), " +
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
         } catch (Exception ex) {
             ex.printStackTrace();
         }

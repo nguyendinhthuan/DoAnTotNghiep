@@ -40,13 +40,10 @@ import com.example.doantotnghiep.model.ArrayThongKe;
 import com.example.doantotnghiep.model.ArrayThuChi;
 import com.example.doantotnghiep.model.ArrayVi;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +54,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
     private Button button_ThoatThuChiDialog, button_LuuThuChiDialog, button_NgayThuChiDialog,
-            button_GioThuChiDialog, button_ThoiGianHienTaiDialog, button_ChonNgay, button_ChonNgayTatCa;
+            button_GioThuChiDialog, button_ThoiGianHienTaiDialog, button_ChonNgayLocThuChi, button_ChonTatCaThuChi;
     private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
@@ -117,8 +114,8 @@ public class QuanLyThuChiFragment extends Fragment {
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
-        button_ChonNgay = (Button) myFragment.findViewById(R.id.button_ChonNgay);
-        button_ChonNgayTatCa = (Button) myFragment.findViewById(R.id.button_ChonNgayTatCa);
+        button_ChonNgayLocThuChi = (Button) myFragment.findViewById(R.id.button_ChonNgayLocThuChi);
+        button_ChonTatCaThuChi = (Button) myFragment.findViewById(R.id.button_ChonTatCaThuChi);
     }
 
     public void ThemThuChi() {
@@ -289,24 +286,23 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public void ChonNgayLocThuChi() {
-        button_ChonNgayTatCa.setEnabled(false);
-        button_ChonNgay.setOnClickListener(new View.OnClickListener() {
+        button_ChonTatCaThuChi.setEnabled(false);
+        button_ChonNgayLocThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LoadNgayLocThuChi();
-                button_ChonNgayTatCa.setEnabled(true);
+                button_ChonTatCaThuChi.setEnabled(true);
             }
         });
 
-        button_ChonNgayTatCa.setOnClickListener(new View.OnClickListener() {
+        button_ChonTatCaThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LocCoSoDuLieu();
-                button_ChonNgay.setText("Chọn ngày");
-                button_ChonNgayTatCa.setEnabled(false);
+                button_ChonNgayLocThuChi.setText("Chọn ngày");
+                button_ChonTatCaThuChi.setEnabled(false);
             }
         });
-
     }
 
     public void LoadNgayLocThuChi() {
@@ -328,7 +324,7 @@ public class QuanLyThuChiFragment extends Fragment {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                button_ChonNgay.setText(simpleDateFormatDialog.format(date));
+                button_ChonNgayLocThuChi.setText(simpleDateFormatDialog.format(date));
                 dialog.cancel();
                 LoadThuChiTheoNgay();
             }
@@ -367,8 +363,8 @@ public class QuanLyThuChiFragment extends Fragment {
             thongbao = "Lưu thành công";
             Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
             LocCoSoDuLieu();
-            button_ChonNgay.setText("Chọn ngày");
-            button_ChonNgayTatCa.setEnabled(false);
+            button_ChonNgayLocThuChi.setText("Chọn ngày");
+            button_ChonTatCaThuChi.setEnabled(false);
             TinhSoDu();
         return true;
     }
@@ -415,7 +411,7 @@ public class QuanLyThuChiFragment extends Fragment {
     //Thu Chi Fragment
     public void setListview() {
         arr = new ArrayList<ArrayThuChi>();
-        adapterThuChi = new AdapterThuChi(getActivity(), R.layout.activity_thuchi_item, arr);
+        adapterThuChi = new AdapterThuChi(getActivity(), R.layout.adapter_thuchi_item, arr);
         listView_LichSuThuChi.setAdapter(adapterThuChi);
     }
 

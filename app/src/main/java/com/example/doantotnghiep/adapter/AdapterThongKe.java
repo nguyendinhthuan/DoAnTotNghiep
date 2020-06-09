@@ -69,7 +69,7 @@ public class AdapterThongKe extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View view, ViewGroup parent) {
         if (view == null) {
-            view = LayoutInflater.from(C).inflate(R.layout.activity_thongke_tong_item, parent, false);
+            view = LayoutInflater.from(C).inflate(R.layout.adapter_thongke_tong_item, parent, false);
         }
         txtTenNhom = (TextView) view.findViewById(R.id.txtTenNhom);
         txtSoLuong = (TextView) view.findViewById(R.id.txtSoLuong);
@@ -85,7 +85,7 @@ public class AdapterThongKe extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
         if (view == null) {
-            view = LayoutInflater.from(C).inflate(R.layout.activity_thongke_item, parent, false);
+            view = LayoutInflater.from(C).inflate(R.layout.adapter_thongke_item, parent, false);
         }
         txtTenNhomNho = (TextView) view.findViewById(R.id.txtTenNhomNho);
         txtTien = (TextView) view.findViewById(R.id.txtTien);

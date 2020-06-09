@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -48,7 +49,7 @@ public class QuanLyViFragment extends Fragment {
 
     private QuanLyViViewModel galleryViewModel;
     private Activity activity;
-    private ImageButton button_ThemVi;
+    private ImageButton button_ThemVi, button_LichSuChuyenTien;
     private Button button_LuuCapNhatVi, button_HuyCapNhatVi,button_ChuyenTien,button_HuyChuyenTien;
     private ListView listView_Vi;
     private View myFragment;
@@ -62,7 +63,7 @@ public class QuanLyViFragment extends Fragment {
     private String taikhoan,tenvichuyen,tenvichuyentoi;
     private SharedPreferences sharedPreferences;
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
-            editText_TenVi,editText_MoTaVi,editText_SoTienVi,editText_ViChon,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
+            editText_TenVi,editText_MoTaVi,editText_SoTienVi,editText_ViChuyen,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
     private Button button_LuuVi,button_ThoatVi;
     private TextView textView_NgayThucHienChuyenTien;
     private int vitri = 0;
@@ -76,7 +77,7 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<Integer> arrMaViDialog;
     private ArrayList<String> arrTenViDialog;
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViChuyenDialog;
-    private Spinner spinner_ViChuyenDialog;
+    private Spinner spinner_ViNhanDialog;
     private int sotienvitoi,sotienvichon,sotiencanchuyen,mavi;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -99,6 +100,7 @@ public class QuanLyViFragment extends Fragment {
         LayTenTaiKhoan();
         LayDanhSachVi();
         //TaiDanhSachVi();
+        LichSuChuyenTien();
 
         listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -138,7 +140,6 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void ChuyenTien() {
-
         final Dialog d = new Dialog(getContext());
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setContentView(R.layout.dialog_chuyentien);
@@ -147,12 +148,12 @@ public class QuanLyViFragment extends Fragment {
 
 
         //Anh Xa
-        editText_ViChon = d.findViewById(R.id.edit_ViChonChuyen);
+        editText_ViChuyen = d.findViewById(R.id.edit_ViChuyen);
         editText_SoTienChuyen = d.findViewById(R.id.edit_SoTienChuyen);
         editText_TienCuaViChuyen = d.findViewById(R.id.edit_TienCuaViChuyen);
         editText_TienCuaViNhan = d.findViewById(R.id.edit_TienCuaViNhan);
         textView_NgayThucHienChuyenTien = d.findViewById(R.id.tetxView_NgayThucHienChuyenTien);
-        spinner_ViChuyenDialog = d.findViewById(R.id.spinner_ViChuyenToi);
+        spinner_ViNhanDialog = d.findViewById(R.id.spinner_ViNhan);
         button_ChuyenTien = d.findViewById(R.id.btnChuyen);
         button_HuyChuyenTien = d.findViewById(R.id.btnHuyChuyenTien);
 
@@ -163,7 +164,7 @@ public class QuanLyViFragment extends Fragment {
         HienThiThoiGian();
 
         //Lay tien theo vi chon o spinner
-        spinner_ViChuyenDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_ViNhanDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
 
@@ -185,14 +186,14 @@ public class QuanLyViFragment extends Fragment {
             public void onClick(View view) {
                 if (tenvichuyen.equals(tenvichuyentoi)) {
                     Toast.makeText(activity,"Tên ví chuyển tiền bị trùng",Toast.LENGTH_SHORT).show();
-                    spinner_ViChuyenDialog.startAnimation(animation);
+                    spinner_ViNhanDialog.startAnimation(animation);
                 }else  if (editText_SoTienChuyen.getText().toString().equals("")){
                     Toast.makeText(activity,"Bạn chưa nhập số tiền chuyển",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
                 } else if (KiemTraChuyenTien() == false) {
                     Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
-                }else {
+                } else {
                     XuLyChuyenTien();
                     d.dismiss();
                     LayDanhSachVi();
@@ -211,19 +212,17 @@ public class QuanLyViFragment extends Fragment {
 
     public void LayTienTuVi(){
         tenvichuyen = list.get(vitri).tenvi;
-        editText_ViChon.setText(tenvichuyen);
-        editText_ViChon.setEnabled(false);
-        tenvichuyentoi = spinner_ViChuyenDialog.getSelectedItem().toString();
+        editText_ViChuyen.setText(tenvichuyen);
+        editText_ViChuyen.setEnabled(false);
+        tenvichuyentoi = spinner_ViNhanDialog.getSelectedItem().toString();
         cursor = data.rawQuery("select* from tblvi",null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
                 editText_TienCuaViChuyen.setText(String.valueOf(sotienvichon));
-
             }
-            if(cursor.getInt(cursor.getColumnIndex("mavi"))== mavi)
-            {
+            if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
                 sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
                 editText_TienCuaViNhan.setText(String.valueOf(sotienvitoi));
             }
@@ -232,23 +231,21 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public boolean KiemTraChuyenTien() {
-
         sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
         if (sotiencanchuyen > sotienvichon) {
-
             editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
             int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString());
             sotiencanchuyen =  sotiencanchuyenmin;
 
             return false;
         }
-
         return true;
     }
 
-    public void XuLyChuyenTien(){
-            int sotiendatru = 0;
-            int sotiendacong = 0;
+    public boolean XuLyChuyenTien(){
+        int sotiendatru = 0;
+        int sotiendacong = 0;
+        int malichsuchuyentien = 1;
 
         //cong tien vao vi chuyen toi
         sotiendacong = sotienvitoi + sotiencanchuyen;
@@ -258,13 +255,30 @@ public class QuanLyViFragment extends Fragment {
         ContentValues values = new ContentValues();
         values.put("sotienvi",sotiendatru);
         data.update("tblvi",values,"tenvi like '"+ tenvichuyen + "'",null);
+
         //cap nhat lai so tien da cong them o vi duoc chuyen
         ContentValues values1 = new ContentValues();
         values1.put("sotienvi",sotiendacong);
         data.update("tblvi",values1,"tenvi like '"+ tenvichuyentoi + "'",null);
 
+        //Luu lich su vao database
+        cursor = data.rawQuery("select malichsuchuyentien from tbllichsuchuyentien", null);
+        if (cursor.moveToLast() == true) {
+            malichsuchuyentien = cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")) + 1;
+        }
+        String thongbao = "";
+        ContentValues values2 = new ContentValues();
+        values2.put("malichsuchuyentien", malichsuchuyentien);
+        values2.put("tenvichuyen", editText_ViChuyen.getText().toString());
+        values2.put("tenvinhan", spinner_ViNhanDialog.getSelectedItem().toString());
+        values2.put("sotienchuyen", editText_SoTienChuyen.getText().toString());
+        values2.put("ngaythuchien", textView_NgayThucHienChuyenTien.getText().toString());
+        values2.put("tentaikhoan", taikhoan);
 
-
+        if (data.insert("tbllichsuchuyentien", null, values2) == -1) {
+            return false;
+        }
+        return true;
     }
 
     public void LoadSpinnerDialog() {
@@ -273,7 +287,7 @@ public class QuanLyViFragment extends Fragment {
         arrTenViDialog = new ArrayList<String>();
         adapterViChuyenDialog = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenViDialog);
         adapterViChuyenDialog.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_ViChuyenDialog.setAdapter(adapterViChuyenDialog);
+        spinner_ViNhanDialog.setAdapter(adapterViChuyenDialog);
 
     }
 
@@ -401,7 +415,7 @@ public class QuanLyViFragment extends Fragment {
 
     public void AnhXa() {
         button_ThemVi = (ImageButton) myFragment.findViewById(R.id.button_ThemVi);
-
+        button_LichSuChuyenTien = (ImageButton) myFragment.findViewById(R.id.button_LichSuChuyenTien);
         listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
     }
 
@@ -422,7 +436,7 @@ public class QuanLyViFragment extends Fragment {
             cursor.moveToNext();
         }
         cursor.close();
-        adapterVi = new AdapterVi(getContext(), R.layout.fragment_quanlyvi_item, list);
+        adapterVi = new AdapterVi(getContext(), R.layout.adapter_quanlyvi_item, list);
         listView_Vi.setAdapter(adapterVi);
     }
 
@@ -523,5 +537,15 @@ public class QuanLyViFragment extends Fragment {
     public void HienThiThoiGian() {
         date = calendar.getTime();
         textView_NgayThucHienChuyenTien.setText(simpleDateFormatDialog.format(date));
+    }
+
+    public void LichSuChuyenTien() {
+        button_LichSuChuyenTien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), LichSuChuyenTienActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }

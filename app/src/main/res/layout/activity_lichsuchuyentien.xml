@@ -7,20 +7,32 @@
     android:orientation="vertical"
     android:background="@drawable/main_background_fragment">
 
+    <ImageButton
+        android:id="@+id/imageButton_TroVeQuanLyVi"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@null"
+        android:padding="4dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/icon_back"
+        tools:ignore="RtlHardcoded" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="40dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lịch sử thu chi"
+            android:text="Lịch sử chuyển tiền"
             android:textColor="#000000"
             android:textSize="20dp"/>
 
         <Button
-            android:id="@+id/button_ChonNgayLocThuChi"
+            android:id="@+id/button_ChonNgayLocChuyenTien"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Chọn ngày"
@@ -28,7 +40,7 @@
             android:background="@drawable/main_background_fragment"/>
 
         <Button
-            android:id="@+id/button_ChonTatCaThuChi"
+            android:id="@+id/button_ChonTatCaChuyenTien"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tất cả"
@@ -38,32 +50,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
         <ListView
-            android:id="@+id/listView_LichSuThuChi"
-            android:layout_width="wrap_content"
+            android:id="@+id/listView_LichSuChuyenTien"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="60dp"
-            android:dividerHeight="3dp"
-            android:layout_marginBottom="45dp"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <ImageButton
-            android:id="@+id/imageButton_ThemThuChi"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="right"
-            android:background="@null"
-            android:padding="4dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/add_icon_green"
-            tools:ignore="RtlHardcoded" />
+            android:dividerHeight="3dp"/>
     </RelativeLayout>
 </RelativeLayout>

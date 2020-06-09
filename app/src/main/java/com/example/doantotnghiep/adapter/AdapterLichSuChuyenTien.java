@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.doantotnghiep.R;
+import com.example.doantotnghiep.model.ArrayLichSuChuyenTien;
 import com.example.doantotnghiep.model.ArrayThuChi;
 
 import java.text.DecimalFormat;
@@ -15,13 +16,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
+public class AdapterLichSuChuyenTien extends ArrayAdapter<ArrayLichSuChuyenTien> {
     private Activity a;
     private int id;
-    private ArrayList<ArrayThuChi> arr;
-    private TextView ngay, tien, danhmucthuchi, vi, loaikhoan;
+    private ArrayList<ArrayLichSuChuyenTien> arr;
+    private TextView ngay, tien, vichuyen, vinhan;
 
-    public AdapterThuChi(Activity context, int resource, ArrayList<ArrayThuChi> objects) {
+    public AdapterLichSuChuyenTien(Activity context, int resource, ArrayList<ArrayLichSuChuyenTien> objects) {
         super(context, resource, objects);
         this.a = context;
         this.id = resource;
@@ -33,17 +34,15 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
         LayoutInflater in = a.getLayoutInflater();
         view = in.inflate(id, null);
         if (arr.size()>0 && position>=0) {
-            ngay = (TextView) view.findViewById(R.id.txtNgayThuChi);
-            tien = (TextView) view.findViewById(R.id.txtTienThuChi);
-            danhmucthuchi = (TextView) view.findViewById(R.id.txtDanhMucThuChi);
-            vi = (TextView) view.findViewById(R.id.txtViThuChi);
-            loaikhoan = (TextView) view.findViewById(R.id.txtLoaiKhoanThuChi);
+            ngay = (TextView) view.findViewById(R.id.txtNgayChuyenTien);
+            tien = (TextView) view.findViewById(R.id.txtTienChuyen);
+            vichuyen = (TextView) view.findViewById(R.id.txtViChuyen);
+            vinhan = (TextView) view.findViewById(R.id.txtViNhan);
 
             ngay.setText(""+ arr.get(position).thoigian);
             tien.setText(DoiSoSangTien(arr.get(position).tien));
-            danhmucthuchi.setText(arr.get(position).danhmucthuchi);
-            vi.setText(arr.get(position).vi);
-            loaikhoan.setText(arr.get(position).loaikhoan + ":");
+            vichuyen.setText(arr.get(position).vichuyen);
+            vinhan.setText(arr.get(position).vinhan);
         }
         return view;
     }

@@ -5,29 +5,29 @@
     android:background="@drawable/white_listview_item">
 
     <TextView
-        android:id="@+id/txtNgay"
+        android:id="@+id/txtNgayThuChi"
         android:layout_width="wrap_content"
-        android:layout_toLeftOf="@+id/txtTien"
+        android:layout_toLeftOf="@+id/txtTienThuChi"
         android:layout_alignParentLeft="true"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
+        android:text="Ngay thu chi"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/txtTien"
+        android:id="@+id/txtTienThuChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="hello"
+        android:text="Tien thu chi"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/txtLoaiKhoan"
+        android:id="@+id/txtLoaiKhoanThuChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtNgay"
+        android:layout_below="@+id/txtNgayThuChi"
         android:layout_marginTop="5dp"
         android:layout_alignParentLeft="true"
         android:text="Khoan thu"
@@ -38,10 +38,10 @@
         android:id="@+id/txtDanhMucThuChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtNgay"
+        android:layout_below="@+id/txtNgayThuChi"
         android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/txtLoaiKhoan"
-        android:text="hello"
+        android:layout_toRightOf="@+id/txtLoaiKhoanThuChi"
+        android:text="Danh muc thu chi"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginLeft="5dp"
         android:textColor="#000000"/>
@@ -50,22 +50,22 @@
         android:id="@+id/txtViTieuDe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtNgay"
+        android:layout_below="@+id/txtNgayThuChi"
         android:layout_marginTop="5dp"
-        android:layout_toLeftOf="@+id/txtVi"
+        android:layout_toLeftOf="@+id/txtViThuChi"
         android:text="Ví:"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginRight="5dp"
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/txtVi"
+        android:id="@+id/txtViThuChi"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/txtNgay"
+        android:layout_below="@+id/txtNgayThuChi"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/txtDanhMucThuChi"
         android:layout_alignParentRight="true"
-        android:text="hello"
+        android:text="Vi thu chi"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"/>
 </RelativeLayout>
