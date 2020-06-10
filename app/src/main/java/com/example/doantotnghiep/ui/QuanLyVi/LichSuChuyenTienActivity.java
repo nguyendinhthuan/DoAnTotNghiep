@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -25,7 +28,8 @@ import java.util.Date;
 
 
 public class LichSuChuyenTienActivity extends AppCompatActivity {
-    private Activity a;
+    private String taikhoan;
+    private SharedPreferences sharedPreferences;
     private ArrayList<ArrayLichSuChuyenTien> arr;
     private AdapterLichSuChuyenTien adapterLichSuChuyenTien;
     private ImageButton imageButton_TroVeQuanLyVi;
@@ -33,18 +37,23 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     private ListView listView_LichSuChuyenTien;
     private Date date;
     private SimpleDateFormat simpleDateFormatDialog;
+    private SQLiteDatabase data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lichsuchuyentien);
-        a = getParent();
+        data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
+        simpleDateFormatDialog = new SimpleDateFormat("dd/MM/yyyy");
 
+        sharedPreferences = getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
 
         AnhXa();
         TroVeQuanLyVi();
         ChonNgayLocLichSuChuyenTien();
         setListView();
+        LoadTatCaLichSuChuyenTien();
     }
 
     public void AnhXa() {
@@ -76,7 +85,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         button_ChonTatCaChuyentien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocCoSoDuLieu();
+                LoadTatCaLichSuChuyenTien();
                 button_ChonNgayLocChuyenTien.setText("Chọn ngày");
                 button_ChonTatCaChuyentien.setEnabled(false);
             }
@@ -84,7 +93,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void LoadNgayLocChuyenTien() {
-        final Dialog dialog = new Dialog(getApplicationContext());
+        final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -116,10 +125,30 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void LoadLichSuChuyenTienTheoNgay() {
+        arr.clear();
+        Cursor cursor = data.rawQuery("select malichsuchuyentien, tenvichuyen, tenvinhan, sotienchuyen, ngaythuchien" +
+                " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' " +
+                " and ngaythuchien = '" + simpleDateFormatDialog.format(date) + "' ", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arr.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        adapterLichSuChuyenTien.notifyDataSetChanged();
 
     }
 
-    public void LocCoSoDuLieu() {
-
+    public void LoadTatCaLichSuChuyenTien() {
+        arr.clear();
+        Cursor cursor = data.rawQuery("select malichsuchuyentien, tenvichuyen, tenvinhan, sotienchuyen, ngaythuchien" +
+                " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' ", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arr.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        adapterLichSuChuyenTien.notifyDataSetChanged();
     }
 }

@@ -105,20 +105,20 @@ public class ThongKeThuChiFragment extends Fragment {
                 break;
             case 1:
                 ngaythang = thang + "/" + nam;
-                LocCoSoDuLieu(ngaythang);
+                LoadTatCaThongKeThuChi(ngaythang);
                 break;
             case 2:
-                LocCoSoDuLieu(String.valueOf(nam));
+                LoadTatCaThongKeThuChi(String.valueOf(nam));
                 break;
         }
     }
 
     public void setToday() {
         ngaythang = ngay + "/" + thang + "/" + nam;
-        LocCoSoDuLieu(ngaythang);
+        LoadTatCaThongKeThuChi(ngaythang);
     }
 
-    public void LocCoSoDuLieu(String date) {
+    public void LoadTatCaThongKeThuChi(String date) {
         arrthu.clear();
         arrchi.clear();
         Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien " +

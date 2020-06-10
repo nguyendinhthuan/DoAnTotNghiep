@@ -106,7 +106,7 @@ public class QuanLyThuChiFragment extends Fragment {
         AnhXa();
         ThemThuChi();
         setListview();
-        LocCoSoDuLieu();
+        LoadTatCaThuChi();
         XoaThuChi();
         ChonNgayLocThuChi();
     }
@@ -219,13 +219,12 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     //Xu ly chon vi uu tien
-    public void LayViUuTienTheoDanhMuc(){
+    public void LayViUuTienTheoDanhMuc() {
         String tendanhmuc = arrTenDanhMucDialog.get(vitri);
         cursor = data.rawQuery("select * from tbldanhmucthuchi",null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
-            if(cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(tendanhmuc))
-            {
+        while (cursor.isAfterLast()==false) {
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(tendanhmuc)) {
                 maviuutien = cursor.getInt(cursor.getColumnIndex("mavi"));
             }
             cursor.moveToNext();
@@ -333,7 +332,7 @@ public class QuanLyThuChiFragment extends Fragment {
         button_ChonTatCaThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocCoSoDuLieu();
+                LoadTatCaThuChi();
                 button_ChonNgayLocThuChi.setText("Chọn ngày");
                 button_ChonTatCaThuChi.setEnabled(false);
             }
@@ -397,7 +396,7 @@ public class QuanLyThuChiFragment extends Fragment {
             }
             thongbao = "Lưu thành công";
             Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
-            LocCoSoDuLieu();
+            LoadTatCaThuChi();
             button_ChonNgayLocThuChi.setText("Chọn ngày");
             button_ChonTatCaThuChi.setEnabled(false);
             TinhSoDu();
@@ -509,7 +508,7 @@ public class QuanLyThuChiFragment extends Fragment {
         adapterThuChi.notifyDataSetChanged();
     }
 
-    public void LocCoSoDuLieu() {
+    public void LoadTatCaThuChi() {
         arr.clear();
         Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +

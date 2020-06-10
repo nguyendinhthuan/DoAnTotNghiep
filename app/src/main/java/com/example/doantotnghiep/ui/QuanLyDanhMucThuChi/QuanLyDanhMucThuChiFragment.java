@@ -78,7 +78,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
         AnhXa();
         LoadSpinner();
-        LayDanhSachDanhMucThuChi();
+        LoadTatCaDanhMucThuChi();
         XoaDanhMuc();
         ThemDanhMucThuChiDialog();
     }
@@ -102,7 +102,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         spinner_LoaiKhoan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LayDanhSachDanhMucThuChi();
+                LoadTatCaDanhMucThuChi();
             }
 
             @Override
@@ -127,7 +127,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         spinner_ViUuTienChoDanhMuc.setAdapter(adapterViUuTienDialog);
     }
 
-    public void LayDanhSachDanhMucThuChi() {
+    public void LoadTatCaDanhMucThuChi() {
         String dieukien = "= '" + spinner_LoaiKhoan.getSelectedItem().toString() + "'";
         Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi" +
                 " where loaikhoan" + dieukien + " and tentaikhoan = '" + taikhoan + "'", null);
@@ -181,7 +181,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 data.rawQuery("delete from tbldanhmucthuchi " +
                         "where tendanhmuc = '" + tendanhmuc + "'", null).moveToFirst();
-                LayDanhSachDanhMucThuChi();
+                LoadTatCaDanhMucThuChi();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
@@ -259,7 +259,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                             thongbao = "Thêm danh mục thành công";
                             d.dismiss();
                             //load list view o day
-                            LayDanhSachDanhMucThuChi();
+                            LoadTatCaDanhMucThuChi();
                         }
                         Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                     }

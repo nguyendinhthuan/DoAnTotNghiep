@@ -98,8 +98,7 @@ public class QuanLyViFragment extends Fragment {
         AnhXa();
         ThemVi();
         LayTenTaiKhoan();
-        LayDanhSachVi();
-        //TaiDanhSachVi();
+        LoadTatCaVi();
         LichSuChuyenTien();
 
         listView_Vi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -196,7 +195,7 @@ public class QuanLyViFragment extends Fragment {
                 } else {
                     XuLyChuyenTien();
                     d.dismiss();
-                    LayDanhSachVi();
+                    LoadTatCaVi();
                 }
             }
         });
@@ -273,6 +272,7 @@ public class QuanLyViFragment extends Fragment {
         values2.put("tenvinhan", spinner_ViNhanDialog.getSelectedItem().toString());
         values2.put("sotienchuyen", editText_SoTienChuyen.getText().toString());
         values2.put("ngaythuchien", textView_NgayThucHienChuyenTien.getText().toString());
+        values2.put("mavi", editText_ViChuyen.getText().toString());
         values2.put("tentaikhoan", taikhoan);
 
         if (data.insert("tbllichsuchuyentien", null, values2) == -1) {
@@ -386,7 +386,7 @@ public class QuanLyViFragment extends Fragment {
                             thongbao="Số ví đã đạt tối đa";
                             Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
                         }
-                        LayDanhSachVi();
+                        LoadTatCaVi();
                     }
                 });
                 button_ThoatVi.setOnClickListener(new View.OnClickListener() {
@@ -419,7 +419,7 @@ public class QuanLyViFragment extends Fragment {
         listView_Vi = (ListView) myFragment.findViewById(R.id.listView_Vi);
     }
 
-    public void LayDanhSachVi() {
+    public void LoadTatCaVi() {
         //Cursor cursor = data.query("tblvi", null, null, null, null, null, null);
         Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
@@ -472,7 +472,7 @@ public class QuanLyViFragment extends Fragment {
                         if(CapNhatVi())
                         {
                             d.dismiss();
-                            LayDanhSachVi();
+                            LoadTatCaVi();
                         }
                     }
                 });
@@ -521,7 +521,7 @@ public class QuanLyViFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 data.rawQuery("delete from tblvi where tenvi = '" + tenvi + "'", null).moveToFirst();
-                LayDanhSachVi();
+                LoadTatCaVi();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
             }
         });
