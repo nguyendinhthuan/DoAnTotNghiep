@@ -81,9 +81,9 @@ public class QuanLyThuChiFragment extends Fragment {
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViDialog, adapterDanhMucDialog;
     private String[] arrSpinnerDialog;
     private List<ArrayVi> listDialog = null;
-    private String gioDialog, tenVi;
+    private String gioDialog, tenVi, tenviuutien ;
     private Cursor cursor;
-    private int sotientuvi,sotienthuchi,sotienchi;
+    private int sotientuvi,sotienthuchi,sotienchi,vitri, maviuutien;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -145,10 +145,13 @@ public class QuanLyThuChiFragment extends Fragment {
 
                 calendar = Calendar.getInstance();
 
+
                 //Xu ly
                 HienThiThoiGian();
                 LoadSpinnerDialog();
                 LoadDanhSachViLenSpinnerDialog();
+
+
 
                 //KiemTraChiTieuMax();
                 editText_SoTienThuChiDialog.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -159,6 +162,22 @@ public class QuanLyThuChiFragment extends Fragment {
                         }
                     }
                 });
+
+                //Chon vi uu tien
+                spinner_DanhMucDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        vitri = position ;
+                        LayViUuTienTheoDanhMuc();
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
 
                 button_ThoatThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -197,6 +216,22 @@ public class QuanLyThuChiFragment extends Fragment {
                 });
             }
         });
+    }
+
+    //Xu ly chon vi uu tien
+    public void LayViUuTienTheoDanhMuc(){
+        String tendanhmuc = arrTenDanhMucDialog.get(vitri);
+        cursor = data.rawQuery("select * from tbldanhmucthuchi",null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast()==false){
+            if(cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(tendanhmuc))
+            {
+                maviuutien = cursor.getInt(cursor.getColumnIndex("mavi"));
+            }
+            cursor.moveToNext();
+        }
+        int vitriviuutien = maviuutien - 1;
+        spinner_ViDialog.setSelection(vitriviuutien);
     }
 
     //Dialog Them Thu Chi

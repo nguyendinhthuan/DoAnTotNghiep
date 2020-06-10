@@ -93,7 +93,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         editText_TenDanhMucThuChi = (EditText) myFragment.findViewById(R.id.editText_TenDanhMucThuChi);
     }
 
-    public void LoadSpinner() {
+    public void LoadSpinner()  {
         //Spinner Loai thu chi
         arrSpinner = getResources().getStringArray(R.array.loaithuchi);
         adapterSpinner = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrSpinner);
@@ -247,12 +247,12 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                             madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
                         }
 
-
+                        //Da sua luu ma vi sang int
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("madanhmuc", madanhmuc);
                         contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
                         contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
-                        contentValues.put("mavi", spinner_ViUuTienChoDanhMuc.getSelectedItem().toString());
+                        contentValues.put("mavi",  arrMaViDialog.get(spinner_ViUuTienChoDanhMuc.getSelectedItemPosition()));
                         contentValues.put("tentaikhoan", taikhoan);
 
                         if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
