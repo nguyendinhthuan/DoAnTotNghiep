@@ -10,13 +10,16 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -45,20 +48,21 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     private Activity activity;
     private SQLiteDatabase data;
     private Animation animation;
-    private String[] arrSpinner, arrSpinnerDialog;
-    private ArrayAdapter<String> adapterSpinner, adapterSpinnerDialog, adapterViUuTienDialog;
-    private Spinner spinner_LoaiKhoan, spinner_LoaiKhoanDialog, spinner_ViUuTienChoDanhMuc;
+    private String[] arrSpinner, arrSpinnerDialog,arrSpinnerDialogSua;
+    private ArrayAdapter<String> adapterSpinner, adapterSpinnerDialog, adapterViUuTienDialog,adapterSpinnerDialogSua,adapterViUuTienDialogSua;
+    private Spinner spinner_LoaiKhoan, spinner_LoaiKhoanDialog, spinner_ViUuTienChoDanhMuc, spinner_SuaViUuTienChoDanhMuc,spinner_SuaLoaiKhoanDialog;
     private ImageButton button_ThemDanhMuc;
-    private EditText editText_TenDanhMucThuChi;
+    private EditText editText_TenDanhMucThuChi,editText_SuaTenDanhMucThuChi;
     private ArrayList<ArrayDanhMucThuChi> arrDanhMucThuChi;
     private AdapterDanhMucThuChi adapterDanhMucThuChi;
     private List<ArrayDanhMucThuChi> list = null;
-    private List<ArrayVi> listViDialog = null;
+    private List<ArrayVi> listViDialog = null,listViDialogSua = null;
     private ListView listView_DanhMucThuChi;
     private SharedPreferences sharedPreferences;
-    private Button button_LuuThemDanhMucThuChi, button_HuyThemDanhMucThuChi;
-    private ArrayList<Integer> arrMaViDialog;
-    private ArrayList<String> arrTenViDialog;
+    private Button button_LuuThemDanhMucThuChi, button_HuyThemDanhMucThuChi,button_LuuSuaDanhMucThuChi,button_HuySuaDanhMucThuChi;
+    private ArrayList<Integer> arrMaViDialog,arrMaViDialogSua;
+    private ArrayList<String> arrTenViDialog,arrTenViDialogSua;
+    private int vitri,mavidanhmucsua;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -76,11 +80,44 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
         taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
 
+
         AnhXa();
         LoadSpinner();
         LoadTatCaDanhMucThuChi();
-        XoaDanhMuc();
+        //XoaDanhMuc();
         ThemDanhMucThuChiDialog();
+        listView_DanhMucThuChi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                vitri = position;
+                return false;
+            }
+        });
+        registerForContextMenu(listView_DanhMucThuChi);
+    }
+
+    //Menu
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        activity.getMenuInflater().inflate(R.menu.menu_danhmucthuchi, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_SuaDanhMuc: {
+                SuaDanhMucDialog();
+                return true;
+            }
+            case R.id.option_XoaDanhMuc: {
+                XoaDanhMuc(vitri);
+                return true;
+            }
+
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void AnhXa() {
@@ -162,14 +199,125 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         adapterViUuTienDialog.notifyDataSetChanged();
     }
 
-    public void XoaDanhMuc() {
-        listView_DanhMucThuChi.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+    //Sua danh muc
+    public void SuaDanhMucDialog(){
+        final int madanhmucht = list.get(vitri).madanhmuc;
+        final Dialog d = new Dialog(getContext());
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.dialog_capnhatdanhmucthuchi);
+        d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        d.show();
+
+        //AnhXa
+        editText_SuaTenDanhMucThuChi = d.findViewById(R.id.editText_SuaTenDanhMucThuChi);
+        spinner_SuaLoaiKhoanDialog = d.findViewById(R.id.spinner_SuaLoaiKhoanDialog);
+        spinner_SuaViUuTienChoDanhMuc = d.findViewById(R.id.spinner_SuaViUuTienChoDanhMuc);
+        button_LuuSuaDanhMucThuChi = d.findViewById(R.id.button_LuuSuaDanhMucThuChi);
+        button_HuySuaDanhMucThuChi = d.findViewById(R.id.button_HuySuaDanhMucThuChi);
+
+        //Xuly
+        LoadSpinnerDialogSua();
+        LoadDanhSachViLenSpinnerDialogSua();
+        //Lay thong tin dua len dialog
+        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where madanhmuc = "+ madanhmucht , null);
+        cursor.moveToFirst();
+        String tendanhmucsua = cursor.getString(cursor.getColumnIndex("tendanhmuc"));
+        String loaidanhmuc = cursor.getString(cursor.getColumnIndex("loaikhoan"));
+        mavidanhmucsua = cursor.getInt(cursor.getColumnIndex("mavi"));
+
+        editText_SuaTenDanhMucThuChi.setText(tendanhmucsua);
+        //editText_SuaTenDanhMucThuChi.setText(String.valueOf(mavidanhmuc));
+
+        if(loaidanhmuc.equals("Khoản thu"))
+        {
+            spinner_SuaLoaiKhoanDialog.setSelection(0);
+        }else {
+            spinner_SuaLoaiKhoanDialog.setSelection(1);
+        }
+        spinner_SuaViUuTienChoDanhMuc.setSelection(mavidanhmucsua-1);
+
+
+        //Xu ly nut
+        button_LuuSuaDanhMucThuChi.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                HamXoaDanhMuc(list.get(position).tendanhmuc);
-                return false;
+            public void onClick(View view) {
+               if(CapNhatDanhMuc()){
+                   d.dismiss();
+                   LoadTatCaDanhMucThuChi();
+               }
             }
         });
+
+        button_HuySuaDanhMucThuChi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.dismiss();
+            }
+        });
+
+    }
+
+    public boolean CapNhatDanhMuc(){
+        String thongbao = "";
+        final int madanhmucht = list.get(vitri).madanhmuc;
+
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("")) {
+            editText_SuaTenDanhMucThuChi.startAnimation(animation);
+            Toast.makeText(activity,"Bạn chưa nhập tên danh mục",Toast.LENGTH_LONG).show();
+        } else {
+            ContentValues values = new ContentValues();
+            values.put("tendanhmuc",editText_SuaTenDanhMucThuChi.getText().toString());
+            values.put("loaikhoan",spinner_SuaLoaiKhoanDialog.getSelectedItem().toString());
+            values.put("mavi",spinner_SuaViUuTienChoDanhMuc.getSelectedItemPosition()+1);
+            data.update("tbldanhmucthuchi",values,"madanhmuc = "+ madanhmucht,null);
+            thongbao = "Cập nhật thành công";
+            Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+            return true;
+        }
+        thongbao = "Cập nhật không thành công";
+        Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+        return false;
+    }
+
+    public void LoadSpinnerDialogSua() {
+        //Spinner loai khoan dialog
+        arrSpinnerDialogSua = getResources().getStringArray(R.array.loaithuchi);
+        adapterSpinnerDialogSua = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrSpinnerDialogSua);
+        adapterSpinnerDialogSua.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_SuaLoaiKhoanDialog.setAdapter(adapterSpinnerDialogSua);
+
+        //Spinner vi dialog
+        arrMaViDialogSua = new ArrayList<Integer>();
+        arrTenViDialogSua = new ArrayList<String>();
+        adapterViUuTienDialogSua = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTenViDialogSua);
+        adapterViUuTienDialogSua.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_SuaViUuTienChoDanhMuc.setAdapter(adapterViUuTienDialogSua);
+    }
+
+    public void LoadDanhSachViLenSpinnerDialogSua() {
+        arrMaViDialogSua.clear();
+        arrTenViDialogSua.clear();
+        Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
+        cursor.moveToFirst();
+        listViDialogSua = new ArrayList<ArrayVi>();
+        while (cursor.isAfterLast() == false) {
+            arrMaViDialogSua.add(cursor.getInt(cursor.getColumnIndex("mavi")));
+            arrTenViDialogSua.add(cursor.getString(cursor.getColumnIndex("tenvi")));
+            cursor.moveToNext();
+        }
+        adapterViUuTienDialogSua.notifyDataSetChanged();
+    }
+
+
+
+    //Xoa dnanh muc
+    public void XoaDanhMuc(int vitrixoa) {
+
+                HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
+
+
+
     }
 
     public void HamXoaDanhMuc(final String tendanhmuc) {

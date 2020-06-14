@@ -39,7 +39,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
     private SQLiteDatabase data;
     private String tentaikhoan;
     private Button button_CapNhatTaiKhoan, button_DangXuat, button_DoiMatKhauTaiKhoan,thaydoi,huy,btnLuu,btnHuy;
-    private TextView txt_TenTaiKhoanFrag, txt_TenNguoiDung, txt_DiaChi, txt_Email, txt_SDT,txt_TenTaiKhoan;
+    private TextView txt_TenTaiKhoanFrag, txt_TenNguoiDung, txt_DiaChi, txt_Email, txt_SDT,txt_TenTaiKhoan,txt_TongSoDu;
     private EditText maso, matkhau1, matkhau2, editText_HoTen, editText_DiaChi,editText_Email,editText_SoDienThoai;
     private String taikhoan;
     private SharedPreferences sharedPreferences;
@@ -66,7 +66,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         DangXuat();
         DoiMatKhauTaiKhoan();
         LayTenTaiKhoan();
-        LayTaiKhoan();
+        LayTongSoDu();
     }
 
     public void LayTenTaiKhoan()
@@ -169,6 +169,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         txt_DiaChi = (TextView) myFragment.findViewById(R.id.txtDiaChi);
         txt_Email = (TextView) myFragment.findViewById(R.id.txtEmail);
         txt_SDT = (TextView) myFragment.findViewById(R.id.txtSoDienThoai);
+        txt_TongSoDu= (TextView) myFragment.findViewById(R.id.txtTongSoDu);
         button_DangXuat = (Button) myFragment.findViewById(R.id.btnDangXuat);
         button_DoiMatKhauTaiKhoan = (Button) myFragment.findViewById(R.id.btnDoiMatKhauTaiKhoan);
     }
@@ -303,5 +304,16 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             cursor.moveToNext();
         }
         cursor.close();
+    }
+
+    public void LayTongSoDu(){
+        int tongsodu = 0;
+        Cursor c = data.rawQuery("select sotienvi from tblvi",null);
+        c.moveToFirst();
+        while (c.isAfterLast()==false){
+            tongsodu = tongsodu + c.getInt(c.getColumnIndex("sotienvi"));
+            c.moveToNext();
+        }
+        txt_TongSoDu.setText(String.valueOf(tongsodu));
     }
 }
