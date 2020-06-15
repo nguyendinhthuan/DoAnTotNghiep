@@ -55,7 +55,6 @@ public class QuanLyThuChiFragment extends Fragment {
     private ImageButton imageButton_ThemThuChi;
     private Button button_ThoatThuChiDialog, button_LuuThuChiDialog, button_NgayThuChiDialog,
             button_GioThuChiDialog, button_ThoiGianHienTaiDialog, button_ChonNgayLocThuChi, button_ChonTatCaThuChi;
-    private QuanLyThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
     private String ngaythang;
@@ -97,7 +96,7 @@ public class QuanLyThuChiFragment extends Fragment {
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
-        simpleDateFormatDialog = new SimpleDateFormat("dd/MM/yyyy");
+        simpleDateFormatDialog = new SimpleDateFormat("dd/M/yyyy");
         date = new Date();
 
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);

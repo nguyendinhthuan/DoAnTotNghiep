@@ -20,7 +20,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chuyển tiền"
+                android:text="Thêm kế hoạch tiết kiệm"
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -39,11 +39,11 @@
             <TextView
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:text="Từ ví:"
+                android:text="Tên kế hoạch:"
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/edit_ViChuyen"
+                android:id="@+id/edit_TenKeHoachTietKiem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -62,39 +62,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số tiền hiện có:"
+                android:text="Ngày bắt đầu:"
                 android:textColor="#000000" />
 
-            <EditText
-                android:id="@+id/edit_TienCuaViChuyen"
+<!--            <EditText-->
+<!--                android:id="@+id/edit_NgayBatDauKeHoachTietKiem"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/main_edittext"-->
+<!--                android:ems="10"-->
+<!--                android:inputType="textPersonName" />-->
+
+            <Button
+                android:id="@+id/button_NgayBatDauKeHoachTietKiem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:background="@drawable/main_edittext"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:textColor="#000000"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="25dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Đến ví:"
-                android:textColor="#000000" />
-
-            <Spinner
-                android:id="@+id/spinner_ViNhan"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:background="@drawable/main_background_fragment"/>
         </TableRow>
 
         <TableRow
@@ -105,64 +94,41 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số tiền hiện có:"
+                android:text="Ngày kết thúc:"
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/edit_TienCuaViNhan"
+                android:id="@+id/edit_NgayKetThucKeHoachTietKiem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/main_edittext"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:textColor="#000000"/>
+                android:inputType="textPersonName" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số tiền chuyển:"
+                android:text="Số tiền cho kế hoạch:"
                 android:textColor="#000000" />
 
             <EditText
-                android:id="@+id/edit_SoTienChuyen"
+                android:id="@+id/edit_SoTienKeHoachTietKiem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/main_edittext"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:textColor="#000000"/>
-
+                android:inputType="textPersonName" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="25dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ngày thực hiện:"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/tetxView_NgayThucHienChuyenTien"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:textColor="#000000" />
-        </TableRow>
-
     </TableLayout>
 
     <LinearLayout
@@ -172,16 +138,16 @@
         android:layout_marginTop="15dp">
 
         <Button
-            android:id="@+id/btnChuyen"
+            android:id="@+id/btnLuuKeHoachTietKiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/confirm_button"
-            android:text="Chuyển"
+            android:text="Lưu"
             android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/btnHuyChuyenTien"
+            android:id="@+id/btnHuyKeHoachChuyenTien"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -1,6 +1,8 @@
 package com.example.doantotnghiep.ui.ThongKeThuChi;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -22,15 +24,16 @@ import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterThongKe;
 import com.example.doantotnghiep.model.ArrayThongKe;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ThongKeThuChiFragment extends Fragment {
     View myFragment;
     private Activity activity;
     private SQLiteDatabase data;
     private Animation animation;
-    private ThongKeThuChiViewModel quanLyThuChiViewModel;
     private String taikhoan;
     private Spinner spinner_LichSuThuChi;
     private String ngaythang;
@@ -41,6 +44,7 @@ public class ThongKeThuChiFragment extends Fragment {
     private ArrayAdapter<String> adapterSpinner;
     private ExpandableListView listView_ThongKeThuChi;
     private AdapterThongKe adapterThongKe;
+    private SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,15 +59,18 @@ public class ThongKeThuChiFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
 
+        sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
+        taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
+
         today = Calendar.getInstance();
-        ngay = today.get(Calendar.DATE);
+
+        ngay = today.get(Calendar.DAY_OF_MONTH);
         thang = today.get(Calendar.MONTH) + 1;
         nam = today.get(Calendar.YEAR);
 
         AnhXa();
         setSpinner();
         setListview();
-        //LocCoSoDuLieu();
     }
 
     public void AnhXa() {
@@ -101,7 +108,8 @@ public class ThongKeThuChiFragment extends Fragment {
     public void LocTheoLuaChon(int position) {
         switch (position) {
             case 0:
-                setToday();
+                ngaythang = ngay + "/" + thang + "/" + nam;
+                LoadTatCaThongKeThuChi(ngaythang);
                 break;
             case 1:
                 ngaythang = thang + "/" + nam;
@@ -113,17 +121,12 @@ public class ThongKeThuChiFragment extends Fragment {
         }
     }
 
-    public void setToday() {
-        ngaythang = ngay + "/" + thang + "/" + nam;
-        LoadTatCaThongKeThuChi(ngaythang);
-    }
-
     public void LoadTatCaThongKeThuChi(String date) {
         arrthu.clear();
         arrchi.clear();
         Cursor cursor = data.rawQuery("select tendanhmuc, sum(sotienthuchi) as tien, loaikhoan, ngaythuchien " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
-                " where ngaythuchien like '%" + date + "%' group by tbldanhmucthuchi.madanhmuc", null);
+                " where ngaythuchien like '%" + date + "%' and tblthuchi.tentaikhoan = '" + taikhoan + "' group by tbldanhmucthuchi.madanhmuc", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("loaikhoan")).equals("Khoản thu")) {
@@ -134,11 +137,5 @@ public class ThongKeThuChiFragment extends Fragment {
             cursor.moveToNext();
         }
         adapterThongKe.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setToday();
     }
 }
