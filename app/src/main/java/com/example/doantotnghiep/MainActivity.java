@@ -66,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
                     "madanhmuc text constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
 
 
-            //Table Ke hoach
-            //data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key)");
+            //Table Ke hoach tiet kiem
+            data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
+                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, " +
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Lich su chuyen tien
             data.execSQL("create table if not exists tbllichsuchuyentien(malichsuchuyentien int primary key, tenvichuyen text, tenvinhan text, sotienchuyen double, ngaythuchien date, " +

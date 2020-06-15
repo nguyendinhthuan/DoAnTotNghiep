@@ -13,7 +13,7 @@
         android:layout_alignParentBottom="true">
 
         <ImageButton
-            android:id="@+id/imageButton_ThemThuChi"
+            android:id="@+id/imageButton_ThemKeHoachTietKiem"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
