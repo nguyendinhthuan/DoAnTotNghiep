@@ -187,11 +187,11 @@ public class QuanLyTaiKhoanFragment extends Fragment {
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
 
-                maso = (EditText) d.findViewById(R.id.txtNhapmasoquen);
-                matkhau1 = (EditText) d.findViewById(R.id.txtNhapmatkhauquen);
-                matkhau2 = (EditText) d.findViewById(R.id.txtNhapmatkhau2quen);
-                thaydoi = (Button) d.findViewById(R.id.btnThaydoiquen);
-                huy = (Button) d.findViewById((R.id.btnHuyQuenMatKhau));
+                maso =  d.findViewById(R.id.txtNhapmasoquen);
+                matkhau1 =  d.findViewById(R.id.txtNhapmatkhauquen);
+                matkhau2 =  d.findViewById(R.id.txtNhapmatkhau2quen);
+                thaydoi =  d.findViewById(R.id.btnThaydoiquen);
+                huy =  d.findViewById((R.id.btnHuyQuenMatKhau));
                 thaydoi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -308,7 +308,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
 
     public void LayTongSoDu(){
         int tongsodu = 0;
-        Cursor c = data.rawQuery("select sotienvi from tblvi",null);
+        Cursor c = data.rawQuery("select sotienvi from tblvi where tentaikhoan = '"+ taikhoan +"'",null);
         c.moveToFirst();
         while (c.isAfterLast()==false){
             tongsodu = tongsodu + c.getInt(c.getColumnIndex("sotienvi"));
