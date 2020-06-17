@@ -57,7 +57,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     private TextView textView_DanhSachChuyenTienTrong;
     private RadioButton radioButton_TatCaLichSuChuyenTien, radioButton_LocLichSuChuyenTienTheoNgay, radioButton_LocLichSuChuyenTienTheoVi;
     private TextView textView_ChonNgayLocChuyenTien;
-    private RadioGroup radioGroup;
+    private RadioGroup radioGroup_LichSuChuyenTien;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +86,8 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         radioButton_TatCaLichSuChuyenTien = (RadioButton) findViewById(R.id.radioButton_TatCaLichSuChuyenTien);
         radioButton_LocLichSuChuyenTienTheoVi = (RadioButton) findViewById(R.id.radioButton_LocLichSuChuyenTienTheoVi);
         radioButton_LocLichSuChuyenTienTheoNgay = (RadioButton) findViewById(R.id.radioButton_LocLichSuChuyenTienTheoNgay);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup_LichSuChuyenTien = (RadioGroup) findViewById(R.id.radioGroup_LichSuChuyenTien);
+        radioGroup_LichSuChuyenTien.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 LocLichSuChuyenTienTheoRadioButton(group, checkedId);

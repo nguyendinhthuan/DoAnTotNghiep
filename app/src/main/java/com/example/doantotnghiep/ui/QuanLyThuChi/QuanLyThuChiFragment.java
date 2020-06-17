@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,8 @@ import com.example.doantotnghiep.model.ArrayThongKe;
 import com.example.doantotnghiep.model.ArrayThuChi;
 import com.example.doantotnghiep.model.ArrayVi;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,9 +58,9 @@ public class QuanLyThuChiFragment extends Fragment {
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
     private Button button_ThoatThuChiDialog, button_LuuThuChiDialog, button_NgayThuChiDialog,
-            button_GioThuChiDialog, button_ThoiGianHienTaiDialog, button_ChonNgayLocThuChi, button_ChonTatCaThuChi;
+            button_GioThuChiDialog, button_ThoiGianHienTaiDialog;
     private String taikhoan;
-    private Spinner spinner_LocThuChi,spinner_LoaiThuChiDialog,spinner_ViDialog,spinner_DanhMucDialog;
+    private Spinner spinner_LoaiThuChiDialog, spinner_ViDialog, spinner_DanhMucDialog;
     private String ngaythang;
     private Calendar today, calendar;
     private int thang, nam;
@@ -72,7 +75,8 @@ public class QuanLyThuChiFragment extends Fragment {
     private ArrayList<String> arrSpinner;
     private ArrayAdapter<String> adapterSpinner;
     private boolean danhsachthuchi = false;
-    private TextView textView_DanhSachThuChiTrong;
+    private TextView textView_DanhSachThuChiTrong, textView_ChonNgayLocThuChi;
+    private RadioGroup radioGroup_ThuChi;
 
     //DialogThem
     private EditText editText_SoTienThuChiDialog,editText_MoTaThuChiDialog;
@@ -111,16 +115,23 @@ public class QuanLyThuChiFragment extends Fragment {
         setListview();
         LoadTatCaThuChi();
         XoaThuChi();
-        ChonNgayLocThuChi();
         XuLyKhiDanhSachThuChiTrong(danhsachthuchi);
+        ChonNgayLocThuChi();
     }
 
     public void AnhXa() {
         imageButton_ThemThuChi = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemThuChi);
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
-        button_ChonNgayLocThuChi = (Button) myFragment.findViewById(R.id.button_ChonNgayLocThuChi);
-        button_ChonTatCaThuChi = (Button) myFragment.findViewById(R.id.button_ChonTatCaThuChi);
+        textView_ChonNgayLocThuChi = (TextView) myFragment.findViewById(R.id.textView_ChonNgayLocThuChi);
         textView_DanhSachThuChiTrong = (TextView) myFragment.findViewById(R.id.textView_DanhSachThuChiTrong);
+        radioGroup_ThuChi = (RadioGroup) myFragment.findViewById(R.id.radioGroup_ThuChi);
+        radioGroup_ThuChi.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                LocThuChiTheoRadioButton(group, checkedId);
+            }
+        });
+        textView_ChonNgayLocThuChi.setVisibility(View.INVISIBLE);
     }
 
     public void ThemThuChi() {
@@ -150,13 +161,10 @@ public class QuanLyThuChiFragment extends Fragment {
 
                 calendar = Calendar.getInstance();
 
-
                 //Xu ly
                 HienThiThoiGian();
                 LoadSpinnerDialog();
                 LoadDanhSachViLenSpinnerDialog();
-
-
 
                 //KiemTraChiTieuMax();
                 editText_SoTienThuChiDialog.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -174,7 +182,6 @@ public class QuanLyThuChiFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         vitri = position ;
                         LayViUuTienTheoDanhMuc();
-
                     }
 
                     @Override
@@ -182,7 +189,6 @@ public class QuanLyThuChiFragment extends Fragment {
 
                     }
                 });
-
 
                 button_ThoatThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -324,27 +330,7 @@ public class QuanLyThuChiFragment extends Fragment {
         });
     }
 
-    public void ChonNgayLocThuChi() {
-        button_ChonTatCaThuChi.setEnabled(false);
-        button_ChonNgayLocThuChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoadNgayLocThuChi();
-                button_ChonTatCaThuChi.setEnabled(true);
-            }
-        });
-
-        button_ChonTatCaThuChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoadTatCaThuChi();
-                button_ChonNgayLocThuChi.setText("Chọn ngày");
-                button_ChonTatCaThuChi.setEnabled(false);
-            }
-        });
-    }
-
-    public void LoadNgayLocThuChi() {
+    public void LoadLichDeChonNgayLocThuChi() {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
@@ -363,7 +349,7 @@ public class QuanLyThuChiFragment extends Fragment {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                button_ChonNgayLocThuChi.setText(simpleDateFormatDialog.format(date));
+                textView_ChonNgayLocThuChi.setText(simpleDateFormatDialog.format(date));
                 dialog.cancel();
                 LoadThuChiTheoNgay();
             }
@@ -402,8 +388,7 @@ public class QuanLyThuChiFragment extends Fragment {
             thongbao = "Lưu thành công";
             Toast.makeText(activity, thongbao, Toast.LENGTH_SHORT).show();
             LoadTatCaThuChi();
-            button_ChonNgayLocThuChi.setText("Chọn ngày");
-            button_ChonTatCaThuChi.setEnabled(false);
+            textView_ChonNgayLocThuChi.setText("Chọn ngày");
             TinhSoDu();
         return true;
     }
@@ -579,5 +564,27 @@ public class QuanLyThuChiFragment extends Fragment {
                 textView_DanhSachThuChiTrong.setVisibility(View.GONE);
             }
         }
+    }
+
+    public void LocThuChiTheoRadioButton(RadioGroup radioGroup, int checkedID) {
+        int checkedid = radioGroup.getCheckedRadioButtonId();
+
+        textView_ChonNgayLocThuChi.setVisibility(View.INVISIBLE);
+        if (checkedid == R.id.radioButton_TatCaThuChi) {
+            LoadTatCaThuChi();
+            textView_ChonNgayLocThuChi.setVisibility(View.INVISIBLE);
+        } else if (checkedid == R.id.radioButton_LocThuChiTheoNgay) {
+            LoadLichDeChonNgayLocThuChi();
+            textView_ChonNgayLocThuChi.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void ChonNgayLocThuChi() {
+        textView_ChonNgayLocThuChi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoadLichDeChonNgayLocThuChi();
+            }
+        });
     }
 }
