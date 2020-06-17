@@ -311,9 +311,13 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
 
 
-    //Xoa danh muc
+    //Xoa dnanh muc
     public void XoaDanhMuc(int vitrixoa) {
-        HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
+
+                HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
+
+
+
     }
 
     public void HamXoaDanhMuc(final String tendanhmuc) {
@@ -371,11 +375,11 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         String thongbao = "";
+                        int madanhmuc = 1;
                         boolean tendanhmuc = true;
-
-                        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi", null);
+                        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi", null);
                         cursor.moveToFirst();
-                        while (cursor.isAfterLast() == false) {
+                        while (cursor.isAfterLast()==false) {
                             if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(editText_TenDanhMucThuChi.getText().toString())) {
                                 tendanhmuc = false;
                             }
@@ -387,28 +391,24 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                         } else if (editText_TenDanhMucThuChi.getText().toString().equals("")) {
                             thongbao = "Bạn chưa nhập tên danh mục";
                             editText_TenDanhMucThuChi.startAnimation(animation);
-                        } else {
-                            int madanhmuc = 1;
-                            Cursor cursor1 = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
-                            if (cursor1.moveToLast() == true) {
-                                madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
-                            }
+                        } else if (cursor.moveToLast() == true) {
+                            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
+                        }
 
-                            //Da sua luu ma vi sang int
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put("madanhmuc", madanhmuc);
-                            contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
-                            contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
-                            contentValues.put("mavi", arrMaViDialog.get(spinner_ViUuTienChoDanhMuc.getSelectedItemPosition()));
-                            contentValues.put("tentaikhoan", taikhoan);
+                        //Da sua luu ma vi sang int
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("madanhmuc", madanhmuc);
+                        contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
+                        contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
+                        contentValues.put("mavi",  arrMaViDialog.get(spinner_ViUuTienChoDanhMuc.getSelectedItemPosition()));
+                        contentValues.put("tenviuutien",spinner_ViUuTienChoDanhMuc.getSelectedItem().toString()); // moi them
+                        contentValues.put("tentaikhoan", taikhoan);
 
-                            if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
-                                thongbao = "Thêm danh mục thành công";
-                                d.dismiss();
-                                //load list view o day
-                                LoadTatCaDanhMucThuChi();
-                            }
-                            Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
+                        if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
+                            thongbao = "Thêm danh mục thành công";
+                            d.dismiss();
+                            //load list view o day
+                            LoadTatCaDanhMucThuChi();
                         }
                         Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                     }

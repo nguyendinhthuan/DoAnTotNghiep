@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private Animation animation;
     private CheckBox checkBox_GhiNho;
     Database database;
+    private String tendangnhap;
+    Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             //data.execSQL("insert into tblvi(mavi, tenvi, motavi, sotienvi, tentaikhoan) values (1, 'Tiet kiem', 'Vi tiet kiem', 0, 'thuan')");
 
             //Table Danh muc thu chi
-            data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, " +
+            data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, tenviuutien text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan), " +
                     "mavi int constraint mavi references tblvi(mavi) on delete cascade)");
 
@@ -130,12 +132,22 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("taikhoan", c.getString(c.getColumnIndex("tentaikhoan")));
                     startActivityForResult(intent, 2);
 
+
                     //Chuyen ten tai khoan di cac class
-                    String tendangnhap = c.getString(c.getColumnIndex("tentaikhoan"));
+                    tendangnhap = c.getString(c.getColumnIndex("tentaikhoan"));
                     SharedPreferences sharedPreferences = getSharedPreferences("tendangnhap",MODE_PRIVATE);
                     SharedPreferences.Editor editor= sharedPreferences.edit();
                     editor.putString("taikhoancanchuyen",tendangnhap);
                     editor.commit();
+                    //Tao san cac vi va danh muc
+
+                    if(KiemtratrungVi()){
+                        TaoSanVi();
+                    }
+                    if(KiemtratrungDanhmuc()){
+                        TaoSanDanhMuc();
+                    }
+
 
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {
@@ -158,6 +170,230 @@ public class MainActivity extends AppCompatActivity {
             editText_MatKhauDangNhap.startAnimation(animation);
         }
     }
+    public boolean KiemtratrungVi(){
+        cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'",null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast()==false){
+            if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")){
+               return false;
+            }
+            cursor.moveToNext();
+        }
+        return true;
+    }
+
+    public boolean KiemtratrungDanhmuc(){
+        cursor = data.rawQuery("select* from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap+ "'",null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false){
+            if(cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền lương")){
+                return false;
+            }
+            cursor.moveToNext();
+        }
+        return true;
+    }
+
+    // Tao san vi
+    public void TaoSanVi(){
+        //Vi Ca Nhan
+        int mavi1 = 1;
+        cursor = data.rawQuery("select mavi from tblvi", null);
+        if (cursor.moveToLast() == true) {
+            mavi1 = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
+        }
+        ContentValues valuesVi1 = new ContentValues();
+        valuesVi1.put("mavi", mavi1);
+        valuesVi1.put("tenvi","Cá nhân");
+        valuesVi1.put("motavi", "Ví dành cho việc thu chi cá nhân");
+        valuesVi1.put("sotienvi", 0);
+        valuesVi1.put("tentaikhoan", tendangnhap);
+        data.insert("tblvi", null, valuesVi1);
+
+        //Vi Gia Dinh
+        int mavi2 = 1;
+        cursor = data.rawQuery("select mavi from tblvi", null);
+        if (cursor.moveToLast() == true) {
+            mavi2 = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
+        }
+        ContentValues valuesVi2 = new ContentValues();
+        valuesVi2.put("mavi", mavi2);
+        valuesVi2.put("tenvi","Gia đình");
+        valuesVi2.put("motavi", "Ví dành cho việc thu chi gia đình");
+        valuesVi2.put("sotienvi", 0);
+        valuesVi2.put("tentaikhoan", tendangnhap);
+        data.insert("tblvi", null, valuesVi2);
+
+        //Vi Tiet Kiem
+        int mavi3 = 1;
+        cursor = data.rawQuery("select mavi from tblvi", null);
+        if (cursor.moveToLast() == true) {
+            mavi3 = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
+        }
+        ContentValues valuesVi3 = new ContentValues();
+        valuesVi3.put("mavi", mavi3);
+        valuesVi3.put("tenvi","Tiết kiệm");
+        valuesVi3.put("motavi", "Ví dành cho kế hoạch tiết kiệm");
+        valuesVi3.put("sotienvi", 0);
+        valuesVi3.put("tentaikhoan", tendangnhap);
+        data.insert("tblvi", null, valuesVi3);
+        cursor.close();
+    }
+
+    //Tao san cac danh muc
+    public void TaoSanDanhMuc(){
+        String khoanthu = "Khoản thu",khoanchi = "Khoản chi";
+        String danhmucthuchovicanhan[] = {"Tiền lương","Khoản thu khác"};
+        String danhmucchichovicanhan[] = {"Ăn uống","Học tập","Chi phí đi lại","Khoản chi khác"};
+        String danhmucthuchovigiadinh[] = {"Được cho"}; // lam de sau nay co them thu cho vi gia dinh
+        String danhmucchichovigiadinh[] = {"Tiền nhà trọ","Tiền điện nước","Dụng cụ sinh hoạt cá nhân"};
+        String danhmucthuchovitietkiem[] = {"Tiền thưởng","Làm thêm"}; // lam de sau nay co them thu cho vi tiet kiem
+        String danhmucchichovitietkiem[] = {"Quần áo","Giải trí","Du lịch"};
+
+        if(khoanthu.equals("Khoản thu")){
+            for (int i = 0; i<= 1; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+                TaoSanDanhMucThuChiChoViCaNhan(khoanthu,danhmucthuchovicanhan[i]);
+            }
+            for (int i = 0; i<= 0;i++ ){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+                TaoSanDanhMucThuChiChoViGiaDinh(khoanthu,danhmucthuchovigiadinh[i]);
+            }
+            for (int i = 0; i<= 1; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+                TaoSanDanhMucThuChiChoViTietKiem(khoanthu,danhmucthuchovitietkiem[i]);
+            }
+        }
+        if(khoanchi.equals("Khoản chi")){
+            for (int i = 0 ; i <= 3; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+                TaoSanDanhMucThuChiChoViCaNhan(khoanchi,danhmucchichovicanhan[i]);
+            }
+            for(int i = 0; i<= 2; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+                TaoSanDanhMucThuChiChoViGiaDinh(khoanchi,danhmucchichovigiadinh[i]);
+            }
+            for (int i = 0; i<=2;i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+                TaoSanDanhMucThuChiChoViTietKiem(khoanchi,danhmucchichovitietkiem[i]);
+            }
+        }
+    }
+
+    //Tao danh muc cho vi ca nhan
+    public void TaoSanDanhMucThuChiChoViCaNhan(String loaikhoan,String tendanhmuc){
+        int madanhmuc = 1;
+        cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
+        if (cursor.moveToLast() == true) {
+            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
+        }
+        int mavi = 1;
+        cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false){
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")){
+                mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
+            }
+            cursor.moveToNext();
+        }
+
+        if(loaikhoan.equals("Khoản thu")){
+            ContentValues contentValuesthu1 = new ContentValues();
+            contentValuesthu1.put("madanhmuc", madanhmuc);
+            contentValuesthu1.put("tendanhmuc", tendanhmuc);
+            contentValuesthu1.put("loaikhoan", "Khoản thu");
+            contentValuesthu1.put("mavi", mavi);
+            contentValuesthu1.put("tenviuutien","Cá nhân");
+            contentValuesthu1.put("tentaikhoan", tendangnhap);
+
+            data.insert("tbldanhmucthuchi", null, contentValuesthu1);
+        }else {
+            ContentValues contentValuesthu1 = new ContentValues();
+            contentValuesthu1.put("madanhmuc", madanhmuc);
+            contentValuesthu1.put("tendanhmuc", tendanhmuc);
+            contentValuesthu1.put("loaikhoan", "Khoản chi");
+            contentValuesthu1.put("mavi", mavi);
+            contentValuesthu1.put("tenviuutien","Cá nhân");
+            contentValuesthu1.put("tentaikhoan", tendangnhap);
+
+            data.insert("tbldanhmucthuchi", null, contentValuesthu1);
+        }
+    }
+
+    //Tao danh muc cho vi gia dinh
+    public void TaoSanDanhMucThuChiChoViGiaDinh(String loaikhoan,String tendanhmuc){
+        int madanhmuc = 1;
+        cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
+        if (cursor.moveToLast() == true) {
+            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
+        }
+        int mavi = 1;
+        cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false){
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Gia đình")){
+                mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
+            }
+            cursor.moveToNext();
+        }
+
+        if(loaikhoan.equals("Khoản thu")){
+            ContentValues contentValuesthu1 = new ContentValues();
+            contentValuesthu1.put("madanhmuc", madanhmuc);
+            contentValuesthu1.put("tendanhmuc", tendanhmuc);
+            contentValuesthu1.put("loaikhoan", "Khoản thu");
+            contentValuesthu1.put("mavi", mavi);
+            contentValuesthu1.put("tenviuutien","Gia đình");
+            contentValuesthu1.put("tentaikhoan", tendangnhap);
+
+            data.insert("tbldanhmucthuchi", null, contentValuesthu1);
+        }else {
+            ContentValues contentValuesthu1 = new ContentValues();
+            contentValuesthu1.put("madanhmuc", madanhmuc);
+            contentValuesthu1.put("tendanhmuc", tendanhmuc);
+            contentValuesthu1.put("loaikhoan", "Khoản chi");
+            contentValuesthu1.put("mavi", mavi);
+            contentValuesthu1.put("tenviuutien","Gia đình");
+            contentValuesthu1.put("tentaikhoan", tendangnhap);
+
+            data.insert("tbldanhmucthuchi", null, contentValuesthu1);
+        }
+    }
+
+    //Tao danh muc cho vi tiet kiem
+    public void TaoSanDanhMucThuChiChoViTietKiem(String loaikhoan,String tendanhmuc){
+        int madanhmuc = 1;
+        cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
+        if (cursor.moveToLast() == true) {
+            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
+        }
+        int mavi = 1;
+        cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false){
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Tiết kiệm")){
+                mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
+            }
+            cursor.moveToNext();
+        }
+
+        if(loaikhoan.equals("Khoản thu")){
+            ContentValues contentValuesthu1 = new ContentValues();
+            contentValuesthu1.put("madanhmuc", madanhmuc);
+            contentValuesthu1.put("tendanhmuc", tendanhmuc);
+            contentValuesthu1.put("loaikhoan", "Khoản thu");
+            contentValuesthu1.put("mavi", mavi);
+            contentValuesthu1.put("tenviuutien","Tiết kiệm");
+            contentValuesthu1.put("tentaikhoan", tendangnhap);
+
+            data.insert("tbldanhmucthuchi", null, contentValuesthu1);
+        }else {
+            ContentValues contentValuesthu1 = new ContentValues();
+            contentValuesthu1.put("madanhmuc", madanhmuc);
+            contentValuesthu1.put("tendanhmuc", tendanhmuc);
+            contentValuesthu1.put("loaikhoan", "Khoản chi");
+            contentValuesthu1.put("mavi", mavi);
+            contentValuesthu1.put("tenviuutien","Tiết kiệm");
+            contentValuesthu1.put("tentaikhoan", tendangnhap);
+
+            data.insert("tbldanhmucthuchi", null, contentValuesthu1);
+        }
+    }
+
 
     public void QuenMatKhau(View v) {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_edittext);
