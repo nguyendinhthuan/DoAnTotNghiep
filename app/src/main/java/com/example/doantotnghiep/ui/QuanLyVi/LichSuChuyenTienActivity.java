@@ -9,16 +9,22 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterLichSuChuyenTien;
@@ -38,7 +44,6 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     private ArrayList<ArrayLichSuChuyenTien> arr;
     private AdapterLichSuChuyenTien adapterLichSuChuyenTien;
     private ImageButton imageButton_TroVeQuanLyVi;
-    private Button button_ChonNgayLocChuyenTien, button_ChonTatCaChuyentien;
     private Spinner spinner_LocLichSuChuyenTienTheoVi;
     private ListView listView_LichSuChuyenTien;
     private Date date;
@@ -48,6 +53,11 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     private ArrayList<String> arrTenVi;
     private ArrayAdapter adapterVi;
     private List<ArrayVi> listVi = null;
+    private boolean danhsachchuyentien = false;
+    private TextView textView_DanhSachChuyenTienTrong;
+    private RadioButton radioButton_TatCaLichSuChuyenTien, radioButton_LocLichSuChuyenTienTheoNgay, radioButton_LocLichSuChuyenTienTheoVi;
+    private TextView textView_ChonNgayLocChuyenTien;
+    private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +74,28 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         ChonNgayLocLichSuChuyenTien();
         setListView();
         LoadTatCaLichSuChuyenTien();
-        LoadDanhSachViLenSpinnerLoc();
-        LoadTatCaVi();
-        //LoadLichSuChuyenTienTheoSpinnerLocVi();
+        XuLyKhiDanhSachChuyenTienTrong(danhsachchuyentien);
     }
 
     public void AnhXa() {
         imageButton_TroVeQuanLyVi = (ImageButton) findViewById(R.id.imageButton_TroVeQuanLyVi);
-        button_ChonNgayLocChuyenTien = (Button) findViewById(R.id.button_ChonNgayLocChuyenTien);
-        button_ChonTatCaChuyentien = (Button) findViewById(R.id.button_ChonTatCaChuyenTien);
+        textView_ChonNgayLocChuyenTien = (TextView) findViewById(R.id.textView_ChonNgayLocChuyenTien);
         listView_LichSuChuyenTien = (ListView) findViewById(R.id.listView_LichSuChuyenTien);
         spinner_LocLichSuChuyenTienTheoVi = (Spinner) findViewById(R.id.spinner_LocLichSuChuyenTienTheoVi);
+        textView_DanhSachChuyenTienTrong = (TextView) findViewById(R.id.textView_DanhSachChuyenTienTrong);
+        radioButton_TatCaLichSuChuyenTien = (RadioButton) findViewById(R.id.radioButton_TatCaLichSuChuyenTien);
+        radioButton_LocLichSuChuyenTienTheoVi = (RadioButton) findViewById(R.id.radioButton_LocLichSuChuyenTienTheoVi);
+        radioButton_LocLichSuChuyenTienTheoNgay = (RadioButton) findViewById(R.id.radioButton_LocLichSuChuyenTienTheoNgay);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                LocLichSuChuyenTienTheoRadioButton(group, checkedId);
+            }
+        });
+
+        textView_ChonNgayLocChuyenTien.setVisibility(View.INVISIBLE);
+        spinner_LocLichSuChuyenTienTheoVi.setVisibility(View.INVISIBLE);
     }
 
     public void TroVeQuanLyVi() {
@@ -87,26 +108,45 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void ChonNgayLocLichSuChuyenTien() {
-        button_ChonTatCaChuyentien.setEnabled(false);
-        button_ChonNgayLocChuyenTien.setOnClickListener(new View.OnClickListener() {
+        textView_ChonNgayLocChuyenTien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoadNgayLocChuyenTien();
-                button_ChonTatCaChuyentien.setEnabled(true);
-            }
-        });
-
-        button_ChonTatCaChuyentien.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoadTatCaLichSuChuyenTien();
-                button_ChonNgayLocChuyenTien.setText("Chọn ngày");
-                button_ChonTatCaChuyentien.setEnabled(false);
+                LoadLichDeChonNgayLocLichSuChuyenTien();
             }
         });
     }
 
-    public void LoadNgayLocChuyenTien() {
+    public void LocLichSuChuyenTienTheoRadioButton(RadioGroup radioGroup, int checkedID) {
+        int checkedid = radioGroup.getCheckedRadioButtonId();
+
+        textView_ChonNgayLocChuyenTien.setVisibility(View.INVISIBLE);
+        spinner_LocLichSuChuyenTienTheoVi.setVisibility(View.INVISIBLE);
+        if (checkedid == R.id.radioButton_TatCaLichSuChuyenTien) {
+            LoadTatCaLichSuChuyenTien();
+            textView_ChonNgayLocChuyenTien.setVisibility(View.INVISIBLE);
+            spinner_LocLichSuChuyenTienTheoVi.setVisibility(View.INVISIBLE);
+
+        } else if (checkedid == R.id.radioButton_LocLichSuChuyenTienTheoNgay) {
+            LoadLichDeChonNgayLocLichSuChuyenTien();
+            textView_ChonNgayLocChuyenTien.setVisibility(View.VISIBLE);
+            spinner_LocLichSuChuyenTienTheoVi.setVisibility(View.INVISIBLE);
+
+        } else if (checkedid == R.id.radioButton_LocLichSuChuyenTienTheoVi) {
+            textView_ChonNgayLocChuyenTien.setVisibility(View.INVISIBLE);
+            spinner_LocLichSuChuyenTienTheoVi.setVisibility(View.VISIBLE);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    LoadTatCaVi();
+                }
+            }, 100);
+
+            LoadDanhSachViLenSpinnerLocTheoVi();
+        }
+    }
+
+    public void LoadLichDeChonNgayLocLichSuChuyenTien() {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
@@ -125,7 +165,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                button_ChonNgayLocChuyenTien.setText(simpleDateFormatDialog.format(date));
+                textView_ChonNgayLocChuyenTien.setText(simpleDateFormatDialog.format(date));
                 dialog.cancel();
                 LoadLichSuChuyenTienTheoNgay();
             }
@@ -165,7 +205,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         adapterLichSuChuyenTien.notifyDataSetChanged();
     }
 
-    public void LoadDanhSachViLenSpinnerLoc() {
+    public void LoadDanhSachViLenSpinnerLocTheoVi() {
         arrMaVi = new ArrayList<Integer>();
         arrTenVi = new ArrayList<String>();
         adapterVi= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrTenVi);
@@ -174,7 +214,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         spinner_LocLichSuChuyenTienTheoVi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LoadLichSuChuyenTienTheoSpinnerLocVi();
+                LoadLichSuChuyenTienTheoSpinnerLocTheoVi();
             }
 
             @Override
@@ -198,7 +238,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         adapterVi.notifyDataSetChanged();
     }
 
-    public void LoadLichSuChuyenTienTheoSpinnerLocVi() {
+    public void LoadLichSuChuyenTienTheoSpinnerLocTheoVi() {
         arr.clear();
         Cursor cursor = data.rawQuery("select malichsuchuyentien, tenvichuyen, tenvinhan, sotienchuyen, ngaythuchien" +
                 " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' " +
@@ -210,5 +250,18 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
         }
         cursor.close();
         adapterLichSuChuyenTien.notifyDataSetChanged();
+    }
+
+    public void XuLyKhiDanhSachChuyenTienTrong(boolean danhsachchuyentien) {
+        this.danhsachchuyentien = danhsachchuyentien;
+        if (danhsachchuyentien) {
+            textView_DanhSachChuyenTienTrong.setVisibility(View.VISIBLE);
+        } else {
+            if (adapterLichSuChuyenTien.getCount() <= 0) {
+                textView_DanhSachChuyenTienTrong.setVisibility(View.VISIBLE);
+            } else {
+                textView_DanhSachChuyenTienTrong.setVisibility(View.GONE);
+            }
+        }
     }
 }

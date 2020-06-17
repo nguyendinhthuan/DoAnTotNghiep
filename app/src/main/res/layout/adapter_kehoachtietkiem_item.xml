@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/white_listview_item">
+
+    <TextView
+        android:id="@+id/txtTenKeHoachTietKiemTieuDe"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
+        android:text="Tên kế hoạch:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        android:layout_marginRight="5dp"/>
+
+    <TextView
+        android:id="@+id/txtTenKeHoachTietKiem"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/txtTenKeHoachTietKiemTieuDe"
+        android:layout_height="wrap_content"
+        android:text="Ten ke hoach tiet kiem"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/txtSoTienKeHoachTietKiem"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content"
+        android:text="So tien"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/txtNgayKetThucKeHoachTietKiem"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/txtNgayKetThucTieuDe"
+        android:layout_below="@id/txtTenKeHoachTietKiem"
+        android:layout_height="wrap_content"
+        android:text="Ngay ket thuc"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/txtNgayKetThucTieuDe"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/txtTenKeHoachTietKiem"
+        android:layout_height="wrap_content"
+        android:text="Ngày kết thúc:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        android:layout_marginRight="5dp"/>
+
+    <TextView
+        android:id="@+id/txtTrangThai"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/txtNgayKetThucKeHoachTietKiem"
+        android:layout_height="wrap_content"
+        android:text="Trạng thái:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"/>
+</RelativeLayout>

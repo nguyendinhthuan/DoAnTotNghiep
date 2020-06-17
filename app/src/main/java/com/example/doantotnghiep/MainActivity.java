@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
             data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi double, sodu real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
 
+            //data.execSQL("insert into tblvi(mavi, tenvi, motavi, sotienvi, tentaikhoan) values (1, 'Tiet kiem', 'Vi tiet kiem', 0, 'thuan')");
+
             //Table Danh muc thu chi
             data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan), " +

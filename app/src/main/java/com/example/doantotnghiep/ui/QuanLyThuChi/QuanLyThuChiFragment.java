@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -70,6 +71,8 @@ public class QuanLyThuChiFragment extends Fragment {
     private List<ArrayThuChi> list = null;
     private ArrayList<String> arrSpinner;
     private ArrayAdapter<String> adapterSpinner;
+    private boolean danhsachthuchi = false;
+    private TextView textView_DanhSachThuChiTrong;
 
     //DialogThem
     private EditText editText_SoTienThuChiDialog,editText_MoTaThuChiDialog;
@@ -83,6 +86,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private String gioDialog, tenVi, tenviuutien ;
     private Cursor cursor;
     private int sotientuvi,sotienthuchi,sotienchi,vitri, maviuutien;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -108,6 +112,7 @@ public class QuanLyThuChiFragment extends Fragment {
         LoadTatCaThuChi();
         XoaThuChi();
         ChonNgayLocThuChi();
+        XuLyKhiDanhSachThuChiTrong(danhsachthuchi);
     }
 
     public void AnhXa() {
@@ -115,6 +120,7 @@ public class QuanLyThuChiFragment extends Fragment {
         listView_LichSuThuChi = (ListView) myFragment.findViewById(R.id.listView_LichSuThuChi);
         button_ChonNgayLocThuChi = (Button) myFragment.findViewById(R.id.button_ChonNgayLocThuChi);
         button_ChonTatCaThuChi = (Button) myFragment.findViewById(R.id.button_ChonTatCaThuChi);
+        textView_DanhSachThuChiTrong = (TextView) myFragment.findViewById(R.id.textView_DanhSachThuChiTrong);
     }
 
     public void ThemThuChi() {
@@ -560,5 +566,18 @@ public class QuanLyThuChiFragment extends Fragment {
             }
         });
         builder.show();
+    }
+
+    public void XuLyKhiDanhSachThuChiTrong(boolean danhsachthuchi) {
+        this.danhsachthuchi = danhsachthuchi;
+        if (danhsachthuchi) {
+            textView_DanhSachThuChiTrong.setVisibility(View.VISIBLE);
+        } else {
+            if (adapterThuChi.getCount() <= 0) {
+                textView_DanhSachThuChiTrong.setVisibility(View.VISIBLE);
+            } else {
+                textView_DanhSachThuChiTrong.setVisibility(View.GONE);
+            }
+        }
     }
 }

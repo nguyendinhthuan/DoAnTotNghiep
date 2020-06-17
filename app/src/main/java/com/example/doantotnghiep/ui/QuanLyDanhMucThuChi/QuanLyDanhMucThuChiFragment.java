@@ -311,13 +311,9 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
 
 
-    //Xoa dnanh muc
+    //Xoa danh muc
     public void XoaDanhMuc(int vitrixoa) {
-
-                HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
-
-
-
+        HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
     }
 
     public void HamXoaDanhMuc(final String tendanhmuc) {
