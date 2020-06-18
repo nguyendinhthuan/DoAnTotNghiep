@@ -306,8 +306,7 @@ public class QuanLyViFragment extends Fragment {
         adapterViChuyenDialog.notifyDataSetChanged();
     }
 
-    public void LayTenTaiKhoan()
-    {
+    public void LayTenTaiKhoan() {
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
         taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
     }
@@ -441,48 +440,49 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void SuaVi() {
-                final String tenviht = list.get(vitri).tenvi; // lay ten vi de cap nhat
-                final Dialog d = new Dialog(getContext());
-                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.dialog_capnhatvi);
-                d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-                d.show();
-                //AnhXa
-                editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
-                editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
-                editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
-                editText_NhapSoTienViCapNhat.setEnabled(false);
-                button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
-                button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
-                //LayThongTinViLenDialog
-                Cursor cursor = data.rawQuery("select * from tblvi where tenvi like '"+ tenviht +"'" , null);
-                cursor.moveToFirst();
-                String tenvi1 = cursor.getString(1);
-                String motavi1 = cursor.getString(2);
-                String sotienvi1 = String.valueOf(cursor.getDouble(3));
+        final String tenviht = list.get(vitri).tenvi; // lay ten vi de cap nhat
+        final Dialog d = new Dialog(getContext());
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.dialog_capnhatvi);
+        d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        d.show();
 
-                editText_NhapTenViCapNhat.setText(tenvi1);
-                editText_NhapMoTaViCapNhat.setText(motavi1);
-                editText_NhapSoTienViCapNhat.setText(sotienvi1);
+        //AnhXa
+        editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
+        editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
+        editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
+        editText_NhapSoTienViCapNhat.setEnabled(false);
+        button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
+        button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
 
-                //XuLy
-                button_LuuCapNhatVi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(CapNhatVi())
-                        {
-                            d.dismiss();
-                            LoadTatCaVi();
-                        }
-                    }
-                });
-                button_HuyCapNhatVi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        d.dismiss();
-                    }
-                });
+        //LayThongTinViLenDialog
+        Cursor cursor = data.rawQuery("select * from tblvi where tenvi like '"+ tenviht +"'" , null);
+        cursor.moveToFirst();
+        String tenvi1 = cursor.getString(1);
+        String motavi1 = cursor.getString(2);
+        String sotienvi1 = String.valueOf(cursor.getDouble(3));
+
+        editText_NhapTenViCapNhat.setText(tenvi1);
+        editText_NhapMoTaViCapNhat.setText(motavi1);
+        editText_NhapSoTienViCapNhat.setText(sotienvi1);
+
+        //XuLy
+        button_LuuCapNhatVi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(CapNhatVi()) {
+                    d.dismiss();
+                    LoadTatCaVi();
+                }
             }
+        });
+        button_HuyCapNhatVi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
 
 
     public boolean CapNhatVi() {

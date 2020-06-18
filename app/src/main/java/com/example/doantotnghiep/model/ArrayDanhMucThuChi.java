@@ -4,11 +4,13 @@ public class ArrayDanhMucThuChi {
     public int madanhmuc;
     public String tendanhmuc;
     public String loaikhoan;
+    public String tenviuutien;
 
-    public ArrayDanhMucThuChi(int madanhmuc, String tendanhmuc, String loaikhoan) {
+    public ArrayDanhMucThuChi(int madanhmuc, String tendanhmuc, String loaikhoan, String tenviuutien) {
         this.madanhmuc = madanhmuc;
         this.tendanhmuc = tendanhmuc;
         this.loaikhoan = loaikhoan;
+        this.tenviuutien = tenviuutien;
     }
 
     public ArrayDanhMucThuChi() {
@@ -37,5 +39,13 @@ public class ArrayDanhMucThuChi {
 
     public void setLoaikhoan(String loaikhoan) {
         this.loaikhoan = loaikhoan;
+    }
+
+    public String getTenviuutien() {
+        return tenviuutien;
+    }
+
+    public void setTenviuutien(String tenviuutien) {
+        this.tenviuutien = tenviuutien;
     }
 }

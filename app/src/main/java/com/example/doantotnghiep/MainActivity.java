@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Ke hoach tiet kiem
             data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
-                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, " +
+                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, sotiendatietkiem real, trangthai text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Lich su chuyen tien
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean KiemtratrungDanhmuc(){
-        cursor = data.rawQuery("select* from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap+ "'",null);
+        cursor = data.rawQuery("select * from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap + "'",null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false){
             if(cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền lương")){

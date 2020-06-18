@@ -61,5 +61,16 @@
         android:layout_height="wrap_content"
         android:text="Trạng thái:"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000000"
+        android:layout_marginRight="5dp"/>
+
+    <TextView
+        android:id="@+id/txtTrangThaiKeHoachTietKiem"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/txtTrangThai"
+        android:layout_below="@id/txtNgayKetThucTieuDe"
+        android:layout_height="wrap_content"
+        android:text="Trang thai"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"/>
 </RelativeLayout>

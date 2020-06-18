@@ -164,7 +164,15 @@ public class QuanLyThuChiFragment extends Fragment {
                 //Xu ly
                 HienThiThoiGian();
                 LoadSpinnerDialog();
-                LoadDanhSachViLenSpinnerDialog();
+
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadDanhSachViLenSpinnerDialog();
+                    }
+                }, 3000 );
+
 
                 //KiemTraChiTieuMax();
                 editText_SoTienThuChiDialog.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -261,7 +269,13 @@ public class QuanLyThuChiFragment extends Fragment {
         spinner_LoaiThuChiDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                LoadDanhSachDanhMucLenSpinnerDialog();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadDanhSachDanhMucLenSpinnerDialog();
+                    }
+                }, 1000 );
+
             }
 
             @Override
@@ -281,7 +295,7 @@ public class QuanLyThuChiFragment extends Fragment {
     public void LoadDanhSachDanhMucLenSpinnerDialog() {
         arrMaDanhMucDialog.clear();
         arrTenDanhMucDialog.clear();
-        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi where loaikhoan = '" + spinner_LoaiThuChiDialog.getSelectedItem().toString() + "'", null);
+        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where tentaikhoan = '" + taikhoan + "' and loaikhoan = '" + spinner_LoaiThuChiDialog.getSelectedItem().toString() + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             arrMaDanhMucDialog.add(cursor.getInt(cursor.getColumnIndex("madanhmuc")));

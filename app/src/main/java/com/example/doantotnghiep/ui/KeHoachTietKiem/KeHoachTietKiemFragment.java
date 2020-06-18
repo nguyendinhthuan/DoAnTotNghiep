@@ -19,7 +19,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -46,9 +48,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class KeHoachTietKiemFragment extends Fragment {
-
+    private int vitri = 0;
     private View myFragment;
     private SQLiteDatabase data;
     private SharedPreferences sharedPreferences;
@@ -64,6 +67,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Date date;
     private SimpleDateFormat simpleDateFormat;
     private ArrayList<ArrayKeHoachTietKiem> arr;
+    private List<ArrayKeHoachTietKiem> list = null;
     private AdapterKeHoachTietKiem adapterKeHoachTietKiem;
     private boolean danhsachkehoachtietkiem = false;
     private TextView textView_DanhSachKeHoachTietKiemTrong;
@@ -94,8 +98,43 @@ public class KeHoachTietKiemFragment extends Fragment {
         ThemKeHoachTietKiem();
         setListview();
         LoadTatCaKeHoachTietKiem();
-        XoaKeHoachTietKiem();
+        //XoaKeHoachTietKiem();
         XuLyKhiDanhSachKeHoachTietKiemTrong(danhsachkehoachtietkiem);
+
+        listView_KeHoachTietKiem.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                vitri = position;
+                return false;
+            }
+        });
+        registerForContextMenu(listView_KeHoachTietKiem);
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        activity.getMenuInflater().inflate(R.menu.menu_kehoachtietkiem, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_ThuChoKeHoachTietKiem: {
+                ThuVaoChoKeHoachTietKiem();
+                return true;
+            }
+            case R.id.option_ChiChoKeHoachTietKiem: {
+                ChiRaChoKeHoachTietKiem();
+                return true;
+            }
+            case R.id.option_XoaKeHoachTietKiem: {
+                XoaKeHoachTietKiem(vitri);
+                return true;
+            }
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void AnhXa() {
@@ -174,6 +213,8 @@ public class KeHoachTietKiemFragment extends Fragment {
                             contentValues.put("ngaybatdaukehoachtietkiem", button_NgayBatDauKeHoachTietKiem.getText().toString());
                             contentValues.put("ngayketthuckehoachtietkiem", button_NgayKetThucKeHoachTietKiem.getText().toString());
                             contentValues.put("sotienkehoachtietkiem", editText_SoTienKeHoachTietKiem.getText().toString());
+                            contentValues.put("sotiendatietkiem", 0);
+                            contentValues.put("trangthai", "NO");
                             contentValues.put("tentaikhoan", taikhoan);
 
                             if (data.insert("tblkehoachtietkiem", null, contentValues) != -1) {
@@ -241,21 +282,15 @@ public class KeHoachTietKiemFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem"))));
+            arr.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
             cursor.moveToNext();
         }
         cursor.close();
         adapterKeHoachTietKiem.notifyDataSetChanged();
     }
 
-    public void XoaKeHoachTietKiem() {
-        listView_KeHoachTietKiem.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                HamXoaKeHoachTietKiem(position);
-                return false;
-            }
-        });
+    public void XoaKeHoachTietKiem(int vitri1) {
+        HamXoaKeHoachTietKiem(arr.get(vitri1).makehoachtietkiem);
     }
 
     public void HamXoaKeHoachTietKiem(final int makehoachtietkiem) {
@@ -265,7 +300,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                data.rawQuery("delete from tblkehoachtietkiem where makehoachtietkiem = '" + arr.get(makehoachtietkiem).makehoachtietkiem + "'", null).moveToFirst();
+                data.rawQuery("delete from tblkehoachtietkiem where makehoachtietkiem = '" + makehoachtietkiem + "'", null).moveToFirst();
                 Toast.makeText(activity, "Xóa thành công", Toast.LENGTH_SHORT).show();
 
                 //Delay ham xuat du lieu de tranh bi crash app
@@ -301,8 +336,11 @@ public class KeHoachTietKiemFragment extends Fragment {
         }
     }
 
-    public boolean KiemTraCoKeHoachTietKiemHayChua() {
-        return danhsachkehoachtietkiem;
+    public void ThuVaoChoKeHoachTietKiem() {
+
     }
 
+    public void ChiRaChoKeHoachTietKiem() {
+
+    }
 }

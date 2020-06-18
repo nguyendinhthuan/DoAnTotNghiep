@@ -20,7 +20,7 @@ public class AdapterKeHoachTietKiem extends ArrayAdapter<ArrayKeHoachTietKiem> {
     private Activity a;
     private int id;
     private ArrayList<ArrayKeHoachTietKiem> arr;
-    private TextView tenkehoachtietkiem, ngaybatdaukehoachtietkiem, ngayketthuckehoachtietkiem, sotienkehoachtietkiem;
+    private TextView tenkehoachtietkiem, ngaybatdaukehoachtietkiem, ngayketthuckehoachtietkiem, sotienkehoachtietkiem, trangthai;
 
     public AdapterKeHoachTietKiem(Activity context, int resource, ArrayList<ArrayKeHoachTietKiem> objects) {
         super(context, resource, objects);
@@ -37,10 +37,12 @@ public class AdapterKeHoachTietKiem extends ArrayAdapter<ArrayKeHoachTietKiem> {
             tenkehoachtietkiem = (TextView) view.findViewById(R.id.txtTenKeHoachTietKiem);
             ngayketthuckehoachtietkiem = (TextView) view.findViewById(R.id.txtNgayKetThucKeHoachTietKiem);
             sotienkehoachtietkiem = (TextView) view.findViewById(R.id.txtSoTienKeHoachTietKiem);
+            trangthai = (TextView) view.findViewById(R.id.txtTrangThaiKeHoachTietKiem);
 
             tenkehoachtietkiem.setText(arr.get(position).tenkehoachtietkiem);
             ngayketthuckehoachtietkiem.setText(arr.get(position).ngayketthuckehoachtietkiem);
             sotienkehoachtietkiem.setText(DoiSoSangTien(arr.get(position).sotienkehoachtietkiem));
+            trangthai.setText(arr.get(position).trangthai);
         }
         return view;
     }

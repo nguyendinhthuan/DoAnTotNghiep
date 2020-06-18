@@ -166,7 +166,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     public void LoadTatCaDanhMucThuChi() {
         String dieukien = "= '" + spinner_LoaiKhoan.getSelectedItem().toString() + "'";
-        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi" +
+        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan, tenviuutien from tbldanhmucthuchi" +
                 " where loaikhoan" + dieukien + " and tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayDanhMucThuChi>();
@@ -175,13 +175,14 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             a.setMadanhmuc(cursor.getInt(0));
             a.setTendanhmuc(cursor.getString(1));
             a.setLoaikhoan(cursor.getString(2));
+            a.setTenviuutien(cursor.getString(3));
             list.add(a);
 
             cursor.moveToNext();
         }
         cursor.close();
 
-        adapterDanhMucThuChi = new AdapterDanhMucThuChi(getContext(), R.layout.adapter_quanlydanhmucthuchi_item, list);
+        adapterDanhMucThuChi = new AdapterDanhMucThuChi(getActivity(), R.layout.adapter_quanlydanhmucthuchi_item, list);
         listView_DanhMucThuChi.setAdapter(adapterDanhMucThuChi);
     }
 
@@ -220,7 +221,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         LoadSpinnerDialogSua();
         LoadDanhSachViLenSpinnerDialogSua();
         //Lay thong tin dua len dialog
-        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where madanhmuc = "+ madanhmucht , null);
+        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where madanhmuc = " + madanhmucht , null);
         cursor.moveToFirst();
         String tendanhmucsua = cursor.getString(cursor.getColumnIndex("tendanhmuc"));
         String loaidanhmuc = cursor.getString(cursor.getColumnIndex("loaikhoan"));
@@ -377,7 +378,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                         String thongbao = "";
                         int madanhmuc = 1;
                         boolean tendanhmuc = true;
-                        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi", null);
+                        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi where tentaikhoan = '" + taikhoan + "' ", null);
                         cursor.moveToFirst();
                         while (cursor.isAfterLast()==false) {
                             if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(editText_TenDanhMucThuChi.getText().toString())) {
