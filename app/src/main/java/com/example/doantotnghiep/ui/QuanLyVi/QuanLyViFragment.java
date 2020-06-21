@@ -126,7 +126,13 @@ public class QuanLyViFragment extends Fragment {
                 return true;
             }
             case R.id.option_Xoa: {
-                XoaVi(vitri);
+                if (!KiemtraXoa(vitri)){
+                    Toast.makeText(activity,"Ví mặc định không thể xóa",Toast.LENGTH_SHORT).show();
+                }else {
+
+                    XoaVi(vitri);
+                }
+
                 return true;
             }
             case R.id.option_ChuyenTien: {
@@ -306,7 +312,8 @@ public class QuanLyViFragment extends Fragment {
         adapterViChuyenDialog.notifyDataSetChanged();
     }
 
-    public void LayTenTaiKhoan() {
+    public void LayTenTaiKhoan()
+    {
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
         taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
     }
@@ -334,7 +341,7 @@ public class QuanLyViFragment extends Fragment {
                     public void onClick(View view) {
                         boolean tenvi = true;
                         String thongbao = "";
-                        cursor = data.rawQuery("select * from tblvi", null);
+                        cursor = data.rawQuery("select * from tblvi where tentaikhoan ='" + taikhoan+"'", null);
                         cursor.moveToFirst();
                         while (cursor.isAfterLast()==false) {
                             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_TenVi.getText().toString())) {
@@ -342,7 +349,7 @@ public class QuanLyViFragment extends Fragment {
                             }
                             cursor.moveToNext();
                         }
-                        if (tenvi == false) {
+                        if (!tenvi) {
                             Toast.makeText(activity, "Tên ví này đã tồn tại", Toast.LENGTH_SHORT).show();
                             editText_TenVi.startAnimation(animation);
                         } else if (editText_TenVi.getText().toString().equals("")) {
@@ -360,7 +367,7 @@ public class QuanLyViFragment extends Fragment {
                         } else if (GioiHanSoVi()){
                             int mavi = 1;
                             cursor = data.rawQuery("select mavi from tblvi", null);
-                            if (cursor.moveToLast() == true) {
+                            if (cursor.moveToLast()) {
                                 mavi = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
                             }
 
@@ -400,7 +407,7 @@ public class QuanLyViFragment extends Fragment {
 
     public boolean GioiHanSoVi() {
         int count = 0;
-        cursor = data.rawQuery("select * from tblvi", null);
+        cursor = data.rawQuery("select * from tblvi where tentaikhoan = '"+ taikhoan +"'", null);
         while (cursor.isAfterLast() == false) {
             count++;
 
@@ -440,54 +447,47 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public void SuaVi() {
-        final String tenviht = list.get(vitri).tenvi; // lay ten vi de cap nhat
-        final Dialog d = new Dialog(getContext());
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.dialog_capnhatvi);
-        d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
-        d.show();
-
-        //AnhXa
-        editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
-        editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
-        editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
-        editText_NhapSoTienViCapNhat.setEnabled(false);
-        button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
-        button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
-
-        //LayThongTinViLenDialog
-        Cursor cursor = data.rawQuery("select * from tblvi where tenvi like '"+ tenviht +"'" , null);
-        cursor.moveToFirst();
-        String tenvi1 = cursor.getString(1);
-        String motavi1 = cursor.getString(2);
-        String sotienvi1 = String.valueOf(cursor.getDouble(3));
-
-        editText_NhapTenViCapNhat.setText(tenvi1);
-        editText_NhapMoTaViCapNhat.setText(motavi1);
-        editText_NhapSoTienViCapNhat.setText(sotienvi1);
-
-        //XuLy
-        button_LuuCapNhatVi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(CapNhatVi()) {
-                    d.dismiss();
-                    LoadTatCaVi();
+                 // lay ten vi de cap nhat
+                final Dialog d = new Dialog(getContext());
+                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                d.setContentView(R.layout.dialog_capnhatvi);
+                d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+                d.show();
+                //AnhXa
+                editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
+                editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
+                editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
+                editText_NhapSoTienViCapNhat.setEnabled(false);
+                button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
+                button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
+                //LayThongTinViLenDialog
+                if (!LayThongTinLenDialogSua()){
+                    editText_NhapTenViCapNhat.setEnabled(false);
                 }
-            }
-        });
-        button_HuyCapNhatVi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-    }
 
+                //XuLy
+                button_LuuCapNhatVi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(CapNhatVi())
+                        {
+                            d.dismiss();
+                            LoadTatCaVi();
+                        }
+                    }
+                });
+                button_HuyCapNhatVi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        d.dismiss();
+                    }
+                });
+            }
 
     public boolean CapNhatVi() {
         String thongbao = "";
         final String tenviht = list.get(vitri).tenvi;
+        final int maviht = list.get(vitri).mavi;
 
         if (editText_NhapTenViCapNhat.getText().toString().equals("")) {
             editText_NhapTenViCapNhat.startAnimation(animation);
@@ -499,7 +499,12 @@ public class QuanLyViFragment extends Fragment {
             ContentValues values = new ContentValues();
             values.put("tenvi",editText_NhapTenViCapNhat.getText().toString());
             values.put("motavi",editText_NhapMoTaViCapNhat.getText().toString());
-            data.update("tblvi",values,"tenvi like '"+ tenviht + "'",null);
+            data.update("tblvi",values,"mavi = "+ maviht ,null);
+
+            //Cap nhat ten vi vao ten vi uu tien ben danh muc thu chi
+            ContentValues values1 = new ContentValues();
+            values1.put("tenviuutien",editText_NhapTenViCapNhat.getText().toString());
+            data.update("tbldanhmucthuchi",values1,"mavi = "+ maviht,null);
             thongbao = "Cập nhật thành công";
             Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
             return true;
@@ -509,7 +514,32 @@ public class QuanLyViFragment extends Fragment {
         return false;
     }
 
+    public boolean LayThongTinLenDialogSua(){
+        final String tenviht = list.get(vitri).tenvi;
+        Cursor cursor = data.rawQuery("select * from tblvi where tenvi like '"+ tenviht +"'" + " and tentaikhoan ='" + taikhoan+"'" , null);
+        cursor.moveToFirst();
+        String tenvi1 = cursor.getString(1);
+        String motavi1 = cursor.getString(2);
+        String sotienvi1 = String.valueOf(cursor.getDouble(3));
+
+        editText_NhapTenViCapNhat.setText(tenvi1);
+        editText_NhapMoTaViCapNhat.setText(motavi1);
+        editText_NhapSoTienViCapNhat.setText(sotienvi1);
+
+        if(editText_NhapTenViCapNhat.getText().toString().equals("Cá nhân")){
+            return false;
+        }else if(editText_NhapTenViCapNhat.getText().toString().equals("Gia đình")){
+            return false;
+        }else if (editText_NhapTenViCapNhat.getText().toString().equals("Tiết kiệm")){
+            return false;
+        }else {
+            return true;
+        }
+
+    }
+
     public void XoaVi(int vitri1) {
+
         HamXoaVi(list.get(vitri1).tenvi);
     }
 
@@ -547,5 +577,22 @@ public class QuanLyViFragment extends Fragment {
                 startActivity(i);
             }
         });
+    }
+
+    //Kiem tra
+    public boolean KiemtraXoa(int vitrivi){
+        String tenvichon = list.get(vitrivi).tenvi;
+        if (tenvichon.equals("Cá nhân")){
+            return false;
+        }else
+        if (tenvichon.equals("Gia đình")){
+            return false;
+        }else
+        if (tenvichon.equals("Tiết kiệm")){
+            return false;
+        }else {
+            return true;
+        }
+
     }
 }

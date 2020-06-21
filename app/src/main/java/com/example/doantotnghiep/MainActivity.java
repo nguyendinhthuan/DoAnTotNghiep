@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
             data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi double, sodu real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
 
+            //data.execSQL("insert into tblvi(mavi, tenvi, motavi, sotienvi, tentaikhoan) values (1, 'Tiet kiem', 'Vi tiet kiem', 0, 'thuan')");
+
             //Table Danh muc thu chi
             data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, tenviuutien text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan), " +
@@ -67,16 +69,10 @@ public class MainActivity extends AppCompatActivity {
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
                     "madanhmuc text constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
 
+
             //Table Ke hoach tiet kiem
             data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
-                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem double, sotiendatietkiem double, trangthai text, " +
-                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
-
-            //Table Thu chi cho ke hoach tiet kiem
-            data.execSQL("create table if not exists tblthuchichokehoachtietkiem(mathuchichokehoachtietkiem int primary key, " +
-                    "loaithuchichokehoachtietkiem text, sotienthuchichokehoachtietkiem real, motathuchichokehoachtietkiem text, " +
-                    "ngaythuchienthuchichokehoachtietkiem date, " +
-                    "makehoachtietkiem int constraint makehoachtietkiem references tblkehoachtietkiem(makehoachtietkiem) on delete cascade, " +
+                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Lich su chuyen tien
@@ -149,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                         TaoSanVi();
                     }
                     if(KiemtratrungDanhmuc()){
-                        TaoSanDanhMuc();
+                        TaoSanDanhMuc(); //Tao rieng tung ham danh muc
                     }
 
 
@@ -180,7 +176,9 @@ public class MainActivity extends AppCompatActivity {
         while (cursor.isAfterLast()==false){
             if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")){
                return false;
-            } else if (cursor.moveToLast() == true) {
+            }else if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Gia đình")){
+                return false;
+            }else if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Tiết kiệm")){
                 return false;
             }
             cursor.moveToNext();
@@ -189,12 +187,52 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean KiemtratrungDanhmuc(){
-        cursor = data.rawQuery("select * from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap + "'",null);
+        cursor = data.rawQuery("select* from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap+ "'",null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false){
             if(cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền lương")){
                 return false;
-            } else if (cursor.moveToLast() == true) {
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Khoản thu khác")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Được cho")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền thưởng")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Làm thêm")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Ăn uống")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Học tập")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Chi phí đi lại")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Khoản chi khác")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền nhà trọ")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền điện nước")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Dụng cụ sinh hoạt cá nhân")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Quần áo")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Giải trí")){
+                return false;
+            }else
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Du lịch")){
                 return false;
             }
             cursor.moveToNext();
@@ -206,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
     public void TaoSanVi(){
         //Vi Ca Nhan
         int mavi1 = 1;
-        cursor = data.rawQuery("select mavi from tblvi", null);
+        cursor = data.rawQuery("select mavi from tblvi ", null);
         if (cursor.moveToLast() == true) {
             mavi1 = cursor.getInt(cursor.getColumnIndex("mavi")) + 1;
         }
@@ -286,13 +324,13 @@ public class MainActivity extends AppCompatActivity {
     public void TaoSanDanhMucThuChiChoViCaNhan(String loaikhoan,String tendanhmuc){
         int madanhmuc = 1;
         cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
-        if (cursor.moveToLast() == true) {
+        if (cursor.moveToLast()) {
             madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
         }
         int mavi = 1;
         cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false){
+        while (!cursor.isAfterLast()){
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")){
                 mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
             }

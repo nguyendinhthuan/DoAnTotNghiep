@@ -164,15 +164,13 @@ public class QuanLyThuChiFragment extends Fragment {
                 //Xu ly
                 HienThiThoiGian();
                 LoadSpinnerDialog();
-
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        LoadDanhSachViLenSpinnerDialog();
-                    }
-                }, 3000 );
-
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        LoadDanhSachViLenSpinnerDialog();
+//                    }
+//                }, 5000 );
+                LoadDanhSachViLenSpinnerDialog();
 
                 //KiemTraChiTieuMax();
                 editText_SoTienThuChiDialog.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -189,7 +187,7 @@ public class QuanLyThuChiFragment extends Fragment {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         vitri = position ;
-                        LayViUuTienTheoDanhMuc();
+                        LayViUuTienTheoDanhMuc(); //Loi o day
                     }
 
                     @Override
@@ -240,16 +238,28 @@ public class QuanLyThuChiFragment extends Fragment {
     //Xu ly chon vi uu tien
     public void LayViUuTienTheoDanhMuc() {
         String tendanhmuc = arrTenDanhMucDialog.get(vitri);
-        cursor = data.rawQuery("select * from tbldanhmucthuchi",null);
+        cursor = data.rawQuery("select * from tbldanhmucthuchi where tentaikhoan ='"+taikhoan+"'",null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false) {
+        while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(tendanhmuc)) {
-                maviuutien = cursor.getInt(cursor.getColumnIndex("mavi"));
+               tenviuutien = cursor.getString(cursor.getColumnIndex("tenviuutien"));
             }
             cursor.moveToNext();
         }
-        int vitriviuutien = maviuutien - 1;
-        spinner_ViDialog.setSelection(vitriviuutien);
+
+
+
+        spinner_ViDialog.setSelection(LayViTriUuTien(spinner_ViDialog,tenviuutien)); //loi o day
+
+    }
+
+    public int LayViTriUuTien(Spinner spinnerVi,String tenvican){
+        for (int i = 0;i < spinnerVi.getCount();i++){
+            if(spinnerVi.getItemAtPosition(i).toString().equalsIgnoreCase(tenvican)){
+                return i;
+            }
+        }
+        return 0;
     }
 
     //Dialog Them Thu Chi
@@ -269,13 +279,13 @@ public class QuanLyThuChiFragment extends Fragment {
         spinner_LoaiThuChiDialog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        LoadDanhSachDanhMucLenSpinnerDialog();
-                    }
-                }, 1000 );
-
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        LoadDanhSachDanhMucLenSpinnerDialog();
+//                    }
+//                }, 5000 );
+                LoadDanhSachDanhMucLenSpinnerDialog();
             }
 
             @Override
@@ -295,6 +305,7 @@ public class QuanLyThuChiFragment extends Fragment {
     public void LoadDanhSachDanhMucLenSpinnerDialog() {
         arrMaDanhMucDialog.clear();
         arrTenDanhMucDialog.clear();
+        //Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi where loaikhoan = '" + spinner_LoaiThuChiDialog.getSelectedItem().toString() + "'"+ "and tentaikhoan = '"+ taikhoan + "'", null);
         Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where tentaikhoan = '" + taikhoan + "' and loaikhoan = '" + spinner_LoaiThuChiDialog.getSelectedItem().toString() + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
@@ -311,12 +322,13 @@ public class QuanLyThuChiFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
         cursor.moveToFirst();
         listDialog = new ArrayList<ArrayVi>();
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             arrMaViDialog.add(cursor.getInt(cursor.getColumnIndex("mavi")));
             arrTenViDialog.add(cursor.getString(cursor.getColumnIndex("tenvi")));
             cursor.moveToNext();
         }
         adapterViDialog.notifyDataSetChanged();
+        cursor.close();
     }
 
     public void ChonNgayThemThuChi() {

@@ -163,15 +163,15 @@ public class QuanLyTaiKhoanFragment extends Fragment {
 
     public void AnhXa()
     {
-        button_CapNhatTaiKhoan = (Button) myFragment.findViewById(R.id.btnCapNhatTaiKhoan);
-        txt_TenTaiKhoanFrag = (TextView) myFragment.findViewById(R.id.txtTenTaiKhoan);
-        txt_TenNguoiDung = (TextView) myFragment.findViewById(R.id.txtTenNguoiDung);
-        txt_DiaChi = (TextView) myFragment.findViewById(R.id.txtDiaChi);
-        txt_Email = (TextView) myFragment.findViewById(R.id.txtEmail);
-        txt_SDT = (TextView) myFragment.findViewById(R.id.txtSoDienThoai);
-        txt_TongSoDu= (TextView) myFragment.findViewById(R.id.txtTongSoDu);
-        button_DangXuat = (Button) myFragment.findViewById(R.id.btnDangXuat);
-        button_DoiMatKhauTaiKhoan = (Button) myFragment.findViewById(R.id.btnDoiMatKhauTaiKhoan);
+        button_CapNhatTaiKhoan =  myFragment.findViewById(R.id.btnCapNhatTaiKhoan);
+        txt_TenTaiKhoanFrag =  myFragment.findViewById(R.id.txtTenTaiKhoan);
+        txt_TenNguoiDung =  myFragment.findViewById(R.id.txtTenNguoiDung);
+        txt_DiaChi =  myFragment.findViewById(R.id.txtDiaChi);
+        txt_Email =  myFragment.findViewById(R.id.txtEmail);
+        txt_SDT =  myFragment.findViewById(R.id.txtSoDienThoai);
+        txt_TongSoDu=  myFragment.findViewById(R.id.txtTongSoDu);
+        button_DangXuat =  myFragment.findViewById(R.id.btnDangXuat);
+        button_DoiMatKhauTaiKhoan =  myFragment.findViewById(R.id.btnDoiMatKhauTaiKhoan);
     }
 
     public void DoiMatKhauTaiKhoan()
@@ -315,5 +315,6 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             c.moveToNext();
         }
         txt_TongSoDu.setText(String.valueOf(tongsodu));
+        c.close();
     }
 }

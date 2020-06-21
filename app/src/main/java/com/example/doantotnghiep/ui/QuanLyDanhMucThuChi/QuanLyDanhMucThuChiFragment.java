@@ -63,6 +63,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     private ArrayList<Integer> arrMaViDialog,arrMaViDialogSua;
     private ArrayList<String> arrTenViDialog,arrTenViDialogSua;
     private int vitri,mavidanhmucsua;
+    Cursor cursor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -111,7 +112,12 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                 return true;
             }
             case R.id.option_XoaDanhMuc: {
-                XoaDanhMuc(vitri);
+                if(KiemtratrungDanhmuc(vitri)){
+                    XoaDanhMuc(vitri);
+                }else {
+                    Toast.makeText(activity,"Danh mục mặc định không thể xóa",Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
             }
 
@@ -166,7 +172,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     public void LoadTatCaDanhMucThuChi() {
         String dieukien = "= '" + spinner_LoaiKhoan.getSelectedItem().toString() + "'";
-        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan, tenviuutien from tbldanhmucthuchi" +
+        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc, loaikhoan from tbldanhmucthuchi" +
                 " where loaikhoan" + dieukien + " and tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayDanhMucThuChi>();
@@ -175,14 +181,13 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             a.setMadanhmuc(cursor.getInt(0));
             a.setTendanhmuc(cursor.getString(1));
             a.setLoaikhoan(cursor.getString(2));
-            a.setTenviuutien(cursor.getString(3));
             list.add(a);
 
             cursor.moveToNext();
         }
         cursor.close();
 
-        adapterDanhMucThuChi = new AdapterDanhMucThuChi(getActivity(), R.layout.adapter_quanlydanhmucthuchi_item, list);
+        adapterDanhMucThuChi = new AdapterDanhMucThuChi(getContext(), R.layout.adapter_quanlydanhmucthuchi_item, list);
         listView_DanhMucThuChi.setAdapter(adapterDanhMucThuChi);
     }
 
@@ -203,7 +208,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     //Sua danh muc
     public void SuaDanhMucDialog(){
-        final int madanhmucht = list.get(vitri).madanhmuc;
+
         final Dialog d = new Dialog(getContext());
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setContentView(R.layout.dialog_capnhatdanhmucthuchi);
@@ -221,23 +226,10 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         LoadSpinnerDialogSua();
         LoadDanhSachViLenSpinnerDialogSua();
         //Lay thong tin dua len dialog
-        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where madanhmuc = " + madanhmucht , null);
-        cursor.moveToFirst();
-        String tendanhmucsua = cursor.getString(cursor.getColumnIndex("tendanhmuc"));
-        String loaidanhmuc = cursor.getString(cursor.getColumnIndex("loaikhoan"));
-        mavidanhmucsua = cursor.getInt(cursor.getColumnIndex("mavi"));
-
-        editText_SuaTenDanhMucThuChi.setText(tendanhmucsua);
-        //editText_SuaTenDanhMucThuChi.setText(String.valueOf(mavidanhmuc));
-
-        if(loaidanhmuc.equals("Khoản thu"))
-        {
-            spinner_SuaLoaiKhoanDialog.setSelection(0);
-        }else {
-            spinner_SuaLoaiKhoanDialog.setSelection(1);
+        if(!LayThongTinDanhMucSua()){
+            editText_SuaTenDanhMucThuChi.setEnabled(false);
+            spinner_SuaLoaiKhoanDialog.setEnabled(false);
         }
-        spinner_SuaViUuTienChoDanhMuc.setSelection(mavidanhmucsua-1);
-
 
         //Xu ly nut
         button_LuuSuaDanhMucThuChi.setOnClickListener(new View.OnClickListener() {
@@ -261,8 +253,13 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     public boolean CapNhatDanhMuc(){
         String thongbao = "";
+        String tenviuutien = spinner_SuaViUuTienChoDanhMuc.getSelectedItem().toString();
+        int maviuutien = 0;
         final int madanhmucht = list.get(vitri).madanhmuc;
 
+        cursor = data.rawQuery("select* from tblvi where tenvi = '"+ tenviuutien +"'" + "and tentaikhoan ='" + taikhoan +"'",null);
+        cursor.moveToFirst();
+        maviuutien = cursor.getInt(cursor.getColumnIndex("mavi"));
         if (editText_SuaTenDanhMucThuChi.getText().toString().equals("")) {
             editText_SuaTenDanhMucThuChi.startAnimation(animation);
             Toast.makeText(activity,"Bạn chưa nhập tên danh mục",Toast.LENGTH_LONG).show();
@@ -270,7 +267,8 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             ContentValues values = new ContentValues();
             values.put("tendanhmuc",editText_SuaTenDanhMucThuChi.getText().toString());
             values.put("loaikhoan",spinner_SuaLoaiKhoanDialog.getSelectedItem().toString());
-            values.put("mavi",spinner_SuaViUuTienChoDanhMuc.getSelectedItemPosition()+1);
+            values.put("mavi",maviuutien);
+            values.put("tenviuutien",tenviuutien);
             data.update("tbldanhmucthuchi",values,"madanhmuc = "+ madanhmucht,null);
             thongbao = "Cập nhật thành công";
             Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
@@ -279,6 +277,85 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         thongbao = "Cập nhật không thành công";
         Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
         return false;
+    }
+
+    public boolean LayThongTinDanhMucSua(){
+        final int madanhmucht = list.get(vitri).madanhmuc;
+        cursor = data.rawQuery("select * from tbldanhmucthuchi" +  " where madanhmuc = "+ madanhmucht +" and tentaikhoan ='"+ taikhoan+  "'" , null);
+        cursor.moveToFirst();
+        String tendanhmucsua = cursor.getString(cursor.getColumnIndex("tendanhmuc"));
+        String loaidanhmuc = cursor.getString(cursor.getColumnIndex("loaikhoan"));
+        String tenviuutien = cursor.getString(cursor.getColumnIndex("tenviuutien"));
+
+
+        if(loaidanhmuc.equals("Khoản thu"))
+        {
+            spinner_SuaLoaiKhoanDialog.setSelection(0);
+        }else {
+            spinner_SuaLoaiKhoanDialog.setSelection(1);
+        }
+
+        spinner_SuaViUuTienChoDanhMuc.setSelection(LayViTriUuTien(spinner_SuaViUuTienChoDanhMuc,tenviuutien));
+
+        editText_SuaTenDanhMucThuChi.setText(tendanhmucsua);
+
+        if(editText_SuaTenDanhMucThuChi.getText().toString().equals("Tiền lương")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Khoản thu khác")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Được cho")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Tiền thưởng")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Làm thêm")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Ăn uống")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Học tập")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Chi phí đi lại")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Khoản chi khác")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Tiền nhà trọ")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Tiền điện nước")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Dụng cụ sinh hoạt cá nhân")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Quần áo")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Giải trí")){
+            return false;
+        }else
+        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("Du lịch")){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+    //Lay vi tri vi uu tien trong sua danh muc
+    public int LayViTriUuTien(Spinner spinnerVi,String tenvican){
+        for (int i = 0;i < spinnerVi.getCount();i++){
+            if(spinnerVi.getItemAtPosition(i).toString().equalsIgnoreCase(tenvican)){
+                return i;
+            }
+        }
+        return 0;
     }
 
     public void LoadSpinnerDialogSua() {
@@ -312,13 +389,9 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
 
 
-    //Xoa dnanh muc
+    //Xoa danh muc
     public void XoaDanhMuc(int vitrixoa) {
-
-                HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
-
-
-
+        HamXoaDanhMuc(list.get(vitrixoa).tendanhmuc);
     }
 
     public void HamXoaDanhMuc(final String tendanhmuc) {
@@ -376,45 +449,105 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         String thongbao = "";
-                        int madanhmuc = 1;
+
                         boolean tendanhmuc = true;
-                        Cursor cursor = data.rawQuery("select madanhmuc, tendanhmuc from tbldanhmucthuchi where tentaikhoan = '" + taikhoan + "' ", null);
+                        // chi lay ten danh muc cua tai khoan de kiem tra
+                        Cursor cursor = data.rawQuery("select tendanhmuc from tbldanhmucthuchi where tentaikhoan ='"+taikhoan+"'", null);
                         cursor.moveToFirst();
-                        while (cursor.isAfterLast()==false) {
+                        while (!cursor.isAfterLast()) {
                             if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(editText_TenDanhMucThuChi.getText().toString())) {
                                 tendanhmuc = false;
                             }
                             cursor.moveToNext();
                         }
+                        cursor.close();
                         if (tendanhmuc == false) {
                             thongbao = "Tên danh mục này đã tồn tại";
                             editText_TenDanhMucThuChi.startAnimation(animation);
                         } else if (editText_TenDanhMucThuChi.getText().toString().equals("")) {
                             thongbao = "Bạn chưa nhập tên danh mục";
                             editText_TenDanhMucThuChi.startAnimation(animation);
-                        } else if (cursor.moveToLast() == true) {
-                            madanhmuc = cursor.getInt(cursor.getColumnIndex("madanhmuc")) + 1;
-                        }
+                        } else {
+                            int madanhmuc = 1;
+                            //Lay tat ca ma danh muc co trong bang
+                            Cursor cursorMa = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
+                            if (cursorMa.moveToLast()) {
+                                madanhmuc = cursorMa.getInt(cursorMa.getColumnIndex("madanhmuc")) + 1;
+                            }
 
-                        //Da sua luu ma vi sang int
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("madanhmuc", madanhmuc);
-                        contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
-                        contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
-                        contentValues.put("mavi",  arrMaViDialog.get(spinner_ViUuTienChoDanhMuc.getSelectedItemPosition()));
-                        contentValues.put("tenviuutien",spinner_ViUuTienChoDanhMuc.getSelectedItem().toString()); // moi them
-                        contentValues.put("tentaikhoan", taikhoan);
 
-                        if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
-                            thongbao = "Thêm danh mục thành công";
-                            d.dismiss();
-                            //load list view o day
-                            LoadTatCaDanhMucThuChi();
+                            //Da sua luu ma vi sang int
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put("madanhmuc", madanhmuc);
+                            contentValues.put("tendanhmuc", editText_TenDanhMucThuChi.getText().toString());
+                            contentValues.put("loaikhoan", spinner_LoaiKhoanDialog.getSelectedItem().toString());
+                            contentValues.put("mavi", arrMaViDialog.get(spinner_ViUuTienChoDanhMuc.getSelectedItemPosition()));
+                            contentValues.put("tenviuutien", spinner_ViUuTienChoDanhMuc.getSelectedItem().toString()); // moi them
+                            contentValues.put("tentaikhoan", taikhoan);
+
+                            if (data.insert("tbldanhmucthuchi", null, contentValues) != -1) {
+                                thongbao = "Thêm danh mục thành công";
+                                d.dismiss();
+                                //load list view o day
+                                LoadTatCaDanhMucThuChi();
+                            }
+                            Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
+    }
+
+    //Kiem tra
+    public boolean KiemtratrungDanhmuc(int vitrixoa){
+        String tendanhmucxoa = list.get(vitrixoa).tendanhmuc;
+        if(tendanhmucxoa.equals("Tiền lương")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Khoản thu khác")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Được cho")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Tiền thưởng")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Làm thêm")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Ăn uống")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Học tập")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Chi phí đi lại")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Khoản chi khác")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Tiền nhà trọ")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Tiền điện nước")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Dụng cụ sinh hoạt các nhân")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Quần áo")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Giải trí")){
+            return false;
+        }else
+        if(tendanhmucxoa.equals("Du lịch")){
+            return false;
+        }else {
+            return true;
+        }
     }
 }
