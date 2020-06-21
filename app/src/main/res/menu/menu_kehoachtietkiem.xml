@@ -2,10 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/option_ThuChoKeHoachTietKiem"
-        android:title="Thu vào" />
-    <item
-        android:id="@+id/option_ChiChoKeHoachTietKiem"
-        android:title="Chi ra" />
+        android:title="Thu chi" />
     <item
         android:id="@+id/option_XoaKeHoachTietKiem"
         android:title="Xóa" />

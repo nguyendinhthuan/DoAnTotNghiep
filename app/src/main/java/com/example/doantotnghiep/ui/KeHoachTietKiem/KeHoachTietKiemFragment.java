@@ -9,6 +9,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,12 +30,14 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +75,14 @@ public class KeHoachTietKiemFragment extends Fragment {
     private AdapterKeHoachTietKiem adapterKeHoachTietKiem;
     private boolean danhsachkehoachtietkiem = false;
     private TextView textView_DanhSachKeHoachTietKiemTrong;
+    private EditText editText_SoTienThuChiChoKeHoach, editText_MoTaThuChiChoKeHoach;
+    private Spinner spinner_LoaiThuChiChoKeHoach;
+    private TextView textView_NgayThucHienThuChiChoKeHoach;
+    private Button button_LuuThuChiChoKeHoach, button_HuyThuChiChoKeHoach;
+    private String[] arrSpinner;
+    private ArrayAdapter<String> adapterSpinner;
+    private int sotienthuchichokehoach, sotiendatietkiemchokehoachtietkiem, sotienkehoachtietkiem;
+    private TextView textView_TrangThaiKeHoachTietKiem;
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -98,7 +110,6 @@ public class KeHoachTietKiemFragment extends Fragment {
         ThemKeHoachTietKiem();
         setListview();
         LoadTatCaKeHoachTietKiem();
-        //XoaKeHoachTietKiem();
         XuLyKhiDanhSachKeHoachTietKiemTrong(danhsachkehoachtietkiem);
 
         listView_KeHoachTietKiem.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -124,10 +135,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                 ThuVaoChoKeHoachTietKiem();
                 return true;
             }
-            case R.id.option_ChiChoKeHoachTietKiem: {
-                ChiRaChoKeHoachTietKiem();
-                return true;
-            }
             case R.id.option_XoaKeHoachTietKiem: {
                 XoaKeHoachTietKiem(vitri);
                 return true;
@@ -141,6 +148,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         listView_KeHoachTietKiem = (ListView) myFragment.findViewById(R.id.listView_KeHoachTietKiem);
         imageButton_ThemKeHoachTietKiem = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemKeHoachTietKiem);
         textView_DanhSachKeHoachTietKiemTrong = (TextView) myFragment.findViewById(R.id.textView_DanhSachKeHoachTietKiemTrong);
+        textView_TrangThaiKeHoachTietKiem = (TextView) myFragment.findViewById(R.id.txtTrangThaiKeHoachTietKiem);
     }
 
     public void ThemKeHoachTietKiem() {
@@ -153,6 +161,10 @@ public class KeHoachTietKiemFragment extends Fragment {
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
 
+                if (KiemTraTrangThaiCuaCacKeHoachTietKiem() == true) {
+                    d.dismiss();
+                }
+
                 //Anh xa
                 button_LuuKeHoachTietKiem = (Button) d.findViewById(R.id.button_LuuKeHoachTietKiem);
                 button_HuyKeHoachTietKiem = (Button) d.findViewById(R.id.button_HuyKeHoachTietKiem);
@@ -164,7 +176,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                 calendar = Calendar.getInstance();
 
                 //Xu Ly
-                HienThiThoiGian();
+                HienThiThoiGianThemKeHoachTietKiem();
 
                 button_HuyKeHoachTietKiem.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -214,7 +226,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                             contentValues.put("ngayketthuckehoachtietkiem", button_NgayKetThucKeHoachTietKiem.getText().toString());
                             contentValues.put("sotienkehoachtietkiem", editText_SoTienKeHoachTietKiem.getText().toString());
                             contentValues.put("sotiendatietkiem", 0);
-                            contentValues.put("trangthai", "NO");
+                            contentValues.put("trangthai", "Chưa hoàn thành");
                             contentValues.put("tentaikhoan", taikhoan);
 
                             if (data.insert("tblkehoachtietkiem", null, contentValues) != -1) {
@@ -266,9 +278,14 @@ public class KeHoachTietKiemFragment extends Fragment {
         });
     }
 
-    public void HienThiThoiGian() {
+    public void HienThiThoiGianThemKeHoachTietKiem() {
         date = calendar.getTime();
         button_NgayBatDauKeHoachTietKiem.setText(simpleDateFormat.format(date));
+    }
+
+    public void HienThiThoiGianThemThuChiChoKeHoachTietKiem() {
+        date = calendar.getTime();
+        textView_NgayThucHienThuChiChoKeHoach.setText(simpleDateFormat.format(date));
     }
 
     public void setListview() {
@@ -336,11 +353,142 @@ public class KeHoachTietKiemFragment extends Fragment {
         }
     }
 
-    public void ThuVaoChoKeHoachTietKiem() {
-
+    public void LoadSpinner() {
+        //Spinner loai thu chi cho ke hoach tiet kiem
+        arrSpinner = getResources().getStringArray(R.array.loaithuchichokehoachtietkiem);
+        adapterSpinner = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrSpinner);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_LoaiThuChiChoKeHoach.setAdapter(adapterSpinner);
     }
 
-    public void ChiRaChoKeHoachTietKiem() {
+    public void ThuVaoChoKeHoachTietKiem() {
+        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+        final Dialog d = new Dialog(getActivity());
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.dialog_thuchichokehoachtietkiem);
+        d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        d.show();
 
+        //Anh xa
+        editText_SoTienThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_SoTienThuChiChoKeHoach);
+        editText_MoTaThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_MoTaThuChiChoKeHoach);
+        textView_NgayThucHienThuChiChoKeHoach = (TextView) d.findViewById(R.id.textView_NgayThucHienThuChiChoKeHoach);
+        button_LuuThuChiChoKeHoach = (Button) d.findViewById(R.id.button_LuuThuChiChoKeHoach);
+        button_HuyThuChiChoKeHoach = (Button) d.findViewById(R.id.button_HuyThuChiChoKeHoach);
+        spinner_LoaiThuChiChoKeHoach = (Spinner) d.findViewById(R.id.spinner_LoaiThuChiChoKeHoach);
+
+        calendar = Calendar.getInstance();
+
+        //Xu ly
+        HienThiThoiGianThemThuChiChoKeHoachTietKiem();
+        LoadSpinner();
+
+
+        button_LuuThuChiChoKeHoach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editText_SoTienThuChiChoKeHoach.getText().toString().equals("")) {
+                    editText_SoTienThuChiChoKeHoach.startAnimation(animation);
+                    Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
+                } else if (editText_MoTaThuChiChoKeHoach.getText().toString().equals("")) {
+                    editText_MoTaThuChiChoKeHoach.startAnimation(animation);
+                    Toast.makeText(activity, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
+                } else {
+                    int mathuchichokehoachtietkiem = 1;
+                    Cursor cursor = data.rawQuery("select mathuchichokehoachtietkiem from tblthuchichokehoachtietkiem", null);
+                    if (cursor.moveToLast() == true) {
+                        mathuchichokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("mathuchichokehoachtietkiem")) + 1;
+                    }
+
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("mathuchichokehoachtietkiem", mathuchichokehoachtietkiem);
+                    contentValues.put("loaithuchichokehoachtietkiem", spinner_LoaiThuChiChoKeHoach.getSelectedItem().toString());
+                    contentValues.put("sotienthuchichokehoachtietkiem", editText_SoTienThuChiChoKeHoach.getText().toString());
+                    contentValues.put("motathuchichokehoachtietkiem", editText_MoTaThuChiChoKeHoach.getText().toString());
+                    contentValues.put("ngaythuchienthuchichokehoachtietkiem", textView_NgayThucHienThuChiChoKeHoach.getText().toString());
+                    contentValues.put("makehoachtietkiem", arr.get(vitri).makehoachtietkiem);
+                    contentValues.put("tentaikhoan", taikhoan);
+
+                    if (data.insert("tblthuchichokehoachtietkiem", null, contentValues) != -1) {
+                        Toast.makeText(activity, "Thêm thành công", Toast.LENGTH_SHORT).show();
+                        LayTienTuKeHoachTietKiem();
+                        XuLyChuyenTienChoKeHoach();
+                        d.dismiss();
+                        LoadTatCaKeHoachTietKiem();
+                        KiemTraSoTienTietKiemBangSoTienBanDau();
+                        LoadTatCaKeHoachTietKiem();
+                    } else {
+                        Toast.makeText(activity, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        button_HuyThuChiChoKeHoach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+    }
+
+    public void LayTienTuKeHoachTietKiem() {
+        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arr.get(vitri).makehoachtietkiem) {
+                sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
+            }
+            cursor.moveToNext();
+        }
+    }
+
+    public void XuLyChuyenTienChoKeHoach() {
+        int sotienthu = 0;
+        int sotienchi = 0;
+        sotienthuchichokehoach = Integer.parseInt(editText_SoTienThuChiChoKeHoach.getText().toString());
+
+        sotienthu = sotiendatietkiemchokehoachtietkiem + sotienthuchichokehoach;
+        sotienchi = sotiendatietkiemchokehoachtietkiem - sotienthuchichokehoach;
+
+        if (spinner_LoaiThuChiChoKeHoach.getSelectedItem().toString().equals("Thu vào")) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("sotiendatietkiem", sotienthu);
+            data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arr.get(vitri).makehoachtietkiem + "'", null);
+        } else if (spinner_LoaiThuChiChoKeHoach.getSelectedItem().toString().equals("Chi ra")) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("sotiendatietkiem", sotienchi);
+            data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arr.get(vitri).makehoachtietkiem + "'", null);
+        }
+    }
+
+    public void KiemTraSoTienTietKiemBangSoTienBanDau() {
+        String trangthai = "Đã hoàn thành";
+        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arr.get(vitri).makehoachtietkiem) {
+                sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
+                sotienkehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotienkehoachtietkiem"));
+                if (sotienkehoachtietkiem == sotiendatietkiemchokehoachtietkiem) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("trangthai", trangthai);
+                    data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arr.get(vitri).makehoachtietkiem + "'", null);
+                }
+            }
+            cursor.moveToNext();
+        }
+    }
+
+    public boolean KiemTraTrangThaiCuaCacKeHoachTietKiem() {
+        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getString(cursor.getColumnIndex("trangthai")).equals("Chưa hoàn thành")) {
+                Toast.makeText(activity, "Có kế hoạch chưa hoàn thành", Toast.LENGTH_SHORT).show();
+            }
+            cursor.moveToNext();
+        }
+        return false;
     }
 }

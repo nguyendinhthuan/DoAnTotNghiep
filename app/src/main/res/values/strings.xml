@@ -45,6 +45,11 @@
         <item>Khoản chi</item>
     </string-array>
 
+    <string-array name="loaithuchichokehoachtietkiem">
+        <item>Thu vào</item>
+        <item>Chi ra</item>
+    </string-array>
+
     <!--Giao dịch-->
     <string name="taikhoan">Tài khoản</string>
     <string name="loaigiaodich">Loại giao dịch</string>
