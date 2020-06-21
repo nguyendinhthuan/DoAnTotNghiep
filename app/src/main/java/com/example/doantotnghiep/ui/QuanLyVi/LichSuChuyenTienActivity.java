@@ -41,7 +41,7 @@ import java.util.List;
 public class LichSuChuyenTienActivity extends AppCompatActivity {
     private String taikhoan;
     private SharedPreferences sharedPreferences;
-    private ArrayList<ArrayLichSuChuyenTien> arr;
+    private ArrayList<ArrayLichSuChuyenTien> arrayLichSuChuyenTien;
     private AdapterLichSuChuyenTien adapterLichSuChuyenTien;
     private ImageButton imageButton_TroVeQuanLyVi;
     private Spinner spinner_LocLichSuChuyenTienTheoVi;
@@ -173,19 +173,19 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void setListView() {
-        arr = new ArrayList<ArrayLichSuChuyenTien>();
-        adapterLichSuChuyenTien = new AdapterLichSuChuyenTien(this, R.layout.adapter_lichsuchuyentien_item, arr);
+        arrayLichSuChuyenTien = new ArrayList<ArrayLichSuChuyenTien>();
+        adapterLichSuChuyenTien = new AdapterLichSuChuyenTien(this, R.layout.adapter_lichsuchuyentien_item, arrayLichSuChuyenTien);
         listView_LichSuChuyenTien.setAdapter(adapterLichSuChuyenTien);
     }
 
     public void LoadLichSuChuyenTienTheoNgay() {
-        arr.clear();
+        arrayLichSuChuyenTien.clear();
         Cursor cursor = data.rawQuery("select malichsuchuyentien, tenvichuyen, tenvinhan, sotienchuyen, ngaythuchien" +
                 " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' " +
                 " and ngaythuchien = '" + simpleDateFormatDialog.format(date) + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -193,12 +193,12 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void LoadTatCaLichSuChuyenTien() {
-        arr.clear();
+        arrayLichSuChuyenTien.clear();
         Cursor cursor = data.rawQuery("select malichsuchuyentien, tenvichuyen, tenvinhan, sotienchuyen, ngaythuchien" +
                 " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -239,13 +239,13 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void LoadLichSuChuyenTienTheoSpinnerLocTheoVi() {
-        arr.clear();
+        arrayLichSuChuyenTien.clear();
         Cursor cursor = data.rawQuery("select malichsuchuyentien, tenvichuyen, tenvinhan, sotienchuyen, ngaythuchien" +
                 " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' " +
                 " and tenvichuyen = '" + spinner_LocLichSuChuyenTienTheoVi.getSelectedItem().toString() + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
             cursor.moveToNext();
         }
         cursor.close();

@@ -4,6 +4,12 @@
         android:id="@+id/option_ThuChoKeHoachTietKiem"
         android:title="Thu chi" />
     <item
+        android:id="@+id/option_XemChiTietKeHoachTietKiem"
+        android:title="Xem chi tiết kế hoạch" />
+    <item
+        android:id="@+id/option_XemLishSuThuChiChoKeHoachTietKiem"
+        android:title="Lịch sử thu chi" />
+    <item
         android:id="@+id/option_XoaKeHoachTietKiem"
         android:title="Xóa" />
 </menu>

@@ -44,8 +44,10 @@ import android.widget.Toast;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterKeHoachTietKiem;
 import com.example.doantotnghiep.adapter.AdapterThuChi;
+import com.example.doantotnghiep.adapter.AdapterThuChiChoKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayThuChi;
+import com.example.doantotnghiep.model.ArrayThuChiChoKeHoachTietKiem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,7 +72,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Calendar calendar;
     private Date date;
     private SimpleDateFormat simpleDateFormat;
-    private ArrayList<ArrayKeHoachTietKiem> arr;
+    private ArrayList<ArrayKeHoachTietKiem> arrayKeHoachTietKiem;
     private List<ArrayKeHoachTietKiem> list = null;
     private AdapterKeHoachTietKiem adapterKeHoachTietKiem;
     private boolean danhsachkehoachtietkiem = false;
@@ -82,7 +84,9 @@ public class KeHoachTietKiemFragment extends Fragment {
     private String[] arrSpinner;
     private ArrayAdapter<String> adapterSpinner;
     private int sotienthuchichokehoach, sotiendatietkiemchokehoachtietkiem, sotienkehoachtietkiem;
-    private TextView textView_TrangThaiKeHoachTietKiem;
+    private ArrayList<ArrayThuChiChoKeHoachTietKiem> arrayThuChiChoKeHoachTietKiem;
+    private AdapterThuChiChoKeHoachTietKiem adapterThuChiChoKeHoachTietKiem;
+
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -139,6 +143,12 @@ public class KeHoachTietKiemFragment extends Fragment {
                 XoaKeHoachTietKiem(vitri);
                 return true;
             }
+            case R.id.option_XemLishSuThuChiChoKeHoachTietKiem: {
+
+            }
+            case R.id.option_XemChiTietKeHoachTietKiem: {
+
+            }
             default:
                 return super.onContextItemSelected(item);
         }
@@ -148,7 +158,6 @@ public class KeHoachTietKiemFragment extends Fragment {
         listView_KeHoachTietKiem = (ListView) myFragment.findViewById(R.id.listView_KeHoachTietKiem);
         imageButton_ThemKeHoachTietKiem = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemKeHoachTietKiem);
         textView_DanhSachKeHoachTietKiemTrong = (TextView) myFragment.findViewById(R.id.textView_DanhSachKeHoachTietKiemTrong);
-        textView_TrangThaiKeHoachTietKiem = (TextView) myFragment.findViewById(R.id.txtTrangThaiKeHoachTietKiem);
     }
 
     public void ThemKeHoachTietKiem() {
@@ -160,10 +169,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                 d.setContentView(R.layout.dialog_themkehoachtietkiem);
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
-
-                if (KiemTraTrangThaiCuaCacKeHoachTietKiem() == true) {
-                    d.dismiss();
-                }
 
                 //Anh xa
                 button_LuuKeHoachTietKiem = (Button) d.findViewById(R.id.button_LuuKeHoachTietKiem);
@@ -289,17 +294,17 @@ public class KeHoachTietKiemFragment extends Fragment {
     }
 
     public void setListview() {
-        arr = new ArrayList<ArrayKeHoachTietKiem>();
-        adapterKeHoachTietKiem = new AdapterKeHoachTietKiem(getActivity(), R.layout.adapter_kehoachtietkiem_item, arr);
+        arrayKeHoachTietKiem = new ArrayList<ArrayKeHoachTietKiem>();
+        adapterKeHoachTietKiem = new AdapterKeHoachTietKiem(getActivity(), R.layout.adapter_kehoachtietkiem_item, arrayKeHoachTietKiem);
         listView_KeHoachTietKiem.setAdapter(adapterKeHoachTietKiem);
     }
 
     public void LoadTatCaKeHoachTietKiem() {
-        arr.clear();
+        arrayKeHoachTietKiem.clear();
         Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
+            arrayKeHoachTietKiem.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -307,7 +312,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     }
 
     public void XoaKeHoachTietKiem(int vitri1) {
-        HamXoaKeHoachTietKiem(arr.get(vitri1).makehoachtietkiem);
+        HamXoaKeHoachTietKiem(arrayKeHoachTietKiem.get(vitri1).makehoachtietkiem);
     }
 
     public void HamXoaKeHoachTietKiem(final int makehoachtietkiem) {
@@ -371,8 +376,8 @@ public class KeHoachTietKiemFragment extends Fragment {
 
         //Anh xa
         editText_SoTienThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_SoTienThuChiChoKeHoach);
-        editText_MoTaThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_MoTaThuChiChoKeHoach);
-        textView_NgayThucHienThuChiChoKeHoach = (TextView) d.findViewById(R.id.textView_NgayThucHienThuChiChoKeHoach);
+        editText_MoTaThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_MoTaThuChiChoKeHoachTietKiem);
+        textView_NgayThucHienThuChiChoKeHoach = (TextView) d.findViewById(R.id.textView_NgayThucHienThuChiChoKeHoachTietKiem);
         button_LuuThuChiChoKeHoach = (Button) d.findViewById(R.id.button_LuuThuChiChoKeHoach);
         button_HuyThuChiChoKeHoach = (Button) d.findViewById(R.id.button_HuyThuChiChoKeHoach);
         spinner_LoaiThuChiChoKeHoach = (Spinner) d.findViewById(R.id.spinner_LoaiThuChiChoKeHoach);
@@ -406,7 +411,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                     contentValues.put("sotienthuchichokehoachtietkiem", editText_SoTienThuChiChoKeHoach.getText().toString());
                     contentValues.put("motathuchichokehoachtietkiem", editText_MoTaThuChiChoKeHoach.getText().toString());
                     contentValues.put("ngaythuchienthuchichokehoachtietkiem", textView_NgayThucHienThuChiChoKeHoach.getText().toString());
-                    contentValues.put("makehoachtietkiem", arr.get(vitri).makehoachtietkiem);
+                    contentValues.put("makehoachtietkiem", arrayKeHoachTietKiem.get(vitri).makehoachtietkiem);
                     contentValues.put("tentaikhoan", taikhoan);
 
                     if (data.insert("tblthuchichokehoachtietkiem", null, contentValues) != -1) {
@@ -436,7 +441,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arr.get(vitri).makehoachtietkiem) {
+            if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arrayKeHoachTietKiem.get(vitri).makehoachtietkiem) {
                 sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
             }
             cursor.moveToNext();
@@ -454,11 +459,11 @@ public class KeHoachTietKiemFragment extends Fragment {
         if (spinner_LoaiThuChiChoKeHoach.getSelectedItem().toString().equals("Thu vào")) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("sotiendatietkiem", sotienthu);
-            data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arr.get(vitri).makehoachtietkiem + "'", null);
+            data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arrayKeHoachTietKiem.get(vitri).makehoachtietkiem + "'", null);
         } else if (spinner_LoaiThuChiChoKeHoach.getSelectedItem().toString().equals("Chi ra")) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("sotiendatietkiem", sotienchi);
-            data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arr.get(vitri).makehoachtietkiem + "'", null);
+            data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arrayKeHoachTietKiem.get(vitri).makehoachtietkiem + "'", null);
         }
     }
 
@@ -467,13 +472,13 @@ public class KeHoachTietKiemFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arr.get(vitri).makehoachtietkiem) {
+            if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arrayKeHoachTietKiem.get(vitri).makehoachtietkiem) {
                 sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
                 sotienkehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotienkehoachtietkiem"));
                 if (sotienkehoachtietkiem == sotiendatietkiemchokehoachtietkiem) {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("trangthai", trangthai);
-                    data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arr.get(vitri).makehoachtietkiem + "'", null);
+                    data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arrayKeHoachTietKiem.get(vitri).makehoachtietkiem + "'", null);
                 }
             }
             cursor.moveToNext();
@@ -490,5 +495,27 @@ public class KeHoachTietKiemFragment extends Fragment {
             cursor.moveToNext();
         }
         return false;
+    }
+
+    public void LoadLichSuThuChiChoKeHoachTietKiem() {
+        arrayThuChiChoKeHoachTietKiem.clear();
+        Cursor cursor = data.rawQuery("select * from tblthuchichokehoachtietkiem where tentaikhoan = '" + taikhoan + "' " +
+                "and makehoachtietkiem = '" + arrayKeHoachTietKiem.get(vitri).makehoachtietkiem + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arrayThuChiChoKeHoachTietKiem.add(new ArrayThuChiChoKeHoachTietKiem(cursor.getInt(cursor.getColumnIndex("mathuchichokehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienthuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("loaithuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("motathuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaythuchienthuchichokehoachtietkiem"))));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        adapterThuChiChoKeHoachTietKiem.notifyDataSetChanged();
+    }
+
+    public void XemLichSuThuChiChoKeHoachTietKiem() {
+        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
+        final Dialog d = new Dialog(getActivity());
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        d.setContentView(R.layout.dialog_thuchichokehoachtietkiem);
+        d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+        d.show();
     }
 }

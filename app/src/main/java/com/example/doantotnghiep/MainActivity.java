@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
             data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi double, sodu real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
 
-            //data.execSQL("insert into tblvi(mavi, tenvi, motavi, sotienvi, tentaikhoan) values (1, 'Tiet kiem', 'Vi tiet kiem', 0, 'thuan')");
-
             //Table Danh muc thu chi
             data.execSQL("create table if not exists tbldanhmucthuchi(madanhmuc int primary key, tendanhmuc text, loaikhoan text, tenviuutien text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan), " +
@@ -72,7 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Ke hoach tiet kiem
             data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
-                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, " +
+                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem double, sotiendatietkiem double, trangthai text, " +
+                    "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
+
+            //Table Thu chi cho ke hoach tiet kiem
+            data.execSQL("create table if not exists tblthuchichokehoachtietkiem(mathuchichokehoachtietkiem int primary key, " +
+                    "loaithuchichokehoachtietkiem text, sotienthuchichokehoachtietkiem real, motathuchichokehoachtietkiem text, " +
+                    "ngaythuchienthuchichokehoachtietkiem date, " +
+                    "makehoachtietkiem int constraint makehoachtietkiem references tblkehoachtietkiem(makehoachtietkiem) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Lich su chuyen tien
