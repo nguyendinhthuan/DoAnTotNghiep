@@ -58,7 +58,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private Animation animation;
     private ImageButton imageButton_ThemThuChi;
     private Button button_ThoatThuChiDialog, button_LuuThuChiDialog, button_NgayThuChiDialog,
-            button_GioThuChiDialog, button_ThoiGianHienTaiDialog;
+            button_ThoiGianHienTaiDialog;
     private String taikhoan;
     private Spinner spinner_LoaiThuChiDialog, spinner_ViDialog, spinner_DanhMucDialog;
     private String ngaythang;
@@ -149,7 +149,6 @@ public class QuanLyThuChiFragment extends Fragment {
                 button_ThoatThuChiDialog = (Button) d.findViewById(R.id.button_ThoatThuChi);
                 button_LuuThuChiDialog = (Button) d.findViewById(R.id.button_LuuThuChi);
                 button_NgayThuChiDialog = (Button) d.findViewById(R.id.button_NgayThuChi);
-                button_GioThuChiDialog = (Button) d.findViewById(R.id.button_GioThuchi);
                 button_ThoiGianHienTaiDialog = (Button) d.findViewById(R.id.button_ThoiGianHienTai);
 
                 editText_SoTienThuChiDialog = (EditText) d.findViewById(R.id.editText_SoTienThuChi);
@@ -387,7 +386,6 @@ public class QuanLyThuChiFragment extends Fragment {
         gioDialog = calendar.get(Calendar.HOUR_OF_DAY) + ":"+ calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND);
         date = calendar.getTime();
         button_NgayThuChiDialog.setText(simpleDateFormatDialog.format(date));
-        button_GioThuChiDialog.setText(gioDialog);
     }
 
     public boolean ThemThuChiDialog() {

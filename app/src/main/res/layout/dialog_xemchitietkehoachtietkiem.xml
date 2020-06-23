@@ -28,111 +28,76 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TableLayout
+    <TextView
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:text="Tên kế hoạch:"
+        android:textColor="#000000"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        android:id="@+id/editText_TenKeHoachTietKiem_ChiTiet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/main_edittext"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:layout_marginTop="10dp"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày bắt đầu:"
+        android:textColor="#000000"
+        android:layout_marginTop="15dp"/>
 
-            <TextView
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:text="Tên kế hoạch:"
-                android:textColor="#000000" />
+    <Button
+        android:id="@+id/button_NgayBatDauKeHoachTietKiem_ChiTiet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/main_edittext"
+        android:layout_marginTop="10dp"/>
 
-            <EditText
-                android:id="@+id/editText_TenKeHoachTietKiem_ChiTiet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_edittext"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:textColor="#000000"/>
-        </TableRow>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày kết thúc:"
+        android:textColor="#000000"
+        android:layout_marginTop="15dp"/>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+    <Button
+        android:id="@+id/button_NgayKetThucKeHoachTietKiem_ChiTiet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chọn ngày"
+        android:layout_weight="1"
+        android:background="@drawable/main_edittext"
+        android:layout_marginTop="10dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ngày bắt đầu:"
-                android:textColor="#000000" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số tiền cho kế hoạch:"
+        android:textColor="#000000"
+        android:layout_marginTop="15dp"/>
 
-            <!--            <EditText-->
-            <!--                android:id="@+id/editText_NgayBatDauKeHoachTietKiem"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginLeft="15dp"-->
-            <!--                android:layout_weight="1"-->
-            <!--                android:background="@drawable/main_edittext"-->
-            <!--                android:ems="10"-->
-            <!--                android:inputType="textPersonName" />-->
-
-            <Button
-                android:id="@+id/button_NgayBatDauKeHoachTietKiem_ChiTiet"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_edittext" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ngày kết thúc:"
-                android:textColor="#000000" />
-
-            <Button
-                android:id="@+id/button_NgayKetThucKeHoachTietKiem_ChiTiet"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:text="Chọn ngày"
-                android:layout_weight="1"
-                android:background="@drawable/main_edittext" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Số tiền cho kế hoạch:"
-                android:textColor="#000000" />
-
-            <EditText
-                android:id="@+id/editText_SoTienKeHoachTietKiem_ChiTiet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_edittext"
-                android:ems="10"
-                android:inputType="number" />
-        </TableRow>
-    </TableLayout>
+    <EditText
+        android:id="@+id/editText_SoTienKeHoachTietKiem_ChiTiet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/main_edittext"
+        android:ems="10"
+        android:inputType="number"
+        android:layout_marginTop="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="25dp">
 
         <Button
             android:id="@+id/button_HuyKeHoachTietKiem_ChiTiet"
