@@ -433,8 +433,8 @@ public class QuanLyThuChiFragment extends Fragment {
         if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
             sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
         } else {
-            int sotienthu = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
-            if (sotientuvi < sotienthu) {
+            int sotienchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            if (sotientuvi < sotienchi) {
                 editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
                 editText_SoTienThuChiDialog.startAnimation(animation);
                 Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();

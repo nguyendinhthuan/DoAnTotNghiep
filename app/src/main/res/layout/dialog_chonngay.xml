@@ -17,8 +17,10 @@
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
         android:layout_gravity="center"
-        android:background="#93a3a4"
-        android:calendarTextColor="#000000" />
+        android:headerBackground="@color/colorPrimaryDark1"
+        android:background="@color/colorPrimary1"
+        android:calendarTextColor="#000000"
+        style=""/>
     <Button
         android:id="@+id/button_ChonNgayXong"
         android:layout_width="wrap_content"

@@ -175,15 +175,15 @@ public class MainActivity extends AppCompatActivity {
             editText_MatKhauDangNhap.startAnimation(animation);
         }
     }
-    public boolean KiemtratrungVi(){
+    public boolean KiemtratrungVi() {
         cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'",null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast()==false){
-            if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")){
+        while (cursor.isAfterLast()==false) {
+            if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")) {
                return false;
-            }else if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Gia đình")){
+            } else if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Gia đình")) {
                 return false;
-            }else if(cursor.getString(cursor.getColumnIndex("tenvi")).equals("Tiết kiệm")){
+            } else if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Tiết kiệm")) {
                 return false;
             }
             cursor.moveToNext();
@@ -191,53 +191,39 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean KiemtratrungDanhmuc(){
-        cursor = data.rawQuery("select* from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap+ "'",null);
+    public boolean KiemtratrungDanhmuc() {
+        cursor = data.rawQuery("select* from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap + "'",null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false){
-            if(cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền lương")){
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền lương")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Khoản thu khác")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền thưởng")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Được cho")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Làm thêm")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền thưởng")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Được cho")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Làm thêm")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Khoản thu khác")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Ăn uống")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Ăn uống")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Học tập")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Học tập")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Chi phí đi lại")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Chi phí đi lại")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Khoản chi khác")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Quần áo")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền nhà trọ")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền nhà trọ")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền điện nước")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Tiền điện nước")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Dụng cụ sinh hoạt cá nhân")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Dụng cụ sinh hoạt cá nhân")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Quần áo")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Du lịch")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Giải trí")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Giải trí")) {
                 return false;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Du lịch")){
+            } else if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals("Khoản chi khác")) {
                 return false;
             }
             cursor.moveToNext();
@@ -246,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Tao san vi
-    public void TaoSanVi(){
+    public void TaoSanVi() {
         //Vi Ca Nhan
         int mavi1 = 1;
         cursor = data.rawQuery("select mavi from tblvi ", null);
@@ -292,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Tao san cac danh muc
-    public void TaoSanDanhMuc(){
-        String khoanthu = "Khoản thu",khoanchi = "Khoản chi";
+    public void TaoSanDanhMuc() {
+        String khoanthu = "Khoản thu", khoanchi = "Khoản chi";
         String danhmucthuchovicanhan[] = {"Tiền lương","Khoản thu khác"};
         String danhmucchichovicanhan[] = {"Ăn uống","Học tập","Chi phí đi lại","Khoản chi khác"};
         String danhmucthuchovigiadinh[] = {"Được cho"}; // lam de sau nay co them thu cho vi gia dinh
@@ -301,32 +287,32 @@ public class MainActivity extends AppCompatActivity {
         String danhmucthuchovitietkiem[] = {"Tiền thưởng","Làm thêm"}; // lam de sau nay co them thu cho vi tiet kiem
         String danhmucchichovitietkiem[] = {"Quần áo","Giải trí","Du lịch"};
 
-        if(khoanthu.equals("Khoản thu")){
-            for (int i = 0; i<= 1; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+        if (khoanthu.equals("Khoản thu")) {
+            for (int i = 0; i <= 1; i++) { //sau nay co them vao thi tang n danh muc thì i<= n - 1
                 TaoSanDanhMucThuChiChoViCaNhan(khoanthu,danhmucthuchovicanhan[i]);
             }
-            for (int i = 0; i<= 0;i++ ){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+            for (int i = 0; i <= 0; i++ ) { //sau nay co them vao thi tang n danh muc thì i<= n - 1
                 TaoSanDanhMucThuChiChoViGiaDinh(khoanthu,danhmucthuchovigiadinh[i]);
             }
-            for (int i = 0; i<= 1; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+            for (int i = 0; i <= 1; i++) { //sau nay co them vao thi tang n danh muc thì i<= n - 1
                 TaoSanDanhMucThuChiChoViTietKiem(khoanthu,danhmucthuchovitietkiem[i]);
             }
         }
-        if(khoanchi.equals("Khoản chi")){
-            for (int i = 0 ; i <= 3; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+        if (khoanchi.equals("Khoản chi")) {
+            for (int i = 0 ; i <= 3; i++) { //sau nay co them vao thi tang n danh muc thì i<= n - 1
                 TaoSanDanhMucThuChiChoViCaNhan(khoanchi,danhmucchichovicanhan[i]);
             }
-            for(int i = 0; i<= 2; i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+            for (int i = 0; i <= 2; i++) { //sau nay co them vao thi tang n danh muc thì i<= n - 1
                 TaoSanDanhMucThuChiChoViGiaDinh(khoanchi,danhmucchichovigiadinh[i]);
             }
-            for (int i = 0; i<=2;i++){ //sau nay co them vao thi tang n danh muc thì i<= n - 1
+            for (int i = 0; i <=2 ; i++) { //sau nay co them vao thi tang n danh muc thì i<= n - 1
                 TaoSanDanhMucThuChiChoViTietKiem(khoanchi,danhmucchichovitietkiem[i]);
             }
         }
     }
 
     //Tao danh muc cho vi ca nhan
-    public void TaoSanDanhMucThuChiChoViCaNhan(String loaikhoan,String tendanhmuc){
+    public void TaoSanDanhMucThuChiChoViCaNhan(String loaikhoan,String tendanhmuc) {
         int madanhmuc = 1;
         cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
         if (cursor.moveToLast()) {
@@ -335,14 +321,14 @@ public class MainActivity extends AppCompatActivity {
         int mavi = 1;
         cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
         cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")){
+        while (!cursor.isAfterLast()) {
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Cá nhân")) {
                 mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
             }
             cursor.moveToNext();
         }
 
-        if(loaikhoan.equals("Khoản thu")){
+        if (loaikhoan.equals("Khoản thu")) {
             ContentValues contentValuesthu1 = new ContentValues();
             contentValuesthu1.put("madanhmuc", madanhmuc);
             contentValuesthu1.put("tendanhmuc", tendanhmuc);
@@ -352,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
             contentValuesthu1.put("tentaikhoan", tendangnhap);
 
             data.insert("tbldanhmucthuchi", null, contentValuesthu1);
-        }else {
+        } else {
             ContentValues contentValuesthu1 = new ContentValues();
             contentValuesthu1.put("madanhmuc", madanhmuc);
             contentValuesthu1.put("tendanhmuc", tendanhmuc);
@@ -366,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Tao danh muc cho vi gia dinh
-    public void TaoSanDanhMucThuChiChoViGiaDinh(String loaikhoan,String tendanhmuc){
+    public void TaoSanDanhMucThuChiChoViGiaDinh(String loaikhoan,String tendanhmuc) {
         int madanhmuc = 1;
         cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
         if (cursor.moveToLast() == true) {
@@ -375,14 +361,14 @@ public class MainActivity extends AppCompatActivity {
         int mavi = 1;
         cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false){
+        while (cursor.isAfterLast() == false) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Gia đình")){
                 mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
             }
             cursor.moveToNext();
         }
 
-        if(loaikhoan.equals("Khoản thu")){
+        if (loaikhoan.equals("Khoản thu")) {
             ContentValues contentValuesthu1 = new ContentValues();
             contentValuesthu1.put("madanhmuc", madanhmuc);
             contentValuesthu1.put("tendanhmuc", tendanhmuc);
@@ -392,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
             contentValuesthu1.put("tentaikhoan", tendangnhap);
 
             data.insert("tbldanhmucthuchi", null, contentValuesthu1);
-        }else {
+        } else {
             ContentValues contentValuesthu1 = new ContentValues();
             contentValuesthu1.put("madanhmuc", madanhmuc);
             contentValuesthu1.put("tendanhmuc", tendanhmuc);
@@ -406,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Tao danh muc cho vi tiet kiem
-    public void TaoSanDanhMucThuChiChoViTietKiem(String loaikhoan,String tendanhmuc){
+    public void TaoSanDanhMucThuChiChoViTietKiem(String loaikhoan,String tendanhmuc) {
         int madanhmuc = 1;
         cursor = data.rawQuery("select madanhmuc from tbldanhmucthuchi", null);
         if (cursor.moveToLast() == true) {
@@ -415,14 +401,14 @@ public class MainActivity extends AppCompatActivity {
         int mavi = 1;
         cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'", null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false){
-            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Tiết kiệm")){
+        while (cursor.isAfterLast() == false) {
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals("Tiết kiệm")) {
                 mavi = cursor.getInt(cursor.getColumnIndex("mavi"));
             }
             cursor.moveToNext();
         }
 
-        if(loaikhoan.equals("Khoản thu")){
+        if (loaikhoan.equals("Khoản thu")) {
             ContentValues contentValuesthu1 = new ContentValues();
             contentValuesthu1.put("madanhmuc", madanhmuc);
             contentValuesthu1.put("tendanhmuc", tendanhmuc);
@@ -432,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
             contentValuesthu1.put("tentaikhoan", tendangnhap);
 
             data.insert("tbldanhmucthuchi", null, contentValuesthu1);
-        }else {
+        } else {
             ContentValues contentValuesthu1 = new ContentValues();
             contentValuesthu1.put("madanhmuc", madanhmuc);
             contentValuesthu1.put("tendanhmuc", tendanhmuc);

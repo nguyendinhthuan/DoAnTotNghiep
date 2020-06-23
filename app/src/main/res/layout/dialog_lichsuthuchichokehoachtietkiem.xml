@@ -20,38 +20,40 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chuyển tiền"
+                android:text="Thu chi cho kế hoạch tiết kiệm"
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/textView_DanhSachThuChiChoKeHoachTietKiemTrong"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp">
+        android:layout_height="wrap_content"
+        android:text="Danh sách trống"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:gravity="center"/>
+
+    <ListView
+        android:id="@+id/listView_ThuChiChoKeHoachTietKiem"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:dividerHeight="3dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp">
 
         <Button
-            android:id="@+id/btnChuyen"
+            android:id="@+id/button_HuyThuChiChoKeHoach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/confirm_button"
-            android:text="Chuyển"
-            android:textStyle="bold"/>
-
-        <Button
-            android:id="@+id/btnHuyChuyenTien"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/cancel_button"
-            android:text="Hủy"
-            android:layout_marginLeft="50dp"
-            android:textStyle="bold"/>
-    </LinearLayout>
+            android:text="Đóng"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+    </RelativeLayout>
 </LinearLayout>

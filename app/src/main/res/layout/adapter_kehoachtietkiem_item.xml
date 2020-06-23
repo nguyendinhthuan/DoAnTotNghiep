@@ -43,54 +43,12 @@
         android:textColor="#000000"/>
 
     <TextView
-        android:id="@+id/txtNgayBatDauTieuDe"
-        android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtTenKeHoachTietKiem"
-        android:layout_height="wrap_content"
-        android:text="Ngày bắt đầu:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000"
-        android:layout_marginRight="5dp"/>
-
-    <TextView
-        android:id="@+id/txtNgayBatDauKeHoachTietKiem"
-        android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/txtNgayBatDauTieuDe"
-        android:layout_below="@id/txtTenKeHoachTietKiemTieuDe"
-        android:layout_height="wrap_content"
-        android:text="Ngay bat dau"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:id="@+id/txtNgayKetThucKeHoachTietKiem"
-        android:layout_width="wrap_content"
-        android:layout_toRightOf="@id/txtNgayKetThucTieuDe"
-        android:layout_below="@id/txtNgayBatDauTieuDe"
-        android:layout_height="wrap_content"
-        android:text="Ngay ket thuc"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000"/>
-
-    <TextView
-        android:id="@+id/txtNgayKetThucTieuDe"
-        android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtNgayBatDauTieuDe"
-        android:layout_height="wrap_content"
-        android:text="Ngày kết thúc:"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000"
-        android:layout_marginRight="5dp"/>
-
-    <TextView
         android:id="@+id/txtSoTienDaTietKiemTieuDe"
         android:layout_width="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtNgayKetThucTieuDe"
+        android:layout_below="@id/txtTenKeHoachTietKiemTieuDe"
         android:layout_height="wrap_content"
-        android:text="Đã tiết kiệm được:"
+        android:text="Đã tiết kiệm:"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"
         android:layout_marginRight="5dp"/>
@@ -99,7 +57,7 @@
         android:id="@+id/txtSoTienDaTietKiem"
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/txtSoTienDaTietKiemTieuDe"
-        android:layout_below="@id/txtNgayKetThucTieuDe"
+        android:layout_below="@id/txtTenKeHoachTietKiemTieuDe"
         android:layout_height="wrap_content"
         android:text="Tien:"
         android:textAppearance="?android:attr/textAppearanceMedium"

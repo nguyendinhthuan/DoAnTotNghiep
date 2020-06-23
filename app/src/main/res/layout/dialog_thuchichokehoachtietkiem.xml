@@ -117,7 +117,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="25dp">
 
@@ -131,7 +131,7 @@
             android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/button_HuyThuChiChoKeHoach"
+            android:id="@+id/button_HuyThuChiChoKeHoachTietKiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

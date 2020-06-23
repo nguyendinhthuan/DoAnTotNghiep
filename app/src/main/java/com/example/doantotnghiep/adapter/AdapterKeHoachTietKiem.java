@@ -36,15 +36,11 @@ public class AdapterKeHoachTietKiem extends ArrayAdapter<ArrayKeHoachTietKiem> {
         view = in.inflate(id, null);
         if (arr.size()>0 && position>=0) {
             tenkehoachtietkiem = (TextView) view.findViewById(R.id.txtTenKeHoachTietKiem);
-            ngayketthuckehoachtietkiem = (TextView) view.findViewById(R.id.txtNgayKetThucKeHoachTietKiem);
-            ngaybatdaukehoachtietkiem = (TextView) view.findViewById(R.id.txtNgayBatDauKeHoachTietKiem);
             sotienkehoachtietkiem = (TextView) view.findViewById(R.id.txtSoTienKeHoachTietKiem);
             trangthai = (TextView) view.findViewById(R.id.txtTrangThaiKeHoachTietKiem);
             sotiendatietkiem = (TextView) view.findViewById(R.id.txtSoTienDaTietKiem);
 
             tenkehoachtietkiem.setText(arr.get(position).tenkehoachtietkiem);
-            ngayketthuckehoachtietkiem.setText(arr.get(position).ngayketthuckehoachtietkiem);
-            ngaybatdaukehoachtietkiem.setText(arr.get(position).ngaybatdaukehoachtietkiem);
             sotienkehoachtietkiem.setText(DoiSoSangTien(arr.get(position).sotienkehoachtietkiem));
             trangthai.setText(arr.get(position).trangthai);
             trangthai.setTextColor(Color.BLUE);
