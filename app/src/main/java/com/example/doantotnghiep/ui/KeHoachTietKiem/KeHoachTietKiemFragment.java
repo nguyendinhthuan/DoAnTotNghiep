@@ -496,7 +496,7 @@ public class KeHoachTietKiemFragment extends Fragment {
             if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arrayKeHoachTietKiem.get(vitri).makehoachtietkiem) {
                 sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
                 sotienkehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotienkehoachtietkiem"));
-                if (sotienkehoachtietkiem == sotiendatietkiemchokehoachtietkiem) {
+                if (sotiendatietkiemchokehoachtietkiem >= sotienkehoachtietkiem) {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("trangthai", trangthai);
                     data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + arrayKeHoachTietKiem.get(vitri).makehoachtietkiem + "'", null);
