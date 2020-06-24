@@ -43,7 +43,13 @@ public class AdapterKeHoachTietKiem extends ArrayAdapter<ArrayKeHoachTietKiem> {
             tenkehoachtietkiem.setText(arr.get(position).tenkehoachtietkiem);
             sotienkehoachtietkiem.setText(DoiSoSangTien(arr.get(position).sotienkehoachtietkiem));
             trangthai.setText(arr.get(position).trangthai);
-            trangthai.setTextColor(Color.BLUE);
+            if (trangthai.getText().toString().equals("Đã kết thúc - Kế hoạch thành công")) {
+                trangthai.setTextColor(Color.parseColor("#2FB400"));
+            } else if (trangthai.getText().toString().equals("Đã kết thúc - Kế hoạch thất bại")) {
+                trangthai.setTextColor(Color.RED);
+            } else if (trangthai.getText().toString().equals("Đang thực hiện")) {
+                trangthai.setTextColor(Color.BLUE);
+            }
             sotiendatietkiem.setText(DoiSoSangTien(arr.get(position).sotiendatietkiem));
         }
         return view;
