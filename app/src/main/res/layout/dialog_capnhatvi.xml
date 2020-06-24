@@ -21,30 +21,32 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
     </androidx.appcompat.widget.Toolbar>
+
     <TextView
         android:id="@+id/textView_NhapTenViCapNhat"
         style="@style/WhiteText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tên ví"
         android:textAppearance="?android:attr/textAppearance"
         android:textColor="#000000"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="15dp"/>
 
     <EditText
         android:id="@+id/editText_NhapTenViCapNhat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
+        android:hint="Nhập tên ví"
         android:background="@drawable/main_edittext"
         android:inputType="text" />
 
     <TextView
         android:id="@+id/textView_NhapMoTaViCapNhat"
         style="@style/WhiteText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:text="Mô tả ví"
         android:textAppearance="?android:attr/textAppearance"
         android:textColor="#000000" />
@@ -53,16 +55,16 @@
         android:id="@+id/editText_NhapMoTaViCapNhat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/main_edittext"
-        />
+        android:hint="Nhập mô tả ví"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/main_edittext" />
 
     <TextView
         android:id="@+id/textView_NhapSoTienCapNhat"
         style="@style/WhiteText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="15dp"
         android:text="Số tiền"
         android:textAppearance="?android:attr/textAppearance"
         android:textColor="#000000" />
@@ -71,25 +73,22 @@
         android:id="@+id/editText_NhapSoTienCapNhat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/main_edittext"
-        android:inputType="number"
-        />
+        android:inputType="number" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp">
 
         <Button
             android:id="@+id/button_LuuCapNhatVi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="60dp"
             android:background="@drawable/confirm_button"
-            android:ems="8"
             android:text="Lưu"
             android:textStyle="bold"/>
 
@@ -97,14 +96,10 @@
             android:id="@+id/button_HuyCapNhatVi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60dp"
             android:background="@drawable/cancel_button"
-            android:ems="8"
             android:text="Hủy"
             android:textStyle="bold"/>
-    </LinearLayout>
-
+    </RelativeLayout>
 </LinearLayout>
