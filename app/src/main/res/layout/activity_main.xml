@@ -70,6 +70,7 @@
                             android:background="@drawable/main_edittext"
                             android:drawableLeft="@mipmap/user_icon"
                             android:drawablePadding="3dp"
+                            android:hint="Nhập tên đăng nhập"
                             android:singleLine="true" />
                     </TableRow>
 
@@ -101,6 +102,7 @@
                             android:drawableLeft="@mipmap/password_icon"
                             android:drawablePadding="3dp"
                             android:inputType="textPassword"
+                            android:hint="Nhập mật khẩu"
                             android:singleLine="true" />
                     </TableRow>
 

@@ -146,7 +146,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         } else {
 
             ContentValues contentValues = new ContentValues();
-            int sdt = Integer.parseInt(editText_SoDienThoai.getText().toString());
+            String sdt = editText_SoDienThoai.getText().toString();
             contentValues.put("hovaten", editText_HoTen.getText().toString());
             contentValues.put("diachi", editText_DiaChi.getText().toString());
             contentValues.put("sodienthoai", sdt);
@@ -281,7 +281,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         {
             txt_TenNguoiDung.setText(cursor.getString(3));
             txt_DiaChi.setText(cursor.getString(4));
-            txt_SDT.setText(String.valueOf(cursor.getInt(5)));
+            txt_SDT.setText(cursor.getString(5));
             txt_Email.setText(cursor.getString(6));
         }
          cursor.moveToNext();
@@ -298,7 +298,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             {
                 editText_HoTen.setText(cursor.getString(3));
                 editText_DiaChi.setText(cursor.getString(4));
-                editText_SoDienThoai.setText(String.valueOf(cursor.getInt(5)));
+                editText_SoDienThoai.setText(cursor.getString(5));
                 editText_Email.setText(cursor.getString(6));
             }
             cursor.moveToNext();

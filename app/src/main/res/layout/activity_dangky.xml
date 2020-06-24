@@ -20,9 +20,9 @@
 
             <TextView
                 android:id="@+id/txtTendangnhapdangky"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/tendangnhap"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="#000000" />
@@ -31,14 +31,15 @@
                 android:id="@+id/editText_TenTaiKhoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:hint="Nhập tên đăng nhập"
                 android:background="@drawable/main_edittext" />
 
             <TextView
                 android:id="@+id/txtMatkhaudangky"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/matkhau"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="#000000" />
@@ -47,22 +48,24 @@
                 android:id="@+id/editText_MatKhau"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:hint="Nhập mật khẩu"
                 android:background="@drawable/main_edittext"
                 android:inputType="textPassword" />
 
             <TextView
                 android:id="@+id/txtMasodangky"
                 style="@style/WhiteText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/mabimat"
+                android:layout_marginTop="15dp"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="#000000" />
 
             <TextView
                 android:id="@+id/txtLuuydangky"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/luuy"
                 android:textColor="#ff0900" />
@@ -71,7 +74,8 @@
                 android:id="@+id/editText_MaSoBiMat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:hint="Nhập mã số bí mật"
                 android:background="@drawable/main_edittext"
                 android:inputType="numberPassword"/>
         </LinearLayout>
@@ -82,24 +86,22 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/main_button"
-            android:ems="6"
             android:onClick="XoaTrang"
             android:text="@string/xoatrang"
             android:textStyle="bold"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/btnDangkydangky"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/confirm_button"
-                android:ems="9"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="60dp"
                 android:onClick="DangKy"
                 android:text="@string/dangky"
                 android:textStyle="bold"/>
@@ -108,14 +110,13 @@
                 android:id="@+id/btnHuyDangKy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/cancel_button"
-                android:ems="9"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="60dp"
                 android:onClick="ThoatDangKy"
                 android:text="Hủy"
                 android:textStyle="bold"/>
-        </LinearLayout>
-
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

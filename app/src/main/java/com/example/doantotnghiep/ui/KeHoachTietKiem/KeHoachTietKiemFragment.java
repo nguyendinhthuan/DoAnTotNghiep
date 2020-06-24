@@ -490,7 +490,7 @@ public class KeHoachTietKiemFragment extends Fragment {
 
     public void KiemTraSoTienTietKiemBangSoTienBanDau() {
         String trangthai = "Đã hoàn thành";
-        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
+        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arrayKeHoachTietKiem.get(vitri).makehoachtietkiem) {
@@ -512,7 +512,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         calendar = Calendar.getInstance();
         date = calendar.getTime();
 
-        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "'", null);
+        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "' and trangthai = 'Chưa hoàn thành'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arrayKeHoachTietKiem.get(vitri).makehoachtietkiem) {
