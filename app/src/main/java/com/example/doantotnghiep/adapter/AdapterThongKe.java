@@ -92,7 +92,7 @@ public class AdapterThongKe extends BaseExpandableListAdapter {
         if (groupPosition == 0) {
             txtTenNhomNho.setText(arrthu.get(childPosition).TenThongKe);
             txtTien.setText(DoiSoSangTien(arrthu.get(childPosition).TienThongKe));
-            txtTien.setTextColor(Color.BLUE);
+            txtTien.setTextColor(Color.parseColor("#2FB400"));
             view.setBackgroundColor(Color.parseColor("#EEEEEE"));
         } else {
             txtTenNhomNho.setText(arrchi.get(childPosition).TenThongKe);

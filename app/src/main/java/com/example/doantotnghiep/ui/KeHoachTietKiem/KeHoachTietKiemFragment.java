@@ -38,6 +38,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,7 @@ import com.example.doantotnghiep.adapter.AdapterKeHoachTietKiem;
 import com.example.doantotnghiep.adapter.AdapterThuChi;
 import com.example.doantotnghiep.adapter.AdapterThuChiChoKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayKeHoachTietKiem;
+import com.example.doantotnghiep.model.ArrayLichSuChuyenTien;
 import com.example.doantotnghiep.model.ArrayThuChi;
 import com.example.doantotnghiep.model.ArrayThuChiChoKeHoachTietKiem;
 
@@ -82,14 +84,15 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Spinner spinner_LoaiThuChiChoKeHoach;
     private TextView textView_NgayThucHienThuChiChoKeHoach, textView_Toolbar;
     private Button button_LuuThuChiChoKeHoach, button_HuyThuChiChoKeHoach, button_HuyThuChiChoKeHoachTietKiem;
-    private String[] arrSpinner;
-    private ArrayAdapter<String> adapterSpinner;
+    private String[] arrSpinner, arrTrangThaiKeHoachTietKiem;
+    private ArrayAdapter<String> adapterSpinner, adapterTrangThaiKeHoachTietKiem;
     private int sotienthuchichokehoach, sotiendatietkiemchokehoachtietkiem, sotienkehoachtietkiem;
     private ArrayList<ArrayThuChiChoKeHoachTietKiem> arrayThuChiChoKeHoachTietKiem;
     private AdapterThuChiChoKeHoachTietKiem adapterThuChiChoKeHoachTietKiem;
     private EditText editText_TenKeHoachTietKiem_ChiTiet, editText_SoTienKeHoachTietKiem_ChiTiet;
     private Button button_NgayBatDauKeHoachTietKiem_ChiTiet, button_NgayKetThucKeHoachTietKiem_ChiTiet, button_HuyKeHoachTietKiem_ChiTiet;
-
+    private Spinner spinner_TrangThaiKeHoachTietKiem;
+    private RadioGroup radioGroup_KeHoachTietKiem;
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -114,6 +117,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         date = new Date();
 
         AnhXa();
+        //LoadSpinnerTrangThaiCuaKeHoachTietKiem();
         ThemKeHoachTietKiem();
         setListview();
         LoadTatCaKeHoachTietKiem();
@@ -170,6 +174,16 @@ public class KeHoachTietKiemFragment extends Fragment {
         listView_KeHoachTietKiem = (ListView) myFragment.findViewById(R.id.listView_KeHoachTietKiem);
         imageButton_ThemKeHoachTietKiem = (ImageButton) myFragment.findViewById(R.id.imageButton_ThemKeHoachTietKiem);
         textView_DanhSachKeHoachTietKiemTrong = (TextView) myFragment.findViewById(R.id.textView_DanhSachKeHoachTietKiemTrong);
+        spinner_TrangThaiKeHoachTietKiem = (Spinner) myFragment.findViewById(R.id.spinner_TrangThaiKeHoachTietKiem);
+        radioGroup_KeHoachTietKiem = (RadioGroup) myFragment.findViewById(R.id.radioGroup_KeHoachTietKiem);
+        radioGroup_KeHoachTietKiem.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                LoadKeHoachTietKiemTheoRadioButton(group, checkedId);
+            }
+        });
+
+        spinner_TrangThaiKeHoachTietKiem.setVisibility(View.INVISIBLE);
     }
 
     public void ThemKeHoachTietKiem() {
@@ -379,12 +393,31 @@ public class KeHoachTietKiemFragment extends Fragment {
         }
     }
 
-    public void LoadSpinner() {
-        //Spinner loai thu chi cho ke hoach tiet kiem
+    //Spinner loai thu chi cho ke hoach tiet kiem
+    public void LoadSpinnerThuChiChoKeHoachTietKiem() {
         arrSpinner = getResources().getStringArray(R.array.loaithuchichokehoachtietkiem);
         adapterSpinner = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrSpinner);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_LoaiThuChiChoKeHoach.setAdapter(adapterSpinner);
+    }
+
+    //Spinner loc ke hoach tiet kiem theo trang thai
+    public void LoadSpinnerTrangThaiCuaKeHoachTietKiem() {
+        arrTrangThaiKeHoachTietKiem = getResources().getStringArray(R.array.trangthaicuakehoachtietkiem);
+        adapterTrangThaiKeHoachTietKiem = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, arrTrangThaiKeHoachTietKiem);
+        adapterTrangThaiKeHoachTietKiem.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_TrangThaiKeHoachTietKiem.setAdapter(adapterTrangThaiKeHoachTietKiem);
+        spinner_TrangThaiKeHoachTietKiem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LoadKeHoachTietKiemTheoTrangThai();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void ThuVaoChoKeHoachTietKiem() {
@@ -407,7 +440,7 @@ public class KeHoachTietKiemFragment extends Fragment {
 
         //Xu ly
         HienThiThoiGianThemThuChiChoKeHoachTietKiem();
-        LoadSpinner();
+        LoadSpinnerThuChiChoKeHoachTietKiem();
 
         button_LuuThuChiChoKeHoach.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -442,7 +475,6 @@ public class KeHoachTietKiemFragment extends Fragment {
 
                         d.dismiss();
 
-                        LoadTatCaKeHoachTietKiem();
                         LoadTatCaKeHoachTietKiem();
                     } else {
                         Toast.makeText(activity, "Thêm thất bại", Toast.LENGTH_SHORT).show();
@@ -616,5 +648,31 @@ public class KeHoachTietKiemFragment extends Fragment {
                 d.dismiss();
             }
         });
+    }
+
+    public void LoadKeHoachTietKiemTheoTrangThai() {
+        arrayKeHoachTietKiem.clear();
+        Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "' " +
+                "and trangthai = '" + spinner_TrangThaiKeHoachTietKiem.getSelectedItem().toString() + "'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+            arrayKeHoachTietKiem.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        adapterKeHoachTietKiem.notifyDataSetChanged();
+    }
+
+    public void LoadKeHoachTietKiemTheoRadioButton(RadioGroup radioGroup, int checkedID) {
+        int checkedid = radioGroup.getCheckedRadioButtonId();
+
+        spinner_TrangThaiKeHoachTietKiem.setVisibility(View.INVISIBLE);
+        if (checkedid == R.id.radioButton_TatCaKeHoachTietKiem) {
+            spinner_TrangThaiKeHoachTietKiem.setVisibility(View.INVISIBLE);
+            LoadTatCaKeHoachTietKiem();
+        } else if (checkedid == R.id.radioButton_LocKeHoachTietKiemTheoTrangThai) {
+            LoadSpinnerTrangThaiCuaKeHoachTietKiem();
+            spinner_TrangThaiKeHoachTietKiem.setVisibility(View.VISIBLE);
+        }
     }
 }

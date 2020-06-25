@@ -29,7 +29,7 @@
     <TextView
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Loại thu chi:"
+        android:text="Loại thu chi"
         android:textColor="#000000"
         android:layout_marginTop="15dp"/>
 
@@ -40,7 +40,7 @@
         android:layout_marginTop="10dp"/>
 
     <TextView
-        android:text="Chọn ví:"
+        android:text="Chọn ví"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
@@ -53,7 +53,7 @@
         android:layout_marginTop="10dp"/>
 
     <TextView
-        android:text="Danh mục:"
+        android:text="Danh mục"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
@@ -65,85 +65,67 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"/>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="Nhập số tiền:"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:layout_marginTop="15dp"/>
-
-            <EditText
-                android:id="@+id/editText_SoTienThuChi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:background="@drawable/main_edittext"
-                android:textColor="#000000"
-                android:hint="Nhập số tiền muốn thu chi"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:text="Nhập mô tả:"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#000000"
-                android:layout_marginTop="15dp"/>
-
-            <EditText
-                android:id="@+id/editText_MoTaThuChi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/main_edittext"
-                android:textColor="#000000"
-                android:hint="Nhập mô tả cho khoản thu chi"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"/>
-        </TableRow>
-    </TableLayout>
-
     <TextView
-        android:text="Thời gian:"
+        android:text="Nhập số tiền"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000000"
         android:layout_marginTop="15dp"/>
 
+    <EditText
+        android:id="@+id/editText_SoTienThuChi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:background="@drawable/main_edittext"
+        android:textColor="#000000"
+        android:hint="Nhập số tiền muốn thu chi"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:text="Nhập mô tả"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        android:id="@+id/editText_MoTaThuChi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_edittext"
+        android:textColor="#000000"
+        android:hint="Nhập mô tả cho khoản thu chi"
+        android:layout_marginTop="10dp" />
+
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:text="Thời gian thực hiện"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000" />
+
             <Button
                 android:id="@+id/button_NgayThuChi"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/main_edittext"
                 android:textColor="#000000"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginLeft="10dp"/>
 
             <Button
                 android:id="@+id/button_ThoiGianHienTai"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hiện tại"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="15dp"
                 android:background="@drawable/main_edittext"/>
         </TableRow>

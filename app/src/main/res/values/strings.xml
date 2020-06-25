@@ -97,5 +97,12 @@
         <item>Tổng thu</item>
         <item>Tổng chi</item>
     </string-array>
+
+    <!--Trạng thái của kế hoạch tiết kiệm-->
+    <string-array name="trangthaicuakehoachtietkiem">
+        <item>Đang thực hiện</item>
+        <item>Đã kết thúc - Kế hoạch thành công</item>
+        <item>Đã kết thúc - Kế hoạch thất bại</item>
+    </string-array>
     <string name="title_activity_tai_khoan">TaiKhoanActivity</string>
 </resources>
