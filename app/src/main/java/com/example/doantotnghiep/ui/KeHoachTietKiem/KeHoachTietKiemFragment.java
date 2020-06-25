@@ -144,7 +144,12 @@ public class KeHoachTietKiemFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_ThuChoKeHoachTietKiem: {
-                ThuVaoChoKeHoachTietKiem();
+                if(KiemTraTrangThaiKeHoach(vitri)){
+                    ThuVaoChoKeHoachTietKiem();
+                }else {
+                    Toast.makeText(activity,"Kế hoạch đã kết thúc",Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
             }
             case R.id.option_XoaKeHoachTietKiem: {
@@ -164,10 +169,20 @@ public class KeHoachTietKiemFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        MenuItem item = menu.findItem(R.id.option_ThuChoKeHoachTietKiem);
-        item.setEnabled(false);
+    //Kiem tra trang thai ke hoach de thuc hien thu chi
+    public boolean KiemTraTrangThaiKeHoach(int vitrichon){
+        int makehoach = arrayKeHoachTietKiem.get(vitrichon).makehoachtietkiem;
+        Cursor cursor = data.rawQuery("Select* from tblkehoachtietkiem where tentaikhoan ='"+ taikhoan +"'",null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            if(cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == makehoach){
+                if(cursor.getString(cursor.getColumnIndex("trangthai")).equals("Chưa hoàn thành")){
+                    return true;
+                }
+            }
+            cursor.moveToNext();
+        }
+        return false;
     }
 
     public void AnhXa() {

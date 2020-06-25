@@ -195,7 +195,7 @@ public class QuanLyViFragment extends Fragment {
                 }else  if (editText_SoTienChuyen.getText().toString().equals("")){
                     Toast.makeText(activity,"Bạn chưa nhập số tiền chuyển",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
-                } else if (KiemTraChuyenTien() == false) {
+                } else if (!KiemTraChuyenTien()) {
                     Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
                 } else {
@@ -222,7 +222,7 @@ public class QuanLyViFragment extends Fragment {
         tenvichuyentoi = spinner_ViNhanDialog.getSelectedItem().toString();
         cursor = data.rawQuery("select* from tblvi",null);
         cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
                 editText_TienCuaViChuyen.setText(String.valueOf(sotienvichon));
@@ -268,7 +268,7 @@ public class QuanLyViFragment extends Fragment {
 
         //Luu lich su vao database
         cursor = data.rawQuery("select malichsuchuyentien from tbllichsuchuyentien", null);
-        if (cursor.moveToLast() == true) {
+        if (cursor.moveToLast()) {
             malichsuchuyentien = cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")) + 1;
         }
         String thongbao = "";
@@ -304,7 +304,7 @@ public class QuanLyViFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan +"'", null);
         cursor.moveToFirst();
         listDialog = new ArrayList<ArrayVi>();
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             arrMaViDialog.add(cursor.getInt(cursor.getColumnIndex("mavi")));
             arrTenViDialog.add(cursor.getString(cursor.getColumnIndex("tenvi")));
             cursor.moveToNext();
@@ -329,11 +329,11 @@ public class QuanLyViFragment extends Fragment {
                 d.show();
 
                 //AnhXa
-                button_LuuVi = (Button) d.findViewById(R.id.button_LuuVi);
-                button_ThoatVi = (Button) d.findViewById(R.id.button_ThoatVi);
-                editText_TenVi = (EditText) d.findViewById(R.id.editText_TenVi);
-                editText_MoTaVi = (EditText) d.findViewById(R.id.editText_MoTaVi);
-                editText_SoTienVi = (EditText) d.findViewById(R.id.editText_SoTienVi);
+                button_LuuVi =  d.findViewById(R.id.button_LuuVi);
+                button_ThoatVi =  d.findViewById(R.id.button_ThoatVi);
+                editText_TenVi =  d.findViewById(R.id.editText_TenVi);
+                editText_MoTaVi = d.findViewById(R.id.editText_MoTaVi);
+                editText_SoTienVi =  d.findViewById(R.id.editText_SoTienVi);
 
                 //Xuly
                button_LuuVi.setOnClickListener(new View.OnClickListener() {
@@ -430,7 +430,7 @@ public class QuanLyViFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + taikhoan + "'", null);
         cursor.moveToFirst();
         list = new ArrayList<ArrayVi>();
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             ArrayVi a = new ArrayVi();
             a.setMavi(cursor.getInt(0));
             a.setTenvi(cursor.getString(1));
@@ -454,12 +454,12 @@ public class QuanLyViFragment extends Fragment {
                 d.getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
                 d.show();
                 //AnhXa
-                editText_NhapTenViCapNhat = (EditText) d.findViewById(R.id.editText_NhapTenViCapNhat);
-                editText_NhapMoTaViCapNhat = (EditText) d.findViewById(R.id.editText_NhapMoTaViCapNhat);
-                editText_NhapSoTienViCapNhat = (EditText) d.findViewById(R.id.editText_NhapSoTienCapNhat);
+                editText_NhapTenViCapNhat =  d.findViewById(R.id.editText_NhapTenViCapNhat);
+                editText_NhapMoTaViCapNhat =  d.findViewById(R.id.editText_NhapMoTaViCapNhat);
+                editText_NhapSoTienViCapNhat =  d.findViewById(R.id.editText_NhapSoTienCapNhat);
                 editText_NhapSoTienViCapNhat.setEnabled(false);
-                button_LuuCapNhatVi = (Button) d.findViewById(R.id.button_LuuCapNhatVi);
-                button_HuyCapNhatVi = (Button) d.findViewById(R.id.button_HuyCapNhatVi);
+                button_LuuCapNhatVi = d.findViewById(R.id.button_LuuCapNhatVi);
+                button_HuyCapNhatVi =  d.findViewById(R.id.button_HuyCapNhatVi);
                 //LayThongTinViLenDialog
                 if (!LayThongTinLenDialogSua()){
                     editText_NhapTenViCapNhat.setEnabled(false);
