@@ -43,6 +43,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterKeHoachTietKiem;
 import com.example.doantotnghiep.adapter.AdapterThuChi;
@@ -70,7 +71,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private ImageButton imageButton_ThemKeHoachTietKiem;
     private Button button_LuuKeHoachTietKiem, button_HuyKeHoachTietKiem, button_NgayBatDauKeHoachTietKiem,
             button_NgayKetThucKeHoachTietKiem;
-    private EditText editText_TenKeHoachTietKiem, editText_SoTienKeHoachTietKiem;
+    private EditText editText_TenKeHoachTietKiem;
     private ListView listView_KeHoachTietKiem, listView_ThuChiChoKeHoachTietKiem;
     private Calendar calendar;
     private Date date;
@@ -80,7 +81,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private AdapterKeHoachTietKiem adapterKeHoachTietKiem;
     private boolean danhsachkehoachtietkiem = false, danhsachthuchichokehoachtietkiem = false;
     private TextView textView_DanhSachKeHoachTietKiemTrong, textView_DanhSachThuChiChoKeHoachTietKiemTrong;
-    private EditText editText_SoTienThuChiChoKeHoach, editText_MoTaThuChiChoKeHoach;
+    private EditText editText_MoTaThuChiChoKeHoach;
     private Spinner spinner_LoaiThuChiChoKeHoach;
     private TextView textView_NgayThucHienThuChiChoKeHoach, textView_Toolbar;
     private Button button_LuuThuChiChoKeHoach, button_HuyThuChiChoKeHoach, button_HuyThuChiChoKeHoachTietKiem;
@@ -93,6 +94,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Button button_NgayBatDauKeHoachTietKiem_ChiTiet, button_NgayKetThucKeHoachTietKiem_ChiTiet, button_HuyKeHoachTietKiem_ChiTiet;
     private Spinner spinner_TrangThaiKeHoachTietKiem;
     private RadioGroup radioGroup_KeHoachTietKiem;
+    private AutoFormatEditText editText_SoTienThuChiChoKeHoach, editText_SoTienKeHoachTietKiem;
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -144,12 +146,11 @@ public class KeHoachTietKiemFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_ThuChoKeHoachTietKiem: {
-                if(KiemTraTrangThaiKeHoach(vitri)){
+                if (KiemTraTrangThaiKeHoach(vitri)) {
                     ThuVaoChoKeHoachTietKiem();
-                }else {
+                } else {
                     Toast.makeText(activity,"Kế hoạch đã kết thúc",Toast.LENGTH_SHORT).show();
                 }
-
                 return true;
             }
             case R.id.option_XoaKeHoachTietKiem: {
@@ -176,7 +177,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             if(cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == makehoach){
-                if(cursor.getString(cursor.getColumnIndex("trangthai")).equals("Chưa hoàn thành")){
+                if(cursor.getString(cursor.getColumnIndex("trangthai")).equals("Đang thực hiện")){
                     return true;
                 }
             }
@@ -217,7 +218,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                 editText_TenKeHoachTietKiem = (EditText) d.findViewById(R.id.editText_TenKeHoachTietKiem);
                 button_NgayBatDauKeHoachTietKiem = (Button) d.findViewById(R.id.button_NgayBatDauKeHoachTietKiem);
                 button_NgayKetThucKeHoachTietKiem = (Button) d.findViewById(R.id.button_NgayKetThucKeHoachTietKiem);
-                editText_SoTienKeHoachTietKiem = (EditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem);
+                editText_SoTienKeHoachTietKiem = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem);
 
                 calendar = Calendar.getInstance();
 
@@ -272,7 +273,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                             contentValues.put("tenkehoachtietkiem", editText_TenKeHoachTietKiem.getText().toString());
                             contentValues.put("ngaybatdaukehoachtietkiem", button_NgayBatDauKeHoachTietKiem.getText().toString());
                             contentValues.put("ngayketthuckehoachtietkiem", button_NgayKetThucKeHoachTietKiem.getText().toString());
-                            contentValues.put("sotienkehoachtietkiem", editText_SoTienKeHoachTietKiem.getText().toString());
+                            contentValues.put("sotienkehoachtietkiem", editText_SoTienKeHoachTietKiem.getText().toString().replaceAll(",", ""));
                             contentValues.put("sotiendatietkiem", 0);
                             contentValues.put("trangthai", "Đang thực hiện");
                             contentValues.put("tentaikhoan", taikhoan);
@@ -444,7 +445,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         d.show();
 
         //Anh xa
-        editText_SoTienThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_SoTienThuChiChoKeHoach);
+        editText_SoTienThuChiChoKeHoach = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienThuChiChoKeHoach);
         editText_MoTaThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_MoTaThuChiChoKeHoachTietKiem);
         textView_NgayThucHienThuChiChoKeHoach = (TextView) d.findViewById(R.id.textView_NgayThucHienThuChiChoKeHoachTietKiem);
         button_LuuThuChiChoKeHoach = (Button) d.findViewById(R.id.button_LuuThuChiChoKeHoach);
@@ -476,7 +477,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("mathuchichokehoachtietkiem", mathuchichokehoachtietkiem);
                     contentValues.put("loaithuchichokehoachtietkiem", spinner_LoaiThuChiChoKeHoach.getSelectedItem().toString());
-                    contentValues.put("sotienthuchichokehoachtietkiem", editText_SoTienThuChiChoKeHoach.getText().toString());
+                    contentValues.put("sotienthuchichokehoachtietkiem", editText_SoTienThuChiChoKeHoach.getText().toString().replaceAll(",", ""));
                     contentValues.put("motathuchichokehoachtietkiem", editText_MoTaThuChiChoKeHoach.getText().toString());
                     contentValues.put("ngaythuchienthuchichokehoachtietkiem", textView_NgayThucHienThuChiChoKeHoach.getText().toString());
                     contentValues.put("makehoachtietkiem", arrayKeHoachTietKiem.get(vitri).makehoachtietkiem);
@@ -520,7 +521,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     public void XuLyChuyenTienChoKeHoach() {
         int sotienthu = 0;
         int sotienchi = 0;
-        sotienthuchichokehoach = Integer.parseInt(editText_SoTienThuChiChoKeHoach.getText().toString());
+        sotienthuchichokehoach = Integer.parseInt(editText_SoTienThuChiChoKeHoach.getText().toString().replaceAll(",", ""));
 
         sotienthu = sotiendatietkiemchokehoachtietkiem + sotienthuchichokehoach;
         sotienchi = sotiendatietkiemchokehoachtietkiem - sotienthuchichokehoach;

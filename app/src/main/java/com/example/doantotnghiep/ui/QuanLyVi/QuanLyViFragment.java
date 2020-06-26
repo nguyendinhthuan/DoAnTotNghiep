@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.example.doantotnghiep.Database;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterVi;
@@ -63,7 +64,7 @@ public class QuanLyViFragment extends Fragment {
     private String taikhoan,tenvichuyen,tenvichuyentoi;
     private SharedPreferences sharedPreferences;
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
-            editText_TenVi,editText_MoTaVi,editText_SoTienVi,editText_ViChuyen,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
+            editText_TenVi,editText_MoTaVi,editText_ViChuyen,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
     private Button button_LuuVi,button_ThoatVi;
     private TextView textView_NgayThucHienChuyenTien;
     private int vitri = 0;
@@ -71,6 +72,7 @@ public class QuanLyViFragment extends Fragment {
     private Date date;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormatDialog;
+    private AutoFormatEditText editText_SoTienVi;
 
     //Chuyen tien
     private List<ArrayVi> listDialog = null;
@@ -236,10 +238,10 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public boolean KiemTraChuyenTien() {
-        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
+        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString().replaceAll(",", ""));
         if (sotiencanchuyen > sotienvichon) {
             editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
-            int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString());
+            int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString().replaceAll(",", ""));
             sotiencanchuyen =  sotiencanchuyenmin;
 
             return false;
@@ -276,7 +278,7 @@ public class QuanLyViFragment extends Fragment {
         values2.put("malichsuchuyentien", malichsuchuyentien);
         values2.put("tenvichuyen", editText_ViChuyen.getText().toString());
         values2.put("tenvinhan", spinner_ViNhanDialog.getSelectedItem().toString());
-        values2.put("sotienchuyen", editText_SoTienChuyen.getText().toString());
+        values2.put("sotienchuyen", editText_SoTienChuyen.getText().toString().replaceAll(",",""));
         values2.put("ngaythuchien", textView_NgayThucHienChuyenTien.getText().toString());
         values2.put("mavi", editText_ViChuyen.getText().toString());
         values2.put("tentaikhoan", taikhoan);
@@ -375,7 +377,7 @@ public class QuanLyViFragment extends Fragment {
                             values.put("mavi", mavi);
                             values.put("tenvi", editText_TenVi.getText().toString());
                             values.put("motavi", editText_MoTaVi.getText().toString());
-                            values.put("sotienvi", editText_SoTienVi.getText().toString());
+                            values.put("sotienvi", editText_SoTienVi.getText().toString().replaceAll(",", ""));
                             values.put("tentaikhoan", taikhoan);
 
                             if (data.insert("tblvi", null, values) != -1) {

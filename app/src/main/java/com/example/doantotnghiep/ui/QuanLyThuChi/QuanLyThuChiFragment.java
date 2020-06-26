@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterThongKe;
 import com.example.doantotnghiep.adapter.AdapterThuChi;
@@ -79,7 +80,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private RadioGroup radioGroup_ThuChi;
 
     //DialogThem
-    private EditText editText_SoTienThuChiDialog,editText_MoTaThuChiDialog;
+    private EditText editText_MoTaThuChiDialog;
     private SimpleDateFormat simpleDateFormatDialog;
     private Date date;
     private ArrayList<Integer> arrMaViDialog, arrMaDanhMucDialog;
@@ -90,6 +91,7 @@ public class QuanLyThuChiFragment extends Fragment {
     private String gioDialog, tenVi, tenviuutien ;
     private Cursor cursor;
     private int sotientuvi,sotienthuchi,sotienchi,vitri, maviuutien;
+    private AutoFormatEditText editText_SoTienThuChiDialog;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -151,7 +153,7 @@ public class QuanLyThuChiFragment extends Fragment {
                 button_NgayThuChiDialog = (Button) d.findViewById(R.id.button_NgayThuChi);
                 button_ThoiGianHienTaiDialog = (Button) d.findViewById(R.id.button_ThoiGianHienTai);
 
-                editText_SoTienThuChiDialog = (EditText) d.findViewById(R.id.editText_SoTienThuChi);
+                editText_SoTienThuChiDialog = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienThuChi);
                 editText_MoTaThuChiDialog = (EditText) d.findViewById(R.id.editText_MoTaThuChi);
 
                 spinner_LoaiThuChiDialog = (Spinner) d.findViewById(R.id.spinner_LoaiThuChi);
@@ -429,16 +431,16 @@ public class QuanLyThuChiFragment extends Fragment {
         }
 
         if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
-            sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
         } else {
-            int sotienchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            int sotienchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
             if (sotientuvi < sotienchi) {
                 editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
                 editText_SoTienThuChiDialog.startAnimation(animation);
                 Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
             } else {
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
             }
         }
     }
