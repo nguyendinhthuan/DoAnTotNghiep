@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tìm kiếm"
+            android:textSize="20dp"
             android:textColor="#000000" />
 
         <RelativeLayout
@@ -84,7 +85,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="100dp">
 
         <ListView
             android:id="@+id/listView_KeHoachTietKiem"

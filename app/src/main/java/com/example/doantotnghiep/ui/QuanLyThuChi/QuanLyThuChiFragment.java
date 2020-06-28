@@ -333,7 +333,7 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public void ChonNgayThemThuChi() {
-        final Dialog dialog = new Dialog(activity);
+        final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -358,7 +358,7 @@ public class QuanLyThuChiFragment extends Fragment {
     }
 
     public void LoadLichDeChonNgayLocThuChi() {
-        final Dialog dialog = new Dialog(activity);
+        final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -511,13 +511,13 @@ public class QuanLyThuChiFragment extends Fragment {
 
     public void LoadThuChiTheoNgay() {
         arr.clear();
-        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
+        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan, mota " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
                 " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi and tblthuchi.ngaythuchien = '" + simpleDateFormatDialog.format(date) + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan")), cursor.getString(cursor.getColumnIndex("mota"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -526,13 +526,13 @@ public class QuanLyThuChiFragment extends Fragment {
 
     public void LoadTatCaThuChi() {
         arr.clear();
-        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan " +
+        Cursor cursor = data.rawQuery("select tblthuchi.mathuchi, tblthuchi.ngaythuchien, tblthuchi.sotienthuchi, tbldanhmucthuchi.tendanhmuc, tblvi.tenvi, loaikhoan, mota " +
                 " from tblthuchi inner join tbldanhmucthuchi on tblthuchi.madanhmuc = tbldanhmucthuchi.madanhmuc " +
                 " inner join tblvi on tbldanhmucthuchi.tentaikhoan = tblvi.tentaikhoan " +
                 " where tblthuchi.tentaikhoan = '" + taikhoan + "' and tblvi.mavi = tblthuchi.mavi", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan"))));
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), cursor.getString(cursor.getColumnIndex("loaikhoan")), cursor.getString(cursor.getColumnIndex("mota"))));
             cursor.moveToNext();
         }
         cursor.close();

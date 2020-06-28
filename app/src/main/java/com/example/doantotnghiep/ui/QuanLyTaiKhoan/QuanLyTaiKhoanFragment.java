@@ -11,6 +11,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -67,6 +70,31 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         DoiMatKhauTaiKhoan();
         LayTenTaiKhoan();
         LayTongSoDu();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        activity.getMenuInflater().inflate(R.menu.menu_taikhoan, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.option_CapNhatTaiKhoan: {
+                CapNhatTaiKhoan();
+                return true;
+            }
+            case R.id.option_DoiMatKhau: {
+                DoiMatKhau();
+                return true;
+            }
+            case R.id.option_DangXuat: {
+                DangXuat();
+                return true;
+            }
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     public void LayTenTaiKhoan()

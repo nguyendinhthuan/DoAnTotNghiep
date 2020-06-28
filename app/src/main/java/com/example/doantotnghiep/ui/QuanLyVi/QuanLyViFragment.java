@@ -123,7 +123,7 @@ public class QuanLyViFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.option_Sua: {
+            case R.id.option_CapNhat: {
                 SuaVi();
                 return true;
             }

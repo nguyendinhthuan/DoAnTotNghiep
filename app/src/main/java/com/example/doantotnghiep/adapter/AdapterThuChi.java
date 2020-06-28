@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.model.ArrayThuChi;
 
+import org.w3c.dom.Text;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
     private Activity a;
     private int id;
     private ArrayList<ArrayThuChi> arr;
-    private TextView ngay, tien, danhmucthuchi, vi, loaikhoan;
+    private TextView ngay, tien, danhmucthuchi, vi, loaikhoan, mota;
 
     public AdapterThuChi(Activity context, int resource, ArrayList<ArrayThuChi> objects) {
         super(context, resource, objects);
@@ -38,12 +40,14 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
             danhmucthuchi = (TextView) view.findViewById(R.id.txtDanhMucThuChi);
             vi = (TextView) view.findViewById(R.id.txtViThuChi);
             loaikhoan = (TextView) view.findViewById(R.id.txtLoaiKhoanThuChi);
+            mota = (TextView) view.findViewById(R.id.txtMoTaThuChi);
 
             ngay.setText(""+ arr.get(position).thoigian);
             tien.setText(DoiSoSangTien(arr.get(position).tien));
             danhmucthuchi.setText(arr.get(position).danhmucthuchi);
             vi.setText(arr.get(position).vi);
             loaikhoan.setText(arr.get(position).loaikhoan + ":");
+            mota.setText(arr.get(position).mota);
         }
         return view;
     }

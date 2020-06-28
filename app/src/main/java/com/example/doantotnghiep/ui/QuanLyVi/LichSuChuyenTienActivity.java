@@ -147,7 +147,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
     }
 
     public void LoadLichDeChonNgayLocLichSuChuyenTien() {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new Dialog(this, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

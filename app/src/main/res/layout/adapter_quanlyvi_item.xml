@@ -7,9 +7,8 @@
 
         <TextView
             android:id="@+id/textView_TenVi"
-            android:layout_width="125dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000000"/>
@@ -20,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="hi"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="10dp"
             android:textColor="#000000"/>
         <TextView
             android:id="@+id/textView_SoTien"

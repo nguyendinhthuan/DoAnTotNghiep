@@ -107,7 +107,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.option_SuaDanhMuc: {
+            case R.id.option_CapNhatDanhMuc: {
                 SuaDanhMucDialog();
                 return true;
             }

@@ -1,11 +1,11 @@
 package com.example.doantotnghiep.ui.KeHoachTietKiem;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,10 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +44,10 @@ import android.widget.Toast;
 import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterKeHoachTietKiem;
-import com.example.doantotnghiep.adapter.AdapterThuChi;
 import com.example.doantotnghiep.adapter.AdapterThuChiChoKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayKeHoachTietKiem;
-import com.example.doantotnghiep.model.ArrayLichSuChuyenTien;
-import com.example.doantotnghiep.model.ArrayThuChi;
 import com.example.doantotnghiep.model.ArrayThuChiChoKeHoachTietKiem;
+import com.example.doantotnghiep.thongbao.AlarmReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,6 +91,9 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Spinner spinner_TrangThaiKeHoachTietKiem;
     private RadioGroup radioGroup_KeHoachTietKiem;
     private AutoFormatEditText editText_SoTienThuChiChoKeHoach, editText_SoTienKeHoachTietKiem;
+    private final String CHANNEL_ID = "1";
+    private AlarmManager alarmManager;
+    private int REQUEST_CODE = 27;
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -303,7 +302,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     }
 
     public void ChonNgayKetThucKeHoachTietKiem() {
-        final Dialog dialog = new Dialog(activity);
+        final Dialog dialog = new Dialog(activity, R.style.Theme_AppCompat_DayNight_Dialog_Alert);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_chonngay);
         dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -561,6 +560,37 @@ public class KeHoachTietKiemFragment extends Fragment {
                     contentValues.put("trangthai", "Đã kết thúc - Kế hoạch thành công");
                     data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + makehoach + "' and tentaikhoan = '" + taikhoan + "'", null);
 
+                    //Thong bao
+//                    NotificationCompat.Builder builder = new NotificationCompat.Builder(activity.getApplicationContext(), CHANNEL_ID)
+//                            .setContentTitle("Thông báo kế hoạch tiết kiệm")
+//                            .setContentText("Kế hoạch đã kết thúc")
+//                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                        CharSequence name = getString(R.string.channel_name);
+//                        String description = getString(R.string.channel_description);
+//                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//                        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//                        channel.setDescription(description);
+//                        // Register the channel with the system; you can't change the importance
+//                        // or other notification behaviors after this
+//                        NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+//                        notificationManager.createNotificationChannel(channel);
+//                    }
+//
+//                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity.getApplicationContext());
+//                    int notificationId = 1;
+//                    notificationManager.notify(notificationId, builder.build());
+
+                    //Thong bao
+                    alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+                    Intent intent = new Intent(activity, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+
+                    //Ham load danh sach ke hoach tiet kiem
                     LoadTatCaKeHoachTietKiem();
                 } else if (datehientai.after(dateketthuc) && sotiendatietkiemchokehoachtietkiem < sotienkehoachtietkiem) {
                     ContentValues contentValues = new ContentValues();

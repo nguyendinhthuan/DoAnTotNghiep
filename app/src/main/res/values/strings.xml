@@ -105,4 +105,7 @@
         <item>Đã kết thúc - Kế hoạch thất bại</item>
     </string-array>
     <string name="title_activity_tai_khoan">TaiKhoanActivity</string>
+
+    <string name="channel_name">Name</string>
+    <string name="channel_description">Description</string>
 </resources>
