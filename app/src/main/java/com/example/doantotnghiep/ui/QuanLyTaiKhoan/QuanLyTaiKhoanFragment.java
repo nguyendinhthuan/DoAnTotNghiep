@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +31,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.doantotnghiep.MainActivity;
 import com.example.doantotnghiep.R;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 
 public class QuanLyTaiKhoanFragment extends Fragment {
@@ -69,6 +74,7 @@ public class QuanLyTaiKhoanFragment extends Fragment {
         DangXuat();
         DoiMatKhauTaiKhoan();
         LayTenTaiKhoan();
+        LayTaiKhoan();
         LayTongSoDu();
     }
 
@@ -342,7 +348,14 @@ public class QuanLyTaiKhoanFragment extends Fragment {
             tongsodu = tongsodu + c.getInt(c.getColumnIndex("sotienvi"));
             c.moveToNext();
         }
-        txt_TongSoDu.setText(String.valueOf(tongsodu));
+        txt_TongSoDu.setText(DoiSoSangTien(Double.parseDouble(String.valueOf(tongsodu))));
+        txt_TongSoDu.setTextColor(Color.BLUE);
         c.close();
+    }
+
+    public static String DoiSoSangTien(Double so) {
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        decimalFormat.applyPattern("#,###,###,###");
+        return decimalFormat.format((so)) + " đ";
     }
 }

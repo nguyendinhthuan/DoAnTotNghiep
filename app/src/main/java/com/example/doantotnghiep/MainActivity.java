@@ -493,7 +493,7 @@ public class MainActivity extends AppCompatActivity {
             ContentValues values = new ContentValues();
             values.put("matkhau", matkhau1.getText().toString());
             data.update("tbltaikhoan", values, "masobimat=?", new String[]{maso.getText().toString()});
-            thongbao = "Lấy lại mật khẩu thành công";
+            thongbao = "Tạo mật khẩu thành công";
             Toast.makeText(getApplicationContext(), thongbao, Toast.LENGTH_SHORT).show();
             return true;
         }

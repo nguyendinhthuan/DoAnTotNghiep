@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEEEEE">
+    android:background="@drawable/main_background_fragment">
 
     <LinearLayout
         android:id="@+id/layoutCaidatTop"
@@ -13,7 +13,7 @@
         <Spinner
             android:id="@+id/spinner_LoaiKhoan"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <ListView
@@ -24,7 +24,7 @@
         android:layout_below="@+id/layoutCaidatTop"
         android:layout_marginTop="8dp"
         android:divider="@null"
-        android:dividerHeight="5dp" />
+        android:dividerHeight="3dp" />
 
 
     <RelativeLayout

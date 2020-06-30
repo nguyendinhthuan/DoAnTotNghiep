@@ -40,11 +40,14 @@ import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterVi;
 import com.example.doantotnghiep.model.ArrayVi;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class QuanLyViFragment extends Fragment {
 
@@ -227,14 +230,20 @@ public class QuanLyViFragment extends Fragment {
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViChuyen.setText(String.valueOf(sotienvichon));
+                editText_TienCuaViChuyen.setText(DoiSoSangTien(Double.parseDouble(String.valueOf(sotienvichon))));
             }
             if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
                 sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViNhan.setText(String.valueOf(sotienvitoi));
+                editText_TienCuaViNhan.setText(DoiSoSangTien(Double.parseDouble(String.valueOf(sotienvitoi))));
             }
             cursor.moveToNext();
         }
+    }
+
+    public static String DoiSoSangTien(Double so) {
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        decimalFormat.applyPattern("#,###,###,###");
+        return decimalFormat.format((so)) + " đ";
     }
 
     public boolean KiemTraChuyenTien() {
@@ -286,6 +295,7 @@ public class QuanLyViFragment extends Fragment {
         if (data.insert("tbllichsuchuyentien", null, values2) == -1) {
             return false;
         }
+        Toast.makeText(activity, "Chuyển tiền thành công", Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -488,10 +498,20 @@ public class QuanLyViFragment extends Fragment {
 
     public boolean CapNhatVi() {
         String thongbao = "";
-        final String tenviht = list.get(vitri).tenvi;
+        boolean tenviht = true;
         final int maviht = list.get(vitri).mavi;
-
-        if (editText_NhapTenViCapNhat.getText().toString().equals("")) {
+        cursor = data.rawQuery("select * from tblvi where tentaikhoan ='" + taikhoan+"'", null);
+        cursor.moveToFirst();
+        while (cursor.isAfterLast()==false) {
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_NhapTenViCapNhat.getText().toString())) {
+                tenviht = false;
+            }
+            cursor.moveToNext();
+        }
+        if (tenviht == false) {
+            Toast.makeText(activity, "Tên ví này đã tồn tại", Toast.LENGTH_SHORT).show();
+            editText_NhapTenViCapNhat.startAnimation(animation);
+        } else if (editText_NhapTenViCapNhat.getText().toString().equals("")) {
             editText_NhapTenViCapNhat.startAnimation(animation);
             Toast.makeText(activity,"Bạn chưa nhập tên ví",Toast.LENGTH_LONG).show();
         } else if (editText_NhapMoTaViCapNhat.getText().toString().equals("")) {

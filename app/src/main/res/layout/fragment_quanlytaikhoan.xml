@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background_fragment">
 
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <TableRow
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <TextView
@@ -29,12 +30,12 @@
                 android:text="TextView"
                 android:textSize="20sp"
                 android:textColor="#000000"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="10dp"/>
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtTenND"
@@ -46,18 +47,18 @@
 
             <TextView
                 android:id="@+id/txtTenNguoiDung"
-                android:layout_width="306dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chưa cập nhật"
                 android:textSize="20sp"
                 android:textColor="#000000"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="10dp"/>
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtDC"
@@ -69,18 +70,18 @@
 
             <TextView
                 android:id="@+id/txtDiaChi"
-                android:layout_width="299dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chưa cập nhật"
                 android:textSize="20sp"
                 android:textColor="#000000"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="10dp"/>
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtEmail1"
@@ -97,13 +98,13 @@
                 android:text="Chưa cập nhật"
                 android:textSize="20sp"
                 android:textColor="#000000"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="10dp"/>
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtSDT"
@@ -120,7 +121,7 @@
                 android:text="Chưa cập nhật"
                 android:textSize="20sp"
                 android:textColor="#000000"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="10dp"/>
         </TableRow>
     </TableLayout>
 
@@ -137,7 +138,7 @@
                 android:id="@+id/txtSD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng số tiền có trong ví:"
+                android:text="Tổng số tiền có trong các ví:"
                 android:textSize="20sp"
                 android:textColor="#000000"/>
 

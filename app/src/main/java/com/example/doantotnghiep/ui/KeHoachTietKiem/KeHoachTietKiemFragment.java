@@ -118,7 +118,6 @@ public class KeHoachTietKiemFragment extends Fragment {
         date = new Date();
 
         AnhXa();
-        //LoadSpinnerTrangThaiCuaKeHoachTietKiem();
         ThemKeHoachTietKiem();
         setListview();
         LoadTatCaKeHoachTietKiem();
@@ -236,6 +235,9 @@ public class KeHoachTietKiemFragment extends Fragment {
                     public void onClick(View v) {
                         boolean tenkehoachtietkiem = true;
                         String thongbao = "";
+                        String ngaybatdaukehoach, ngayketthuckehoach;
+                        calendar = Calendar.getInstance();
+                        date = calendar.getTime();
 
                         Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem", null);
                         cursor.moveToFirst();
@@ -245,49 +247,60 @@ public class KeHoachTietKiemFragment extends Fragment {
                             }
                             cursor.moveToNext();
                         }
-                        if (tenkehoachtietkiem == false) {
-                            thongbao = "Tên kế hoạch tiết kiệm này đã tồn tại";
-                            editText_TenKeHoachTietKiem.startAnimation(animation);
-                        } else if (editText_TenKeHoachTietKiem.getText().toString().equals("")) {
-                            thongbao = "Bạn chưa nhập tên kế hoạch tiết kiệm";
-                            editText_TenKeHoachTietKiem.startAnimation(animation);
-                        } else if (button_NgayKetThucKeHoachTietKiem.getText().toString().equals("Chọn ngày")) {
-                            thongbao = "Bạn chưa chọn ngày kết thúc cho kế hoạch tiết kiệm";
-                            button_NgayKetThucKeHoachTietKiem.startAnimation(animation);
-                        } else if (editText_SoTienKeHoachTietKiem.getText().toString().equals("")) {
-                            thongbao = "Bạn chưa nhập số tiền cho kế hoạch tiết kiệm";
-                            editText_SoTienKeHoachTietKiem.startAnimation(animation);
-//                        } else if () {
 
-                        } else {
-                            int makehoachtietkiem = 1;
-                            Cursor cursor1 = data.rawQuery("select makehoachtietkiem from tblkehoachtietkiem", null);
-                            if (cursor1.moveToLast() == true) {
-                                makehoachtietkiem = cursor1.getInt(cursor1.getColumnIndex("makehoachtietkiem")) + 1;
-                            }
+                        ngayketthuckehoach = button_NgayKetThucKeHoachTietKiem.getText().toString();
+                        ngaybatdaukehoach = simpleDateFormat.format(date);
 
-                            //Luu vao co so du lieu
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put("makehoachtietkiem", makehoachtietkiem);
-                            contentValues.put("tenkehoachtietkiem", editText_TenKeHoachTietKiem.getText().toString());
-                            contentValues.put("ngaybatdaukehoachtietkiem", button_NgayBatDauKeHoachTietKiem.getText().toString());
-                            contentValues.put("ngayketthuckehoachtietkiem", button_NgayKetThucKeHoachTietKiem.getText().toString());
-                            contentValues.put("sotienkehoachtietkiem", editText_SoTienKeHoachTietKiem.getText().toString().replaceAll(",", ""));
-                            contentValues.put("sotiendatietkiem", 0);
-                            contentValues.put("trangthai", "Đang thực hiện");
-                            contentValues.put("tentaikhoan", taikhoan);
+                        try {
+                            Date dateketthuc = simpleDateFormat.parse(ngayketthuckehoach);
+                            Date datebatdau = simpleDateFormat.parse(ngaybatdaukehoach);
 
-                            if (data.insert("tblkehoachtietkiem", null, contentValues) != -1) {
-                                thongbao = "Thêm kế hoạch tiết kiệm thành công";
-                                d.dismiss();
+                            if (dateketthuc.before(datebatdau)) {
+                                Toast.makeText(activity, "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
+                            } else if (tenkehoachtietkiem == false) {
+                                thongbao = "Tên kế hoạch tiết kiệm này đã tồn tại";
+                                editText_TenKeHoachTietKiem.startAnimation(animation);
+                            } else if (editText_TenKeHoachTietKiem.getText().toString().equals("")) {
+                                thongbao = "Bạn chưa nhập tên kế hoạch tiết kiệm";
+                                editText_TenKeHoachTietKiem.startAnimation(animation);
+                            } else if (button_NgayKetThucKeHoachTietKiem.getText().toString().equals("Chọn ngày")) {
+                                thongbao = "Bạn chưa chọn ngày kết thúc cho kế hoạch tiết kiệm";
+                                button_NgayKetThucKeHoachTietKiem.startAnimation(animation);
+                            } else if (editText_SoTienKeHoachTietKiem.getText().toString().equals("")) {
+                                thongbao = "Bạn chưa nhập số tiền cho kế hoạch tiết kiệm";
+                                editText_SoTienKeHoachTietKiem.startAnimation(animation);
+                            } else {
+                                int makehoachtietkiem = 1;
+                                Cursor cursor1 = data.rawQuery("select makehoachtietkiem from tblkehoachtietkiem", null);
+                                if (cursor1.moveToLast() == true) {
+                                    makehoachtietkiem = cursor1.getInt(cursor1.getColumnIndex("makehoachtietkiem")) + 1;
+                                }
 
-                                //Load tat ca danh sach ke hoach tiet kiem
-                                LoadTatCaKeHoachTietKiem();
-                                XuLyKhiDanhSachKeHoachTietKiemTrong(danhsachkehoachtietkiem);
+                                //Luu vao co so du lieu
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put("makehoachtietkiem", makehoachtietkiem);
+                                contentValues.put("tenkehoachtietkiem", editText_TenKeHoachTietKiem.getText().toString());
+                                contentValues.put("ngaybatdaukehoachtietkiem", button_NgayBatDauKeHoachTietKiem.getText().toString());
+                                contentValues.put("ngayketthuckehoachtietkiem", button_NgayKetThucKeHoachTietKiem.getText().toString());
+                                contentValues.put("sotienkehoachtietkiem", editText_SoTienKeHoachTietKiem.getText().toString().replaceAll(",", ""));
+                                contentValues.put("sotiendatietkiem", 0);
+                                contentValues.put("trangthai", "Đang thực hiện");
+                                contentValues.put("tentaikhoan", taikhoan);
+
+                                if (data.insert("tblkehoachtietkiem", null, contentValues) != -1) {
+                                    thongbao = "Thêm kế hoạch tiết kiệm thành công";
+                                    d.dismiss();
+
+                                    //Load tat ca danh sach ke hoach tiet kiem
+                                    LoadTatCaKeHoachTietKiem();
+                                    XuLyKhiDanhSachKeHoachTietKiemTrong(danhsachkehoachtietkiem);
+                                }
+                                Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                             }
                             Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                        Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -584,11 +597,10 @@ public class KeHoachTietKiemFragment extends Fragment {
 //                    notificationManager.notify(notificationId, builder.build());
 
                     //Thong bao
-                    alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-                    Intent intent = new Intent(activity, AlarmReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-
+//                    alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+//                    Intent intent = new Intent(activity, AlarmReceiver.class);
+//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
 
                     //Ham load danh sach ke hoach tiet kiem
                     LoadTatCaKeHoachTietKiem();
@@ -597,6 +609,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                     contentValues.put("trangthai", "Đã kết thúc - Kế hoạch thất bại");
                     data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + makehoach + "' and tentaikhoan = '" + taikhoan + "'", null);
 
+                    //Ham load danh sach ke hoach tiet kiem
                     LoadTatCaKeHoachTietKiem();
                 }
             } catch (ParseException e) {
