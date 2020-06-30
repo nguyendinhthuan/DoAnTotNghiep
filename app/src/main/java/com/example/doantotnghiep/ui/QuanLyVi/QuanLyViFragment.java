@@ -67,7 +67,7 @@ public class QuanLyViFragment extends Fragment {
     private String taikhoan,tenvichuyen,tenvichuyentoi;
     private SharedPreferences sharedPreferences;
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
-            editText_TenVi,editText_MoTaVi,editText_ViChuyen,editText_SoTienChuyen,editText_TienCuaViChuyen,editText_TienCuaViNhan;
+            editText_TenVi,editText_MoTaVi,editText_ViChuyen,editText_SoTienChuyen;
     private Button button_LuuVi,button_ThoatVi;
     private TextView textView_NgayThucHienChuyenTien;
     private int vitri = 0;
@@ -75,7 +75,7 @@ public class QuanLyViFragment extends Fragment {
     private Date date;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormatDialog;
-    private EditText editText_SoTienVi;
+    private AutoFormatEditText editText_SoTienVi, editText_TienCuaViChuyen, editText_TienCuaViNhan;
 
     //Chuyen tien
     private List<ArrayVi> listDialog = null;
@@ -542,7 +542,7 @@ public class QuanLyViFragment extends Fragment {
         cursor.moveToFirst();
         String tenvi1 = cursor.getString(1);
         String motavi1 = cursor.getString(2);
-        String sotienvi1 = String.valueOf(cursor.getDouble(3));
+        String sotienvi1 = String.valueOf(cursor.getInt(3));
 
         editText_NhapTenViCapNhat.setText(tenvi1);
         editText_NhapMoTaViCapNhat.setText(motavi1);

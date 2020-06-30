@@ -39,6 +39,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterKeHoachTietKiem;
 import com.example.doantotnghiep.adapter.AdapterThuChiChoKeHoachTietKiem;
@@ -82,7 +83,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private int sotienthuchichokehoach, sotiendatietkiemchokehoachtietkiem, sotienkehoachtietkiem;
     private ArrayList<ArrayThuChiChoKeHoachTietKiem> arrayThuChiChoKeHoachTietKiem;
     private AdapterThuChiChoKeHoachTietKiem adapterThuChiChoKeHoachTietKiem;
-    private EditText editText_TenKeHoachTietKiem_ChiTiet, editText_SoTienKeHoachTietKiem_ChiTiet;
+    private EditText editText_TenKeHoachTietKiem_ChiTiet;
     private Button button_NgayBatDauKeHoachTietKiem_ChiTiet, button_NgayKetThucKeHoachTietKiem_ChiTiet, button_HuyKeHoachTietKiem_ChiTiet;
     private Spinner spinner_TrangThaiKeHoachTietKiem;
     private RadioGroup radioGroup_KeHoachTietKiem;
@@ -90,6 +91,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private final String CHANNEL_ID = "1";
     private AlarmManager alarmManager;
     private int REQUEST_CODE = 27;
+    private AutoFormatEditText editText_SoTienKeHoachTietKiem_ChiTiet;
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -679,7 +681,7 @@ public class KeHoachTietKiemFragment extends Fragment {
 
         //Anh xa
         editText_TenKeHoachTietKiem_ChiTiet = (EditText) d.findViewById(R.id.editText_TenKeHoachTietKiem_ChiTiet);
-        editText_SoTienKeHoachTietKiem_ChiTiet = (EditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem_ChiTiet);
+        editText_SoTienKeHoachTietKiem_ChiTiet = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem_ChiTiet);
         button_NgayBatDauKeHoachTietKiem_ChiTiet = (Button) d.findViewById(R.id.button_NgayBatDauKeHoachTietKiem_ChiTiet);
         button_NgayKetThucKeHoachTietKiem_ChiTiet = (Button) d.findViewById(R.id.button_NgayKetThucKeHoachTietKiem_ChiTiet);
         button_HuyKeHoachTietKiem_ChiTiet = (Button) d.findViewById(R.id.button_HuyKeHoachTietKiem_ChiTiet);
@@ -692,7 +694,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         String tenkehoach = cursor.getString(1);
         String ngaybatdau = cursor.getString(2);
         String ngayketthuc = cursor.getString(3);
-        String sotien = String.valueOf(cursor.getDouble(4));
+        String sotien = String.valueOf(cursor.getInt(4));
 
         editText_TenKeHoachTietKiem_ChiTiet.setText(tenkehoach);
         button_NgayBatDauKeHoachTietKiem_ChiTiet.setText(ngaybatdau);
