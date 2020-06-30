@@ -42,7 +42,7 @@
                 android:layout_marginTop="10dp"/>
 
             <Spinner
-                android:id="@+id/spinner_LoaiThuChi"
+                android:id="@+id/spinner_LoaiThuChiSua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -61,7 +61,7 @@
                 android:layout_marginTop="15dp"/>
 
             <Spinner
-                android:id="@+id/spinner_Vi"
+                android:id="@+id/spinner_ViThuChiSua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -80,11 +80,11 @@
                 android:layout_marginTop="15dp"/>
 
             <Spinner
-                android:id="@+id/spinner_DanhMuc"
+                android:id="@+id/spinner_DanhMucSua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp" />
         </TableRow>
     </TableLayout>
 
@@ -96,7 +96,7 @@
         android:layout_marginTop="15dp"/>
 
     <com.aldoapps.autoformatedittext.AutoFormatEditText
-        android:id="@+id/editText_SoTienThuChi"
+        android:id="@+id/editText_SoTienThuChiSua"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
@@ -113,7 +113,7 @@
         android:layout_marginTop="15dp"/>
 
     <EditText
-        android:id="@+id/editText_MoTaThuChi"
+        android:id="@+id/editText_MoTaThuChiSua"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/main_edittext"
@@ -137,7 +137,7 @@
                 android:textColor="#000000" />
 
             <Button
-                android:id="@+id/button_NgayThuChi"
+                android:id="@+id/button_NgayThuChiSua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/main_edittext"
@@ -145,7 +145,15 @@
                 android:layout_marginLeft="10dp"/>
 
             <Button
-                android:id="@+id/button_ThoiGianHienTai"
+                android:id="@+id/button_GioThuChiSua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_edittext"
+                android:textColor="#000000"
+                android:layout_marginLeft="10dp"/>
+
+            <Button
+                android:id="@+id/button_ThoiGianHienTaiSua"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hiện tại"
@@ -154,13 +162,19 @@
         </TableRow>
     </TableLayout>
 
+    <CheckBox
+        android:id="@+id/checkBox_ThongBaoSua"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhân thông báo" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
 
         <Button
-            android:id="@+id/button_LuuThuChi"
+            android:id="@+id/button_LuuThuChiSua"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
@@ -171,7 +185,7 @@
             android:textStyle="bold"/>
 
         <Button
-            android:id="@+id/button_ThoatThuChi"
+            android:id="@+id/button_ThoatThuChiSua"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

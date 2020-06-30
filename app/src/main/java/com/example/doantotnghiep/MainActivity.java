@@ -3,6 +3,7 @@ package com.example.doantotnghiep;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.app.AlarmManager;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -22,6 +23,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase data;
     private SharedPreferences share, sharetentaikhoan;
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkBox_GhiNho;
     Database database;
     private String tendangnhap;
+    private SimpleDateFormat simpleDateFormat;
     Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
         share = getSharedPreferences("taikhoan", MODE_PRIVATE);
         sharetentaikhoan = getSharedPreferences("tentaikhoan", MODE_PRIVATE);
-
+        simpleDateFormat = new SimpleDateFormat("dd/M/yyyy");
         AnhXa();
         TaoBangCoSoDuLieu();
     }
@@ -63,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Thu chi
             data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +
-                    "ngaythuchien date, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
+                    "ngaythuchien date, giothuchi int,phutthuchi int, nhanthongbao int, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
-                    "madanhmuc text constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
-
+                    "madanhmuc int constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
+                        // madanhmuc int
 
             //Table Ke hoach tiet kiem
             data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
@@ -111,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                 layout.setVisibility(View.VISIBLE);
             }
         }, 2000);
+
+
     }
 
     public void DangKyTaiKhoan(View v) {
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         editText_MatKhauDangNhap.setText(null);
     }
 
-    public void DangNhap(View v) {
+    public void DangNhap(View v) throws ParseException {
         animation = AnimationUtils.loadAnimation(this, R.anim.animation_edittext);
         boolean tk = false, mk = true;
         Cursor c = data.rawQuery("select * from tbltaikhoan", null);
@@ -153,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                         TaoSanDanhMuc(); //Tao rieng tung ham danh muc
                     }
 
+                    KiemTraThongBao();
 
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {
@@ -175,6 +185,52 @@ public class MainActivity extends AppCompatActivity {
             editText_MatKhauDangNhap.startAnimation(animation);
         }
     }
+
+    //Kiem tra ngay thong bao
+    // Cap nhat lai thuoc tinh nhanthongbao
+    public void KiemTraThongBao() throws ParseException {
+        int mathuchi,gio,phut;
+        String ngaythongbao,ngayhientai;
+        Calendar calendar = Calendar.getInstance();
+
+        int ngay = calendar.get(Calendar.DAY_OF_MONTH);
+        int thang = calendar.get(Calendar.MONTH) +1 ;
+        int nam = calendar.get(Calendar.YEAR);
+
+        int gio12 = calendar.get(Calendar.HOUR);
+        int gio24 = calendar.get(Calendar.HOUR_OF_DAY);
+        int phutht = calendar.get(Calendar.MINUTE);
+
+        ngayhientai = ngay + "/" + thang +"/"+ nam;
+
+
+        Cursor cursor = data.rawQuery("select* from tblthuchi where tentaikhoan ='" + tendangnhap + "'", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getInt(cursor.getColumnIndex("nhanthongbao")) == 1) {
+                ngaythongbao = cursor.getString(cursor.getColumnIndex("ngaythuchien"));
+                gio = cursor.getInt(cursor.getColumnIndex("giothuchi"));
+                phut = cursor.getInt(cursor.getColumnIndex("phutthuchi"));
+                mathuchi = cursor.getInt(cursor.getColumnIndex("mathuchi"));
+
+                Date datehientai = simpleDateFormat.parse(ngayhientai);
+                Date datethongbao = simpleDateFormat.parse(ngaythongbao);
+                if(datethongbao.equals(datehientai)){
+                    if (gio >= gio24 || gio >= gio12 +12 && phut >= phutht){
+                        ContentValues values = new ContentValues();
+                        values.put("nhanthongbao", 0);
+                        data.update("tblthuchi", values, "mathuchi = " + mathuchi, null);
+                    }
+                }
+            }
+            cursor.moveToNext();
+        }
+    }
+
+
+
+
+    //Kiem tra vi tao san
     public boolean KiemtratrungVi() {
         cursor = data.rawQuery("select * from tblvi where tentaikhoan = '" + tendangnhap + "'",null);
         cursor.moveToFirst();
@@ -190,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
-
+    //Kiem tra danh muc tao san
     public boolean KiemtratrungDanhmuc() {
         cursor = data.rawQuery("select* from tbldanhmucthuchi where tentaikhoan = '" + tendangnhap + "'",null);
         cursor.moveToFirst();

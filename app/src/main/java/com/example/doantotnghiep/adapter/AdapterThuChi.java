@@ -21,7 +21,7 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
     private Activity a;
     private int id;
     private ArrayList<ArrayThuChi> arr;
-    private TextView ngay, tien, danhmucthuchi, vi, loaikhoan, mota;
+    private TextView ngay, tien, danhmucthuchi, vi, loaikhoan, mota, nhanthongbao; //moi
 
     public AdapterThuChi(Activity context, int resource, ArrayList<ArrayThuChi> objects) {
         super(context, resource, objects);
@@ -35,12 +35,13 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
         LayoutInflater in = a.getLayoutInflater();
         view = in.inflate(id, null);
         if (arr.size()>0 && position>=0) {
-            ngay = (TextView) view.findViewById(R.id.txtNgayThuChi);
-            tien = (TextView) view.findViewById(R.id.txtTienThuChi);
-            danhmucthuchi = (TextView) view.findViewById(R.id.txtDanhMucThuChi);
-            vi = (TextView) view.findViewById(R.id.txtViThuChi);
-            loaikhoan = (TextView) view.findViewById(R.id.txtLoaiKhoanThuChi);
-            mota = (TextView) view.findViewById(R.id.txtMoTaThuChi);
+            ngay = view.findViewById(R.id.txtNgayThuChi);
+            tien = view.findViewById(R.id.txtTienThuChi);
+            danhmucthuchi = view.findViewById(R.id.txtDanhMucThuChi);
+            vi = view.findViewById(R.id.txtViThuChi);
+            loaikhoan = view.findViewById(R.id.txtLoaiKhoanThuChi);
+            mota = view.findViewById(R.id.txtMoTaThuChi);
+            nhanthongbao = view.findViewById(R.id.txtThongBao); //moi
 
             ngay.setText(""+ arr.get(position).thoigian);
             tien.setText(DoiSoSangTien(arr.get(position).tien));
@@ -48,6 +49,7 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
             vi.setText(arr.get(position).vi);
             loaikhoan.setText(arr.get(position).loaikhoan + ":");
             mota.setText(arr.get(position).mota);
+            nhanthongbao.setText(arr.get(position).nhanthongbao); //moi
         }
         return view;
     }

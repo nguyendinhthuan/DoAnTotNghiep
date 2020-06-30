@@ -530,6 +530,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         }
     }
 
+
     public void XuLyChuyenTienChoKeHoach() {
         int sotienthu = 0;
         int sotienchi = 0;
@@ -601,6 +602,7 @@ public class KeHoachTietKiemFragment extends Fragment {
 //                    Intent intent = new Intent(activity, AlarmReceiver.class);
 //                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
 
                     //Ham load danh sach ke hoach tiet kiem
                     LoadTatCaKeHoachTietKiem();
