@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -22,6 +24,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.doantotnghiep.thongbao.ThongBaoThuChiReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         data = openOrCreateDatabase("data.db", MODE_PRIVATE, null);
         share = getSharedPreferences("taikhoan", MODE_PRIVATE);
         sharetentaikhoan = getSharedPreferences("tentaikhoan", MODE_PRIVATE);
-        simpleDateFormat = new SimpleDateFormat("dd/M/yyyy");
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         AnhXa();
         TaoBangCoSoDuLieu();
     }
@@ -220,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                         ContentValues values = new ContentValues();
                         values.put("nhanthongbao", 0);
                         data.update("tblthuchi", values, "mathuchi = " + mathuchi, null);
+                        TatThongBao();
                     }
                 }
             }
@@ -227,7 +232,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Tat thong bao bo trong ham CapNhatThuChi
+    public void TatThongBao(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ThongBaoThuChiReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
+        alarmManager.cancel(pendingIntent);
+    }
 
 
     //Kiem tra vi tao san

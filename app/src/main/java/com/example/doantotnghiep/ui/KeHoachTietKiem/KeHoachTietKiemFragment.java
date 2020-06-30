@@ -112,7 +112,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         sharedPreferences = getActivity().getSharedPreferences("tendangnhap", Context.MODE_PRIVATE);
         taikhoan = sharedPreferences.getString("taikhoancanchuyen","khong tim thay");
-        simpleDateFormat = new SimpleDateFormat("dd/M/yyyy");
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
 
         AnhXa();

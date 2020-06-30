@@ -127,7 +127,7 @@ public class QuanLyThuChiFragment extends Fragment{
         activity = getActivity();
         data = activity.openOrCreateDatabase("data.db", activity.MODE_PRIVATE, null);
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
-        simpleDateFormatDialog = new SimpleDateFormat("dd/M/yyyy");
+        simpleDateFormatDialog = new SimpleDateFormat("dd/MM/yyyy");
         simpleTimeFormat = new SimpleDateFormat("HH/mm");
 
         date = new Date();
