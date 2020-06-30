@@ -185,7 +185,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
                 " and ngaythuchien = '" + simpleDateFormatDialog.format(date) + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getInt(cursor.getColumnIndex("sotienchuyen"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -198,7 +198,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
                 " from tbllichsuchuyentien where tbllichsuchuyentien.tentaikhoan = '" + taikhoan + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getInt(cursor.getColumnIndex("sotienchuyen"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -245,7 +245,7 @@ public class LichSuChuyenTienActivity extends AppCompatActivity {
                 " and tenvichuyen = '" + spinner_LocLichSuChuyenTienTheoVi.getSelectedItem().toString() + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getDouble(cursor.getColumnIndex("sotienchuyen"))));
+            arrayLichSuChuyenTien.add(new ArrayLichSuChuyenTien(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tenvichuyen")), cursor.getString(cursor.getColumnIndex("tenvinhan")), cursor.getInt(cursor.getColumnIndex("malichsuchuyentien")), cursor.getInt(cursor.getColumnIndex("sotienchuyen"))));
             cursor.moveToNext();
         }
         cursor.close();

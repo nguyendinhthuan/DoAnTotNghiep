@@ -3,9 +3,9 @@ package com.example.doantotnghiep.model;
 public class ArrayThuChi  {
     public String thoigian, danhmucthuchi, vi, loaikhoan, mota,nhanthongbao;//moi
     public int ma;
-    public Double tien;
+    public int tien;
 
-    public ArrayThuChi(String thoigian, String danhmucthuchi, String vi, Double tien, int ma,String nhanthongbao, String loaikhoan, String mota) {
+    public ArrayThuChi(String thoigian, String danhmucthuchi, String vi, int tien, int ma,String nhanthongbao, String loaikhoan, String mota) {
         this.thoigian = thoigian;
         this.danhmucthuchi = danhmucthuchi;
         this.vi = vi;

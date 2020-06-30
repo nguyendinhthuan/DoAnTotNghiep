@@ -69,7 +69,7 @@
         android:textAppearance="?android:attr/textAppearance"
         android:textColor="#000000" />
 
-    <com.aldoapps.autoformatedittext.AutoFormatEditText
+    <EditText
         android:id="@+id/editText_NhapSoTienCapNhat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

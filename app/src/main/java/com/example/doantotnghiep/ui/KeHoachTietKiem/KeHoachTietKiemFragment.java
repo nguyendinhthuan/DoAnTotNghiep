@@ -5,11 +5,9 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,13 +39,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aldoapps.autoformatedittext.AutoFormatEditText;
 import com.example.doantotnghiep.R;
 import com.example.doantotnghiep.adapter.AdapterKeHoachTietKiem;
 import com.example.doantotnghiep.adapter.AdapterThuChiChoKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayThuChiChoKeHoachTietKiem;
-import com.example.doantotnghiep.thongbao.AlarmReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -90,7 +86,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Button button_NgayBatDauKeHoachTietKiem_ChiTiet, button_NgayKetThucKeHoachTietKiem_ChiTiet, button_HuyKeHoachTietKiem_ChiTiet;
     private Spinner spinner_TrangThaiKeHoachTietKiem;
     private RadioGroup radioGroup_KeHoachTietKiem;
-    private AutoFormatEditText editText_SoTienThuChiChoKeHoach, editText_SoTienKeHoachTietKiem;
+    private EditText editText_SoTienThuChiChoKeHoach, editText_SoTienKeHoachTietKiem;
     private final String CHANNEL_ID = "1";
     private AlarmManager alarmManager;
     private int REQUEST_CODE = 27;
@@ -216,7 +212,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                 editText_TenKeHoachTietKiem = (EditText) d.findViewById(R.id.editText_TenKeHoachTietKiem);
                 button_NgayBatDauKeHoachTietKiem = (Button) d.findViewById(R.id.button_NgayBatDauKeHoachTietKiem);
                 button_NgayKetThucKeHoachTietKiem = (Button) d.findViewById(R.id.button_NgayKetThucKeHoachTietKiem);
-                editText_SoTienKeHoachTietKiem = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem);
+                editText_SoTienKeHoachTietKiem = (EditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem);
 
                 calendar = Calendar.getInstance();
 
@@ -234,7 +230,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         boolean tenkehoachtietkiem = true;
-                        String thongbao = "";
                         String ngaybatdaukehoach, ngayketthuckehoach;
                         calendar = Calendar.getInstance();
                         date = calendar.getTime();
@@ -248,27 +243,28 @@ public class KeHoachTietKiemFragment extends Fragment {
                             cursor.moveToNext();
                         }
 
-                        ngayketthuckehoach = button_NgayKetThucKeHoachTietKiem.getText().toString();
-                        ngaybatdaukehoach = simpleDateFormat.format(date);
+
 
                         try {
+                            ngayketthuckehoach = button_NgayKetThucKeHoachTietKiem.getText().toString();
+                            ngaybatdaukehoach = simpleDateFormat.format(date);
                             Date dateketthuc = simpleDateFormat.parse(ngayketthuckehoach);
                             Date datebatdau = simpleDateFormat.parse(ngaybatdaukehoach);
 
-                            if (dateketthuc.before(datebatdau)) {
-                                Toast.makeText(activity, "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
-                            } else if (tenkehoachtietkiem == false) {
-                                thongbao = "Tên kế hoạch tiết kiệm này đã tồn tại";
+                            if (tenkehoachtietkiem == false) {
+                                Toast.makeText(activity, "Tên kế hoạch tiết kiệm này đã tồn tại", Toast.LENGTH_SHORT).show();
                                 editText_TenKeHoachTietKiem.startAnimation(animation);
                             } else if (editText_TenKeHoachTietKiem.getText().toString().equals("")) {
-                                thongbao = "Bạn chưa nhập tên kế hoạch tiết kiệm";
+                                Toast.makeText(activity, "Bạn chưa nhập tên kế hoạch tiết kiệm", Toast.LENGTH_SHORT).show();
                                 editText_TenKeHoachTietKiem.startAnimation(animation);
                             } else if (button_NgayKetThucKeHoachTietKiem.getText().toString().equals("Chọn ngày")) {
-                                thongbao = "Bạn chưa chọn ngày kết thúc cho kế hoạch tiết kiệm";
+                                Toast.makeText(activity, "Bạn chưa chọn ngày kết thúc cho kế hoạch tiết kiệm", Toast.LENGTH_SHORT).show();
                                 button_NgayKetThucKeHoachTietKiem.startAnimation(animation);
                             } else if (editText_SoTienKeHoachTietKiem.getText().toString().equals("")) {
-                                thongbao = "Bạn chưa nhập số tiền cho kế hoạch tiết kiệm";
+                                Toast.makeText(activity, "Bạn chưa nhập số tiền cho kế hoạch tiết kiệm", Toast.LENGTH_SHORT).show();
                                 editText_SoTienKeHoachTietKiem.startAnimation(animation);
+                            } else if (dateketthuc.before(datebatdau)) {
+                                Toast.makeText(activity, "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
                             } else {
                                 int makehoachtietkiem = 1;
                                 Cursor cursor1 = data.rawQuery("select makehoachtietkiem from tblkehoachtietkiem", null);
@@ -288,19 +284,19 @@ public class KeHoachTietKiemFragment extends Fragment {
                                 contentValues.put("tentaikhoan", taikhoan);
 
                                 if (data.insert("tblkehoachtietkiem", null, contentValues) != -1) {
-                                    thongbao = "Thêm kế hoạch tiết kiệm thành công";
+                                    Toast.makeText(activity, "Thêm kế hoạch tiết kiệm thành công", Toast.LENGTH_SHORT).show();
                                     d.dismiss();
 
                                     //Load tat ca danh sach ke hoach tiet kiem
                                     LoadTatCaKeHoachTietKiem();
                                     XuLyKhiDanhSachKeHoachTietKiemTrong(danhsachkehoachtietkiem);
                                 }
-                                Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                             }
-                            Toast.makeText(getActivity(), thongbao, Toast.LENGTH_SHORT).show();
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+
+
                     }
                 });
 
@@ -366,7 +362,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         Cursor cursor = data.rawQuery("select * from tblkehoachtietkiem where tentaikhoan = '" + taikhoan + "' ", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arrayKeHoachTietKiem.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
+            arrayKeHoachTietKiem.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getInt(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getInt(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -457,7 +453,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         d.show();
 
         //Anh xa
-        editText_SoTienThuChiChoKeHoach = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienThuChiChoKeHoach);
+        editText_SoTienThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_SoTienThuChiChoKeHoach);
         editText_MoTaThuChiChoKeHoach = (EditText) d.findViewById(R.id.editText_MoTaThuChiChoKeHoachTietKiem);
         textView_NgayThucHienThuChiChoKeHoach = (TextView) d.findViewById(R.id.textView_NgayThucHienThuChiChoKeHoachTietKiem);
         button_LuuThuChiChoKeHoach = (Button) d.findViewById(R.id.button_LuuThuChiChoKeHoach);
@@ -627,7 +623,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                 "and makehoachtietkiem = '" + arrayKeHoachTietKiem.get(vitri).makehoachtietkiem + "'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arrayThuChiChoKeHoachTietKiem.add(new ArrayThuChiChoKeHoachTietKiem(cursor.getInt(cursor.getColumnIndex("mathuchichokehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienthuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("loaithuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("motathuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaythuchienthuchichokehoachtietkiem"))));
+            arrayThuChiChoKeHoachTietKiem.add(new ArrayThuChiChoKeHoachTietKiem(cursor.getInt(cursor.getColumnIndex("mathuchichokehoachtietkiem")), cursor.getInt(cursor.getColumnIndex("sotienthuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("loaithuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("motathuchichokehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaythuchienthuchichokehoachtietkiem"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -717,7 +713,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                 "and trangthai = '" + spinner_TrangThaiKeHoachTietKiem.getSelectedItem().toString() + "'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
-            arrayKeHoachTietKiem.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
+            arrayKeHoachTietKiem.add(new ArrayKeHoachTietKiem(cursor.getString(cursor.getColumnIndex("tenkehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngaybatdaukehoachtietkiem")), cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem")), cursor.getInt(cursor.getColumnIndex("sotienkehoachtietkiem")), cursor.getInt(cursor.getColumnIndex("sotiendatietkiem")), cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")), cursor.getString(cursor.getColumnIndex("trangthai"))));
             cursor.moveToNext();
         }
         cursor.close();

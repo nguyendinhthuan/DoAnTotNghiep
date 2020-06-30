@@ -54,7 +54,7 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
         return view;
     }
 
-    public static String DoiSoSangTien(Double so) {
+    public static String DoiSoSangTien(int so) {
         DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
         decimalFormat.applyPattern("#,###,###,###");
         return decimalFormat.format((so)) + " đ";

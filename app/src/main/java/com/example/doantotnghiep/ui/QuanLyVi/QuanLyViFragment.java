@@ -75,7 +75,7 @@ public class QuanLyViFragment extends Fragment {
     private Date date;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormatDialog;
-    private AutoFormatEditText editText_SoTienVi;
+    private EditText editText_SoTienVi;
 
     //Chuyen tien
     private List<ArrayVi> listDialog = null;
@@ -230,27 +230,27 @@ public class QuanLyViFragment extends Fragment {
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViChuyen.setText(DoiSoSangTien(Double.parseDouble(String.valueOf(sotienvichon))));
+                editText_TienCuaViChuyen.setText((String.valueOf(sotienvichon)));
             }
             if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
                 sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViNhan.setText(DoiSoSangTien(Double.parseDouble(String.valueOf(sotienvitoi))));
+                editText_TienCuaViNhan.setText((String.valueOf(sotienvitoi)));
             }
             cursor.moveToNext();
         }
     }
 
-    public static String DoiSoSangTien(Double so) {
-        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        decimalFormat.applyPattern("#,###,###,###");
-        return decimalFormat.format((so)) + " đ";
-    }
+//    public static String DoiSoSangTien(Double so) {
+//        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+//        decimalFormat.applyPattern("#,###,###,###");
+//        return decimalFormat.format((so)) + " đ";
+//    }
 
     public boolean KiemTraChuyenTien() {
-        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString().replaceAll(",", ""));
+        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
         if (sotiencanchuyen > sotienvichon) {
             editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
-            int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString().replaceAll(",", ""));
+            int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString());
             sotiencanchuyen =  sotiencanchuyenmin;
 
             return false;
@@ -287,7 +287,7 @@ public class QuanLyViFragment extends Fragment {
         values2.put("malichsuchuyentien", malichsuchuyentien);
         values2.put("tenvichuyen", editText_ViChuyen.getText().toString());
         values2.put("tenvinhan", spinner_ViNhanDialog.getSelectedItem().toString());
-        values2.put("sotienchuyen", editText_SoTienChuyen.getText().toString().replaceAll(",",""));
+        values2.put("sotienchuyen", editText_SoTienChuyen.getText().toString());
         values2.put("ngaythuchien", textView_NgayThucHienChuyenTien.getText().toString());
         values2.put("mavi", editText_ViChuyen.getText().toString());
         values2.put("tentaikhoan", taikhoan);
@@ -387,7 +387,7 @@ public class QuanLyViFragment extends Fragment {
                             values.put("mavi", mavi);
                             values.put("tenvi", editText_TenVi.getText().toString());
                             values.put("motavi", editText_MoTaVi.getText().toString());
-                            values.put("sotienvi", editText_SoTienVi.getText().toString().replaceAll(",", ""));
+                            values.put("sotienvi", editText_SoTienVi.getText().toString());
                             values.put("tentaikhoan", taikhoan);
 
                             if (data.insert("tblvi", null, values) != -1) {
@@ -447,8 +447,8 @@ public class QuanLyViFragment extends Fragment {
             a.setMavi(cursor.getInt(0));
             a.setTenvi(cursor.getString(1));
             a.setMotavi(cursor.getString(2));
-            a.setSotienvi(cursor.getDouble(3));
-            a.setSodu(cursor.getDouble(4));
+            a.setSotienvi(cursor.getInt(3));
+            a.setSodu(cursor.getInt(4));
             list.add(a);
 
             cursor.moveToNext();

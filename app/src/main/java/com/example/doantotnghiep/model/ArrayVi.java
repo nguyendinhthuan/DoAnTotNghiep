@@ -4,9 +4,9 @@ public class ArrayVi {
     public int mavi;
     public String tenvi;
     public String motavi;
-    public Double sotienvi, sodu;
+    public int sotienvi, sodu;
 
-    public ArrayVi(int mavi, String tenvi, String motavi, Double sotienvi, Double sodu) {
+    public ArrayVi(int mavi, String tenvi, String motavi, int sotienvi, int sodu) {
         this.mavi = mavi;
         this.tenvi = tenvi;
         this.motavi = motavi;
@@ -42,19 +42,19 @@ public class ArrayVi {
         this.motavi = motavi;
     }
 
-    public Double getSotienvi() {
+    public int getSotienvi() {
         return sotienvi;
     }
 
-    public void setSotienvi(Double sotien) {
+    public void setSotienvi(int sotien) {
         this.sotienvi = sotien;
     }
 
-    public Double getSodu() {
+    public int getSodu() {
         return sodu;
     }
 
-    public void setSodu(Double sodu) {
+    public void setSodu(int sodu) {
         this.sodu = sodu;
     }
 

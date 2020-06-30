@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     "hovaten text, diachi text, sodienthoai text, email text);");
 
             //Table Vi
-            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi double, sodu real, " +
+            data.execSQL("create table if not exists tblvi(mavi int primary key, tenvi text, motavi text, sotienvi int, sodu real, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade);");
 
             //Table Danh muc thu chi
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     "mavi int constraint mavi references tblvi(mavi) on delete cascade)");
 
             //Table Thu chi
-            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi real, mota text, " +
+            data.execSQL("create table if not exists tblthuchi(mathuchi int primary key, loaithuchi text, sotienthuchi int, mota text, " +
                     "ngaythuchien date, giothuchi int,phutthuchi int, nhanthongbao int, mavi int constraint mavi references tblvi(mavi) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade, " +
                     "madanhmuc int constraint madanhmuc references tbldanhmucthuchi(madanhmuc) on delete cascade)");
@@ -77,18 +77,18 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Ke hoach tiet kiem
             data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
-                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem double, sotiendatietkiem double, trangthai text, " +
+                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem int, sotiendatietkiem int, trangthai text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Thu chi cho ke hoach tiet kiem
             data.execSQL("create table if not exists tblthuchichokehoachtietkiem(mathuchichokehoachtietkiem int primary key, " +
-                    "loaithuchichokehoachtietkiem text, sotienthuchichokehoachtietkiem real, motathuchichokehoachtietkiem text, " +
+                    "loaithuchichokehoachtietkiem text, sotienthuchichokehoachtietkiem int, motathuchichokehoachtietkiem text, " +
                     "ngaythuchienthuchichokehoachtietkiem date, " +
                     "makehoachtietkiem int constraint makehoachtietkiem references tblkehoachtietkiem(makehoachtietkiem) on delete cascade, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Lich su chuyen tien
-            data.execSQL("create table if not exists tbllichsuchuyentien(malichsuchuyentien int primary key, tenvichuyen text, tenvinhan text, sotienchuyen double, ngaythuchien date, " +
+            data.execSQL("create table if not exists tbllichsuchuyentien(malichsuchuyentien int primary key, tenvichuyen text, tenvinhan text, sotienchuyen int, ngaythuchien date, " +
                     "mavi int constraint mavi references tblvi(mavi), " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
         } catch (Exception ex) {

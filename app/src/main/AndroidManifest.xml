@@ -27,7 +27,6 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".thongbao.AlarmReceiver" />
         <receiver android:name=".thongbao.ThongBaoThuChiReceiver" />
     </application>
 

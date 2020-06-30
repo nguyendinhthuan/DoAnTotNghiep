@@ -105,7 +105,7 @@ public class QuanLyThuChiFragment extends Fragment{
     private String gioDialog, tenVi, tenviuutien ;
     private Cursor cursor;
     private int sotientuvi,sotienthuchi,sotienchi,vitri, maviuutien,giothongbao,phutthongbao,nhanthongbao;
-    private AutoFormatEditText editText_SoTienThuChiDialog,editText_SoTienThuChiDialogSua;
+    private EditText editText_SoTienThuChiDialog,editText_SoTienThuChiDialogSua;
 
     //Dung cho thong bao
     //private Time time;
@@ -213,7 +213,7 @@ public class QuanLyThuChiFragment extends Fragment{
                 button_GioThuChiDialog = (Button) d.findViewById(R.id.button_GioThuChi);
                 button_ThoiGianHienTaiDialog = (Button) d.findViewById(R.id.button_ThoiGianHienTai);
                 check_thongbao = d.findViewById(R.id.checkThongBao);
-                editText_SoTienThuChiDialog = (AutoFormatEditText) d.findViewById(R.id.editText_SoTienThuChi);
+                editText_SoTienThuChiDialog = (EditText) d.findViewById(R.id.editText_SoTienThuChi);
                 editText_MoTaThuChiDialog = (EditText) d.findViewById(R.id.editText_MoTaThuChi);
 
                 spinner_LoaiThuChiDialog = (Spinner) d.findViewById(R.id.spinner_LoaiThuChi);
@@ -571,16 +571,16 @@ public class QuanLyThuChiFragment extends Fragment{
         }
 
         if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
-            sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
+            sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
         } else {
-            int sotienchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
+            int sotienchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
             if (sotientuvi < sotienchi) {
                 editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
                 editText_SoTienThuChiDialog.startAnimation(animation);
                 Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
             } else {
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString().replaceAll(",", ""));
+                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
             }
         }
     }
@@ -621,7 +621,7 @@ public class QuanLyThuChiFragment extends Fragment{
                 thongbao = "";
             }
             arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")),
-                    cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), thongbao, cursor.getString(cursor.getColumnIndex("loaikhoan")), cursor.getString(cursor.getColumnIndex("mota"))));
+                    cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")), thongbao, cursor.getString(cursor.getColumnIndex("loaikhoan")), cursor.getString(cursor.getColumnIndex("mota"))));
             cursor.moveToNext();
         }
         cursor.close();
@@ -643,7 +643,7 @@ public class QuanLyThuChiFragment extends Fragment{
             }else {
                 thongbao = "";
             }
-            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getDouble(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")),thongbao, cursor.getString(cursor.getColumnIndex("loaikhoan")), cursor.getString(cursor.getColumnIndex("mota"))));
+            arr.add(new ArrayThuChi(cursor.getString(cursor.getColumnIndex("ngaythuchien")), cursor.getString(cursor.getColumnIndex("tendanhmuc")), cursor.getString(cursor.getColumnIndex("tenvi")), cursor.getInt(cursor.getColumnIndex("sotienthuchi")), cursor.getInt(cursor.getColumnIndex("mathuchi")),thongbao, cursor.getString(cursor.getColumnIndex("loaikhoan")), cursor.getString(cursor.getColumnIndex("mota"))));
             cursor.moveToNext();
         }
         cursor.close();
