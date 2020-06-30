@@ -131,7 +131,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Thời gian thực hiện"
+                android:text="Thời gian"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#000000" />
@@ -157,16 +157,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hiện tại"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/main_edittext"/>
         </TableRow>
     </TableLayout>
 
     <CheckBox
         android:id="@+id/checkBox_ThongBaoSua"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nhân thông báo" />
+        android:text="Nhân thông báo"
+        android:layout_marginTop="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

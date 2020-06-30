@@ -36,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -90,6 +91,7 @@ public class QuanLyThuChiFragment extends Fragment{
     private boolean danhsachthuchi = false;
     private TextView textView_DanhSachThuChiTrong, textView_ChonNgayLocThuChi;
     private RadioGroup radioGroup_ThuChi;
+    private RadioButton radioButton_TatCaThuChi;
 
     //DialogThem
     private EditText editText_MoTaThuChiDialog,editText_MoTaThuChiDialogSua;
@@ -181,6 +183,7 @@ public class QuanLyThuChiFragment extends Fragment{
         listView_LichSuThuChi =  myFragment.findViewById(R.id.listView_LichSuThuChi);
         textView_ChonNgayLocThuChi =  myFragment.findViewById(R.id.textView_ChonNgayLocThuChi);
         textView_DanhSachThuChiTrong =  myFragment.findViewById(R.id.textView_DanhSachThuChiTrong);
+        radioButton_TatCaThuChi = myFragment.findViewById(R.id.radioButton_TatCaThuChi);
         radioGroup_ThuChi =  myFragment.findViewById(R.id.radioGroup_ThuChi);
         radioGroup_ThuChi.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -301,7 +304,7 @@ public class QuanLyThuChiFragment extends Fragment{
                             startAlarm();
                             //LayThongTinThongBao();
                             LoadTatCaThuChi();
-
+                            radioButton_TatCaThuChi.setChecked(true);
 
                             d.dismiss();
                         }

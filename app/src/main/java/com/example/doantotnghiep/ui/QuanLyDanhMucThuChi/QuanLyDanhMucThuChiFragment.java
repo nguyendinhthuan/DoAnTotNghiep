@@ -462,10 +462,10 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
                         }
                         cursor.close();
                         if (tendanhmuc == false) {
-                            thongbao = "Tên danh mục này đã tồn tại";
+                            Toast.makeText(activity, "Tên danh mục này đã tồn tại", Toast.LENGTH_SHORT).show();
                             editText_TenDanhMucThuChi.startAnimation(animation);
                         } else if (editText_TenDanhMucThuChi.getText().toString().equals("")) {
-                            thongbao = "Bạn chưa nhập tên danh mục";
+                            Toast.makeText(activity, "Bạn chưa nhập tên danh mục", Toast.LENGTH_SHORT).show();
                             editText_TenDanhMucThuChi.startAnimation(animation);
                         } else {
                             int madanhmuc = 1;
