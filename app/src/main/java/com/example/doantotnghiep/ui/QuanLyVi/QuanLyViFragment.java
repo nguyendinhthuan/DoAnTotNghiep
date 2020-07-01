@@ -234,7 +234,7 @@ public class QuanLyViFragment extends Fragment {
         editText_ViChuyen.setText(tenvichuyen);
         editText_ViChuyen.setEnabled(false);
         tenvichuyentoi = spinner_ViNhanDialog.getSelectedItem().toString();
-        cursor = data.rawQuery("select* from tblvi",null);
+        cursor = data.rawQuery("select* from tblvi where tentaikhoan ='"+taikhoan+"'",null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
