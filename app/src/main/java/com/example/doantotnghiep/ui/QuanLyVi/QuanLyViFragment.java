@@ -239,11 +239,11 @@ public class QuanLyViFragment extends Fragment {
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViChuyen.setText((String.valueOf(sotienvichon)));
+                editText_TienCuaViChuyen.setText((String.valueOf(sotienvichon)).replace(".0", ""));
             }
             if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
                 sotienvitoi = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViNhan.setText((String.valueOf(sotienvitoi)));
+                editText_TienCuaViNhan.setText((String.valueOf(sotienvitoi)).replace(".0", ""));
             }
             cursor.moveToNext();
         }
@@ -562,7 +562,7 @@ public class QuanLyViFragment extends Fragment {
 
         editText_NhapTenViCapNhat.setText(tenvi1);
         editText_NhapMoTaViCapNhat.setText(motavi1);
-        editText_NhapSoTienViCapNhat.setText(sotienvi1);
+        editText_NhapSoTienViCapNhat.setText(sotienvi1.replace(".0", ""));
 
         if(editText_NhapTenViCapNhat.getText().toString().equals("Cá nhân")){
             return false;

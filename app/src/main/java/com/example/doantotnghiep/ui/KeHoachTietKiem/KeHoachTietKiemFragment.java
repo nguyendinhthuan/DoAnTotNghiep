@@ -718,7 +718,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         editText_TenKeHoachTietKiem_ChiTiet.setText(tenkehoach);
         button_NgayBatDauKeHoachTietKiem_ChiTiet.setText(ngaybatdau);
         button_NgayKetThucKeHoachTietKiem_ChiTiet.setText(ngayketthuc);
-        editText_SoTienKeHoachTietKiem_ChiTiet.setText(sotien);
+        editText_SoTienKeHoachTietKiem_ChiTiet.setText(sotien.replace(".0", ""));
 
         button_HuyKeHoachTietKiem_ChiTiet.setOnClickListener(new View.OnClickListener() {
             @Override
