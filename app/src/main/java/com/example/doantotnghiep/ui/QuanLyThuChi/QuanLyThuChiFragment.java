@@ -575,7 +575,7 @@ public class QuanLyThuChiFragment extends Fragment{
         } else {
             Double sotienchi = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
             if (sotientuvi < sotienchi) {
-                editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
+                editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi).replace(".0", ""));
                 editText_SoTienThuChiDialog.startAnimation(animation);
                 Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();
                 sotienthuchi = -Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
