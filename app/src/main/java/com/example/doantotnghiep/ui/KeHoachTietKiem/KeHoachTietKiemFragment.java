@@ -80,7 +80,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Button button_LuuThuChiChoKeHoach, button_HuyThuChiChoKeHoach, button_HuyThuChiChoKeHoachTietKiem;
     private String[] arrSpinner, arrTrangThaiKeHoachTietKiem;
     private ArrayAdapter<String> adapterSpinner, adapterTrangThaiKeHoachTietKiem;
-    private int sotienthuchichokehoach, sotiendatietkiemchokehoachtietkiem, sotienkehoachtietkiem;
+    private Double sotienthuchichokehoach, sotiendatietkiemchokehoachtietkiem, sotienkehoachtietkiem;
     private ArrayList<ArrayThuChiChoKeHoachTietKiem> arrayThuChiChoKeHoachTietKiem;
     private AdapterThuChiChoKeHoachTietKiem adapterThuChiChoKeHoachTietKiem;
     private EditText editText_TenKeHoachTietKiem_ChiTiet;
@@ -217,6 +217,16 @@ public class KeHoachTietKiemFragment extends Fragment {
                 editText_SoTienKeHoachTietKiem = (EditText) d.findViewById(R.id.editText_SoTienKeHoachTietKiem);
 
                 calendar = Calendar.getInstance();
+
+                editText_SoTienKeHoachTietKiem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean b) {
+                        if(!b && editText_SoTienKeHoachTietKiem.getText().toString()!= null){
+                           GioiHanSoTienKeHoach();
+                        }
+
+                    }
+                });
 
                 //Xu Ly
                 HienThiThoiGianThemKeHoachTietKiem();
@@ -464,6 +474,15 @@ public class KeHoachTietKiemFragment extends Fragment {
 
         calendar = Calendar.getInstance();
 
+        editText_SoTienThuChiChoKeHoach.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b && editText_SoTienThuChiChoKeHoach.getText().toString()!= null){
+                    GioiHanSoTienThuChi();
+                }
+
+            }
+        });
         //Xu ly
         HienThiThoiGianThemThuChiChoKeHoachTietKiem();
         LoadSpinnerThuChiChoKeHoachTietKiem();
@@ -522,7 +541,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("makehoachtietkiem")) == arrayKeHoachTietKiem.get(vitri).makehoachtietkiem) {
-                sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
+                sotiendatietkiemchokehoachtietkiem = cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem"));
             }
             cursor.moveToNext();
         }
@@ -530,9 +549,9 @@ public class KeHoachTietKiemFragment extends Fragment {
 
 
     public void XuLyChuyenTienChoKeHoach() {
-        int sotienthu = 0;
-        int sotienchi = 0;
-        sotienthuchichokehoach = Integer.parseInt(editText_SoTienThuChiChoKeHoach.getText().toString().replaceAll(",", ""));
+        Double sotienthu = 0.0;
+        Double sotienchi = 0.0;
+        sotienthuchichokehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString().replaceAll(",", ""));
 
         sotienthu = sotiendatietkiemchokehoachtietkiem + sotienthuchichokehoach;
         sotienchi = sotiendatietkiemchokehoachtietkiem - sotienthuchichokehoach;
@@ -560,8 +579,8 @@ public class KeHoachTietKiemFragment extends Fragment {
             ngayketthuc = cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem"));
             ngayhientai = simpleDateFormat.format(date);
             makehoach = cursor.getInt(cursor.getColumnIndex("makehoachtietkiem"));
-            sotiendatietkiemchokehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotiendatietkiem"));
-            sotienkehoachtietkiem = cursor.getInt(cursor.getColumnIndex("sotienkehoachtietkiem"));
+            sotiendatietkiemchokehoachtietkiem = cursor.getDouble(cursor.getColumnIndex("sotiendatietkiem"));
+            sotienkehoachtietkiem = cursor.getDouble(cursor.getColumnIndex("sotienkehoachtietkiem"));
 
             try {
                 Date dateketthuc = simpleDateFormat.parse(ngayketthuc);
@@ -732,6 +751,25 @@ public class KeHoachTietKiemFragment extends Fragment {
         } else if (checkedid == R.id.radioButton_LocKeHoachTietKiemTheoTrangThai) {
             LoadSpinnerTrangThaiCuaKeHoachTietKiem();
             spinner_TrangThaiKeHoachTietKiem.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    //Gioi han tien
+    public void GioiHanSoTienKeHoach(){
+        Double sotienkehoach = Double.parseDouble(editText_SoTienKeHoachTietKiem.getText().toString());
+        if(sotienkehoach > 100000000){
+            editText_SoTienKeHoachTietKiem.startAnimation(animation);
+           editText_SoTienKeHoachTietKiem.setText("");
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void GioiHanSoTienThuChi(){
+        Double sotienthuchikehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString());
+        if(sotienthuchikehoach > 100000000){
+            editText_SoTienThuChiChoKeHoach.startAnimation(animation);
+            editText_SoTienThuChiChoKeHoach.setText("");
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
     }
 }

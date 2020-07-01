@@ -104,9 +104,9 @@ public class QuanLyThuChiFragment extends Fragment{
     private List<ArrayVi> listDialog = null;
     private String gioDialog, tenVi, tenviuutien ;
     private Cursor cursor;
-    private int sotientuvi, sotienthuchi, sotienchi, vitri, maviuutien, giothongbao, phutthongbao, nhanthongbao;
+    private int  vitri, maviuutien, giothongbao, phutthongbao, nhanthongbao;
     private EditText editText_SoTienThuChiDialog,editText_SoTienThuChiDialogSua;
-
+    private Double sotientuvi,sotienthuchi,sotienchi;
     //Dung cho thong bao
     //private Time time;
     private SimpleDateFormat simpleTimeFormat;
@@ -233,6 +233,7 @@ public class QuanLyThuChiFragment extends Fragment{
                     public void onFocusChange(View view, boolean b) {
                         if (!b && editText_SoTienThuChiDialog.getText().toString()!= null) {
                           KiemTraChiTieuMax();
+                          GioiHanSoTien();
                         }
                     }
                 });
@@ -564,28 +565,37 @@ public class QuanLyThuChiFragment extends Fragment{
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem) {
-                sotientuvi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+                sotientuvi = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
             }
             cursor.moveToNext();
         }
 
         if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
-            sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            sotienthuchi = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
         } else {
             Double sotienchi = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
             if (sotientuvi < sotienchi) {
                 editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
                 editText_SoTienThuChiDialog.startAnimation(animation);
                 Toast.makeText(activity,"Số tiền chi vượt quá số tiền ví",Toast.LENGTH_SHORT).show();
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+                sotienthuchi = -Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
             } else {
-                sotienthuchi = -Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+                sotienthuchi = -Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
             }
+        }
+    }
+    //Ham gioi han so tien nhap
+    public void GioiHanSoTien(){
+        Double sotiennhapthem = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
+        if(sotiennhapthem > 100000000){
+            editText_SoTienThuChiDialog.startAnimation(animation);
+            editText_SoTienThuChiDialog.setText("");
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
     }
 
     public void TinhSoDu() {
-        int sodu = 0;
+        Double sodu = 0.0;
         int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
         //Tinh
         sodu = sotientuvi + sotienthuchi;

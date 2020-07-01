@@ -66,7 +66,7 @@ public class QuanLyViFragment extends Fragment {
     private List<ArrayVi> list = null;
     private String taikhoan,tenvichuyen,tenvichuyentoi;
     private SharedPreferences sharedPreferences;
-    private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
+    private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat,
             editText_TenVi,editText_MoTaVi,editText_ViChuyen,editText_SoTienChuyen, editText_SoTienVi;
     private Button button_LuuVi,button_ThoatVi;
     private TextView textView_NgayThucHienChuyenTien;
@@ -75,7 +75,7 @@ public class QuanLyViFragment extends Fragment {
     private Date date;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormatDialog;
-    private AutoFormatEditText editText_TienCuaViChuyen, editText_TienCuaViNhan;
+    private AutoFormatEditText editText_TienCuaViChuyen, editText_TienCuaViNhan, editText_NhapSoTienViCapNhat; //NhapSoTienViCapNhat
 
     //Chuyen tien
     private List<ArrayVi> listDialog = null;
@@ -83,8 +83,8 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<String> arrTenViDialog;
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViChuyenDialog;
     private Spinner spinner_ViNhanDialog;
-    private int sotienvitoi,sotienvichon,sotiencanchuyen,mavi;
-
+    private Double sotienvitoi,sotienvichon,sotiencanchuyen;
+    private int mavi;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         myFragment = inflater.inflate(R.layout.fragment_quanlyvi, container, false);
@@ -169,6 +169,15 @@ public class QuanLyViFragment extends Fragment {
 
         calendar = Calendar.getInstance();
 
+        editText_SoTienChuyen.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b && editText_SoTienChuyen.getText().toString() != null){
+                    GioiHanSoTienChuyen();
+                }
+
+            }
+        });
         LoadSpinnerDialog();
         LoadDanhSachViLenSpinnerDialog();
         HienThiThoiGian();
@@ -229,11 +238,11 @@ public class QuanLyViFragment extends Fragment {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
-                sotienvichon = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+                sotienvichon = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
                 editText_TienCuaViChuyen.setText((String.valueOf(sotienvichon)));
             }
             if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
-                sotienvitoi = cursor.getInt(cursor.getColumnIndex("sotienvi"));
+                sotienvitoi = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
                 editText_TienCuaViNhan.setText((String.valueOf(sotienvitoi)));
             }
             cursor.moveToNext();
@@ -247,10 +256,10 @@ public class QuanLyViFragment extends Fragment {
 //    }
 
     public boolean KiemTraChuyenTien() {
-        sotiencanchuyen = Integer.parseInt(editText_SoTienChuyen.getText().toString());
+        sotiencanchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
         if (sotiencanchuyen > sotienvichon) {
             editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
-            int sotiencanchuyenmin = Integer.parseInt(editText_SoTienChuyen.getText().toString());
+            Double sotiencanchuyenmin = Double.parseDouble(editText_SoTienChuyen.getText().toString());
             sotiencanchuyen =  sotiencanchuyenmin;
 
             return false;
@@ -259,8 +268,8 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public boolean XuLyChuyenTien(){
-        int sotiendatru = 0;
-        int sotiendacong = 0;
+        Double sotiendatru = 0.0;
+        Double sotiendacong = 0.0;
         int malichsuchuyentien = 1;
 
         //cong tien vao vi chuyen toi
@@ -347,6 +356,16 @@ public class QuanLyViFragment extends Fragment {
                 editText_MoTaVi = d.findViewById(R.id.editText_MoTaVi);
                 editText_SoTienVi =  d.findViewById(R.id.editText_SoTienVi);
 
+                editText_SoTienVi.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean b) {
+                        if(!b && editText_SoTienVi.getText().toString() != null){
+                            GioiHanSoTienThem();
+                        }
+
+                    }
+                });
+
                 //Xuly
                button_LuuVi.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -413,6 +432,7 @@ public class QuanLyViFragment extends Fragment {
             }
         });
     }
+
 
     public boolean GioiHanSoVi() {
         int count = 0;
@@ -612,5 +632,23 @@ public class QuanLyViFragment extends Fragment {
             return true;
         }
 
+    }
+    //Gioi han tien
+    public void GioiHanSoTienThem(){
+        Double sotienvi = Double.parseDouble(editText_SoTienVi.getText().toString());
+        if(sotienvi > 100000000){
+            editText_SoTienVi.startAnimation(animation);
+            editText_SoTienVi.setText("");
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void GioiHanSoTienChuyen(){
+        Double sotienchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
+        if(sotienchuyen > 100000000){
+            editText_SoTienChuyen.startAnimation(animation);
+            editText_SoTienChuyen.setText("");
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+        }
     }
 }
