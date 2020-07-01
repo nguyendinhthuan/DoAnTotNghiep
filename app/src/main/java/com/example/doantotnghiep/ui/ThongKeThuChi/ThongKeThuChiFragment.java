@@ -108,7 +108,11 @@ public class ThongKeThuChiFragment extends Fragment {
     public void LocTheoLuaChon(int position) {
         switch (position) {
             case 0:
-                ngaythang = ngay + "/" + thang + "/" + nam;
+                String thangconvert = "" + thang;
+                if (thang < 10) {
+                    thangconvert = "0" + thangconvert;
+                }
+                ngaythang = ngay + "/" + thangconvert + "/" + nam;
                 LoadTatCaThongKeThuChi(ngaythang);
                 break;
             case 1:

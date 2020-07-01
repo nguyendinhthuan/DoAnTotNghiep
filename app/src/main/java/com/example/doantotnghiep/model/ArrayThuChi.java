@@ -1,11 +1,11 @@
 package com.example.doantotnghiep.model;
 
 public class ArrayThuChi  {
-    public String thoigian, danhmucthuchi, vi, loaikhoan, mota,nhanthongbao;//moi
+    public String thoigian, danhmucthuchi, vi, loaikhoan, mota, nhanthongbao;//moi
     public int ma;
-    public int tien;
+    public double tien;
 
-    public ArrayThuChi(String thoigian, String danhmucthuchi, String vi, int tien, int ma,String nhanthongbao, String loaikhoan, String mota) {
+    public ArrayThuChi(String thoigian, String danhmucthuchi, String vi, double tien, int ma, String nhanthongbao, String loaikhoan, String mota) {
         this.thoigian = thoigian;
         this.danhmucthuchi = danhmucthuchi;
         this.vi = vi;

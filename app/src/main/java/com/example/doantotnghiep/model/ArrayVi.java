@@ -4,14 +4,13 @@ public class ArrayVi {
     public int mavi;
     public String tenvi;
     public String motavi;
-    public int sotienvi, sodu;
+    public double sotienvi;
 
-    public ArrayVi(int mavi, String tenvi, String motavi, int sotienvi, int sodu) {
+    public ArrayVi(int mavi, String tenvi, String motavi, double sotienvi) {
         this.mavi = mavi;
         this.tenvi = tenvi;
         this.motavi = motavi;
         this.sotienvi = sotienvi;
-        this.sodu = sodu;
     }
 
     public ArrayVi() {
@@ -42,20 +41,12 @@ public class ArrayVi {
         this.motavi = motavi;
     }
 
-    public int getSotienvi() {
+    public double getSotienvi() {
         return sotienvi;
     }
 
-    public void setSotienvi(int sotien) {
+    public void setSotienvi(double sotien) {
         this.sotienvi = sotien;
-    }
-
-    public int getSodu() {
-        return sodu;
-    }
-
-    public void setSodu(int sodu) {
-        this.sodu = sodu;
     }
 
     @Override
@@ -65,7 +56,6 @@ public class ArrayVi {
                 ", tenvi='" + tenvi + '\'' +
                 ", motavi='" + motavi + '\'' +
                 ", sotienvi=" + sotienvi +
-                ", sodu=" + sodu +
                 '}';
     }
 }

@@ -104,16 +104,15 @@ public class QuanLyThuChiFragment extends Fragment{
     private List<ArrayVi> listDialog = null;
     private String gioDialog, tenVi, tenviuutien ;
     private Cursor cursor;
-    private int sotientuvi,sotienthuchi,sotienchi,vitri, maviuutien,giothongbao,phutthongbao,nhanthongbao;
+    private int sotientuvi, sotienthuchi, sotienchi, vitri, maviuutien, giothongbao, phutthongbao, nhanthongbao;
     private EditText editText_SoTienThuChiDialog,editText_SoTienThuChiDialogSua;
 
     //Dung cho thong bao
     //private Time time;
     private SimpleDateFormat simpleTimeFormat;
     //private DateFormat dateFormat;
-    private int gio,phut, gioSua, phutSua;
-    private CheckBox check_thongbao,check_thongbaoSua;
-
+    private int gio, phut, gioSua, phutSua;
+    private CheckBox check_thongbao, check_thongbaoSua;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -573,7 +572,7 @@ public class QuanLyThuChiFragment extends Fragment{
         if (spinner_LoaiThuChiDialog.getSelectedItem().toString().equals("Khoản thu")) {
             sotienthuchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
         } else {
-            int sotienchi = Integer.parseInt(editText_SoTienThuChiDialog.getText().toString());
+            Double sotienchi = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
             if (sotientuvi < sotienchi) {
                 editText_SoTienThuChiDialog.setText(String.valueOf(sotientuvi));
                 editText_SoTienThuChiDialog.startAnimation(animation);

@@ -67,7 +67,7 @@ public class QuanLyViFragment extends Fragment {
     private String taikhoan,tenvichuyen,tenvichuyentoi;
     private SharedPreferences sharedPreferences;
     private EditText editText_NhapTenViCapNhat, editText_NhapMoTaViCapNhat, editText_NhapSoTienViCapNhat,
-            editText_TenVi,editText_MoTaVi,editText_ViChuyen,editText_SoTienChuyen;
+            editText_TenVi,editText_MoTaVi,editText_ViChuyen,editText_SoTienChuyen, editText_SoTienVi;
     private Button button_LuuVi,button_ThoatVi;
     private TextView textView_NgayThucHienChuyenTien;
     private int vitri = 0;
@@ -75,7 +75,7 @@ public class QuanLyViFragment extends Fragment {
     private Date date;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormatDialog;
-    private AutoFormatEditText editText_SoTienVi, editText_TienCuaViChuyen, editText_TienCuaViNhan;
+    private AutoFormatEditText editText_TienCuaViChuyen, editText_TienCuaViNhan;
 
     //Chuyen tien
     private List<ArrayVi> listDialog = null;
@@ -373,9 +373,6 @@ public class QuanLyViFragment extends Fragment {
                         } else if (editText_SoTienVi.getText().toString().equals("")) {
                             editText_SoTienVi.startAnimation(animation);
                             Toast.makeText(activity, "Bạn chưa nhập số tiền ban đầu cho ví", Toast.LENGTH_SHORT).show();
-//        } else if (DinhDangsoTien() < 0) {
-//            editText_SoTienVi.setAnimation(animation);
-//            Toast.makeText(this, "Số tiền không được âm", Toast.LENGTH_SHORT).show();
                         } else if (GioiHanSoVi()){
                             int mavi = 1;
                             cursor = data.rawQuery("select mavi from tblvi", null);
@@ -448,7 +445,6 @@ public class QuanLyViFragment extends Fragment {
             a.setTenvi(cursor.getString(1));
             a.setMotavi(cursor.getString(2));
             a.setSotienvi(cursor.getInt(3));
-            a.setSodu(cursor.getInt(4));
             list.add(a);
 
             cursor.moveToNext();
