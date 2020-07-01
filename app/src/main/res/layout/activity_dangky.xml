@@ -101,7 +101,7 @@
                 android:layout_marginTop="25dp"
                 android:background="@drawable/confirm_button"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="60dp"
+                android:layout_marginLeft="20dp"
                 android:onClick="DangKy"
                 android:text="@string/dangky"
                 android:textStyle="bold"/>
@@ -113,7 +113,7 @@
                 android:layout_marginTop="25dp"
                 android:background="@drawable/cancel_button"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="60dp"
+                android:layout_marginRight="20dp"
                 android:onClick="ThoatDangKy"
                 android:text="Hủy"
                 android:textStyle="bold"/>

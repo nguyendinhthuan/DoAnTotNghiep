@@ -155,7 +155,7 @@
             android:text="Chuyển"
             android:textStyle="bold"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="60dp"/>
+            android:layout_marginLeft="20dp"/>
 
         <Button
             android:id="@+id/btnHuyChuyenTien"
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/cancel_button"
             android:text="Hủy"
-            android:layout_marginRight="60dp"
+            android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:textStyle="bold"/>
     </RelativeLayout>

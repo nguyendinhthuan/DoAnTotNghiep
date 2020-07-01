@@ -88,7 +88,7 @@
             android:id="@+id/btnThaydoiquen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/confirm_button"
             android:text="Lưu"
             android:textStyle="bold"
@@ -101,7 +101,7 @@
             android:background="@drawable/cancel_button"
             android:text="Hủy"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="60dp"
+            android:layout_marginRight="20dp"
             android:textStyle="bold"/>
     </RelativeLayout>
 
