@@ -442,11 +442,12 @@ public class QuanLyViFragment extends Fragment {
                             }
                             Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
                         } else {
-                            editText_TenVi.startAnimation(animation);
-                            editText_MoTaVi.startAnimation(animation);
-                            editText_SoTienVi.startAnimation(animation);
+//                            editText_TenVi.startAnimation(animation);
+//                            editText_MoTaVi.startAnimation(animation);
+//                            editText_SoTienVi.startAnimation(animation);
                             thongbao="Số ví đã đạt tối đa";
                             Toast.makeText(activity, thongbao, Toast.LENGTH_LONG).show();
+                            d.dismiss();
                         }
                         LoadTatCaVi();
                     }
