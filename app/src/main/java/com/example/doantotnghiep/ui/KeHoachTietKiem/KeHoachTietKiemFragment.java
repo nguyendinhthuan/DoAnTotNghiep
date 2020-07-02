@@ -92,6 +92,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     private AlarmManager alarmManager;
     private int REQUEST_CODE = 27;
     private AutoFormatEditText editText_SoTienKeHoachTietKiem_ChiTiet;
+    private Double sotienkehoach,sotienthuchikehoach;
 
     public static KeHoachTietKiemFragment newInstance() {
         return new KeHoachTietKiemFragment();
@@ -222,7 +223,13 @@ public class KeHoachTietKiemFragment extends Fragment {
                     @Override
                     public void onFocusChange(View view, boolean b) {
                         if(!b && editText_SoTienKeHoachTietKiem.getText().toString()!= null){
-                           GioiHanSoTienKeHoach();
+                            if (editText_SoTienKeHoachTietKiem.getText().toString().equals("")) {
+                                Toast.makeText(activity, "Bạn chưa nhập số tiền cho kế hoạch tiết kiệm", Toast.LENGTH_SHORT).show();
+                                editText_SoTienKeHoachTietKiem.startAnimation(animation);
+                            }else {
+                                GioiHanSoTienKeHoachKhiChuyen();
+                            }
+
                         }
 
                     }
@@ -262,7 +269,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                             ngaybatdaukehoach = simpleDateFormat.format(date);
                             Date dateketthuc = simpleDateFormat.parse(ngayketthuckehoach);
                             Date datebatdau = simpleDateFormat.parse(ngaybatdaukehoach);
-
                             if (tenkehoachtietkiem == false) {
                                 Toast.makeText(activity, "Tên kế hoạch tiết kiệm này đã tồn tại", Toast.LENGTH_SHORT).show();
                                 editText_TenKeHoachTietKiem.startAnimation(animation);
@@ -277,7 +283,12 @@ public class KeHoachTietKiemFragment extends Fragment {
                                 editText_SoTienKeHoachTietKiem.startAnimation(animation);
                             } else if (dateketthuc.before(datebatdau)) {
                                 Toast.makeText(activity, "Ngày kết thúc phải sau ngày bắt đầu", Toast.LENGTH_SHORT).show();
-                            } else {
+                            } else if(!GioiHanSoTienKeHoach()){
+                                editText_SoTienKeHoachTietKiem.startAnimation(animation);
+                                editText_SoTienKeHoachTietKiem.setText(String.valueOf(0));
+                                Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+                            }
+                            else {
                                 int makehoachtietkiem = 1;
                                 Cursor cursor1 = data.rawQuery("select makehoachtietkiem from tblkehoachtietkiem", null);
                                 if (cursor1.moveToLast() == true) {
@@ -478,7 +489,13 @@ public class KeHoachTietKiemFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(!b && editText_SoTienThuChiChoKeHoach.getText().toString()!= null){
-                    GioiHanSoTienThuChi();
+                    if (editText_SoTienThuChiChoKeHoach.getText().toString().equals("")) {
+                        editText_SoTienThuChiChoKeHoach.startAnimation(animation);
+                        Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
+                    }else {
+                        GioiHanSoTienThuChiKhiChuyen();
+                    }
+
                 }
 
             }
@@ -496,6 +513,10 @@ public class KeHoachTietKiemFragment extends Fragment {
                 } else if (editText_MoTaThuChiChoKeHoach.getText().toString().equals("")) {
                     editText_MoTaThuChiChoKeHoach.startAnimation(animation);
                     Toast.makeText(activity, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
+                }else if(!GioiHanSoTienThuChi()){
+                    editText_SoTienThuChiChoKeHoach.startAnimation(animation);
+                    editText_SoTienThuChiChoKeHoach.setText(String.valueOf(0));
+                    Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
                 } else {
                     int mathuchichokehoachtietkiem = 1;
                     Cursor cursor = data.rawQuery("select mathuchichokehoachtietkiem from tblthuchichokehoachtietkiem", null);
@@ -756,20 +777,36 @@ public class KeHoachTietKiemFragment extends Fragment {
 
 
     //Gioi han tien
-    public void GioiHanSoTienKeHoach(){
-        Double sotienkehoach = Double.parseDouble(editText_SoTienKeHoachTietKiem.getText().toString());
+    public void GioiHanSoTienKeHoachKhiChuyen(){
+        sotienkehoach = Double.parseDouble(editText_SoTienKeHoachTietKiem.getText().toString());
         if(sotienkehoach > 100000000){
             editText_SoTienKeHoachTietKiem.startAnimation(animation);
-           editText_SoTienKeHoachTietKiem.setText("");
+            editText_SoTienKeHoachTietKiem.setText(String.valueOf(0));
             Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
     }
-    public void GioiHanSoTienThuChi(){
-        Double sotienthuchikehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString());
+    public boolean GioiHanSoTienKeHoach(){
+        sotienkehoach = Double.parseDouble(editText_SoTienKeHoachTietKiem.getText().toString());
+        if(sotienkehoach > 100000000){
+            return false;
+        }
+        return true;
+    }
+
+    public void GioiHanSoTienThuChiKhiChuyen(){
+        sotienthuchikehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString());
         if(sotienthuchikehoach > 100000000){
             editText_SoTienThuChiChoKeHoach.startAnimation(animation);
-            editText_SoTienThuChiChoKeHoach.setText("");
+            editText_SoTienThuChiChoKeHoach.setText(String.valueOf(0));
             Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean GioiHanSoTienThuChi(){
+        sotienthuchikehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString());
+        if(sotienthuchikehoach > 100000000){
+            return false;
+        }
+        return true;
     }
 }

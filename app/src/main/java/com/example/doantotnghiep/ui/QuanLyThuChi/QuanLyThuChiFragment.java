@@ -113,7 +113,7 @@ public class QuanLyThuChiFragment extends Fragment{
     //private DateFormat dateFormat;
     private int gio, phut, gioSua, phutSua;
     private CheckBox check_thongbao, check_thongbaoSua;
-
+    private Double sotiennhapthem;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         myFragment = inflater.inflate(R.layout.fragment_quanlythuchi, container, false);
@@ -232,8 +232,16 @@ public class QuanLyThuChiFragment extends Fragment{
                     @Override
                     public void onFocusChange(View view, boolean b) {
                         if (!b && editText_SoTienThuChiDialog.getText().toString()!= null) {
-                          KiemTraChiTieuMax();
-                          GioiHanSoTien();
+
+                            if(editText_SoTienThuChiDialog.getText().toString().equals("")){
+                              editText_SoTienThuChiDialog.startAnimation(animation);
+                              Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
+                            }else {
+                              GioiHanSoTienKhiChuyen();
+                              KiemTraChiTieuMax();
+                            }
+
+                          //sotiennhapthem = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
                         }
                     }
                 });
@@ -243,7 +251,7 @@ public class QuanLyThuChiFragment extends Fragment{
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                         vitri = position ;
-                        LayViUuTienTheoDanhMuc(); //Loi o day
+                        LayViUuTienTheoDanhMuc();
                     }
 
                     @Override
@@ -284,6 +292,7 @@ public class QuanLyThuChiFragment extends Fragment{
                 button_LuuThuChiDialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         if (editText_SoTienThuChiDialog.getText().toString().equals("")) {
                             editText_SoTienThuChiDialog.startAnimation(animation);
                             Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
@@ -295,8 +304,10 @@ public class QuanLyThuChiFragment extends Fragment{
                             check_thongbao.startAnimation(animation);
                             check_thongbao.setChecked(false);
                             Toast.makeText(activity, "Đã có một thu chi đang chờ thông báo", Toast.LENGTH_SHORT).show();
-
-
+                        }else if(!GioiHanSoTien()){
+                            editText_SoTienThuChiDialog.startAnimation(animation);
+                            //editText_SoTienThuChiDialog.setText(String.valueOf(0));
+                            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
                         }
                         else {
 
@@ -584,15 +595,7 @@ public class QuanLyThuChiFragment extends Fragment{
             }
         }
     }
-    //Ham gioi han so tien nhap
-    public void GioiHanSoTien(){
-        Double sotiennhapthem = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
-        if(sotiennhapthem > 100000000){
-            editText_SoTienThuChiDialog.startAnimation(animation);
-            editText_SoTienThuChiDialog.setText("");
-            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
-        }
-    }
+
 
     public void TinhSoDu() {
         Double sodu = 0.0;
@@ -661,9 +664,7 @@ public class QuanLyThuChiFragment extends Fragment{
 
     //Chuc nang xoa thu chi
     public void XoaThuChi(int vitri) {
-
-                HamXoaThuChi(vitri);
-
+         HamXoaThuChi(vitri);
     }
 
     public void HamXoaThuChi(final int mathuchi) {
@@ -1124,8 +1125,21 @@ public class QuanLyThuChiFragment extends Fragment{
         }
         adapterDanhMucDialog.notifyDataSetChanged();
     }
+    //Ham gioi han so tien nhap
+    public void GioiHanSoTienKhiChuyen(){
+        sotiennhapthem = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
+        if(sotiennhapthem > 100000000){
+            editText_SoTienThuChiDialog.startAnimation(animation);
+            editText_SoTienThuChiDialog.setText(String.valueOf(0));
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+        }
+    }
 
-
-
-
+    public boolean GioiHanSoTien(){
+        sotiennhapthem = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
+        if(sotiennhapthem > 100000000){
+            return false;
+        }
+        return true;
+    }
 }

@@ -83,7 +83,7 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<String> arrTenViDialog;
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViChuyenDialog;
     private Spinner spinner_ViNhanDialog;
-    private Double sotienvitoi,sotienvichon,sotiencanchuyen;
+    private Double sotienvitoi,sotienvichon,sotiencanchuyen,sotienchuyen = 0.0,sotienvi = 0.0;
     private int mavi;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -173,7 +173,13 @@ public class QuanLyViFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if(!b && editText_SoTienChuyen.getText().toString() != null){
-                    GioiHanSoTienChuyen();
+                    if (editText_SoTienChuyen.getText().toString().equals("")) {
+                        Toast.makeText(activity, "Bạn chưa nhập số tiền chuyển", Toast.LENGTH_SHORT).show();
+                        editText_SoTienChuyen.startAnimation(animation);
+                    }else {
+                        GioiHanSoTienChuyenKhiChuyen();
+                    }
+
                 }
 
             }
@@ -203,16 +209,25 @@ public class QuanLyViFragment extends Fragment {
         button_ChuyenTien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (tenvichuyen.equals(tenvichuyentoi)) {
                     Toast.makeText(activity,"Tên ví chuyển tiền bị trùng",Toast.LENGTH_SHORT).show();
                     spinner_ViNhanDialog.startAnimation(animation);
                 }else  if (editText_SoTienChuyen.getText().toString().equals("")){
                     Toast.makeText(activity,"Bạn chưa nhập số tiền chuyển",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
+
                 } else if (!KiemTraChuyenTien()) {
                     Toast.makeText(activity,"Số tiền chuyển vượt quá số tiền có trong ví",Toast.LENGTH_SHORT).show();
                     editText_SoTienChuyen.startAnimation(animation);
-                } else {
+
+                }else if(!GioiHanSoTienChuyen()){
+                    editText_SoTienChuyen.startAnimation(animation);
+                    //editText_SoTienChuyen.setText(String.valueOf(0));
+                    Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+                }
+                else {
+
                     XuLyChuyenTien();
                     d.dismiss();
                     LoadTatCaVi();
@@ -360,7 +375,12 @@ public class QuanLyViFragment extends Fragment {
                     @Override
                     public void onFocusChange(View view, boolean b) {
                         if(!b && editText_SoTienVi.getText().toString() != null){
-                            GioiHanSoTienThem();
+                            if (editText_SoTienVi.getText().toString().equals("")) {
+                                editText_SoTienVi.startAnimation(animation);
+                                Toast.makeText(activity, "Bạn chưa nhập số tiền ban đầu cho ví", Toast.LENGTH_SHORT).show();
+                            }else {
+                                GioiHanSoTienThemKhiChuyen();
+                            }
                         }
 
                     }
@@ -372,6 +392,7 @@ public class QuanLyViFragment extends Fragment {
                     public void onClick(View view) {
                         boolean tenvi = true;
                         String thongbao = "";
+
                         cursor = data.rawQuery("select * from tblvi where tentaikhoan ='" + taikhoan+"'", null);
                         cursor.moveToFirst();
                         while (cursor.isAfterLast()==false) {
@@ -386,13 +407,20 @@ public class QuanLyViFragment extends Fragment {
                         } else if (editText_TenVi.getText().toString().equals("")) {
                             editText_TenVi.startAnimation(animation);
                             Toast.makeText(activity, "Bạn chưa nhập tên ví", Toast.LENGTH_SHORT).show();
-                        } else if (editText_MoTaVi.getText().toString().equals("")) {
-                            editText_MoTaVi.startAnimation(animation);
-                            Toast.makeText(activity, "Bạn chưa nhập mô tả cho ví", Toast.LENGTH_SHORT).show();
+
                         } else if (editText_SoTienVi.getText().toString().equals("")) {
                             editText_SoTienVi.startAnimation(animation);
                             Toast.makeText(activity, "Bạn chưa nhập số tiền ban đầu cho ví", Toast.LENGTH_SHORT).show();
-                        } else if (GioiHanSoVi()){
+                        } else if (editText_MoTaVi.getText().toString().equals("")) {
+                            editText_MoTaVi.startAnimation(animation);
+                            Toast.makeText(activity, "Bạn chưa nhập mô tả cho ví", Toast.LENGTH_SHORT).show();
+
+                        }else if(!GioiHanSoTienThem()){
+                            editText_SoTienVi.startAnimation(animation);
+                            editText_SoTienVi.setText(String.valueOf(0));
+                            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+                        }
+                        else if (GioiHanSoVi()){
                             int mavi = 1;
                             cursor = data.rawQuery("select mavi from tblvi", null);
                             if (cursor.moveToLast()) {
@@ -634,21 +662,39 @@ public class QuanLyViFragment extends Fragment {
 
     }
     //Gioi han tien
-    public void GioiHanSoTienThem(){
-        Double sotienvi = Double.parseDouble(editText_SoTienVi.getText().toString());
+    public boolean GioiHanSoTienThem(){
+        sotienvi = Double.parseDouble(editText_SoTienVi.getText().toString());
+        if(sotienvi > 100000000){
+
+            return false;
+        }
+        return true;
+    }
+    public void GioiHanSoTienThemKhiChuyen(){
+        sotienvi = Double.parseDouble(editText_SoTienVi.getText().toString());
         if(sotienvi > 100000000){
             editText_SoTienVi.startAnimation(animation);
-            editText_SoTienVi.setText("");
+            editText_SoTienVi.setText(String.valueOf(0));
+            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    public void GioiHanSoTienChuyenKhiChuyen(){
+        sotienchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
+        if(sotienchuyen > 100000000){
+            editText_SoTienChuyen.startAnimation(animation);
+            editText_SoTienChuyen.setText(String.valueOf(0));
             Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void GioiHanSoTienChuyen(){
-        Double sotienchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
+    public boolean GioiHanSoTienChuyen(){
+        sotienchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
         if(sotienchuyen > 100000000){
-            editText_SoTienChuyen.startAnimation(animation);
-            editText_SoTienChuyen.setText("");
-            Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
+            return false;
         }
+        return true;
     }
 }
