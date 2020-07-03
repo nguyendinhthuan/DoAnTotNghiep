@@ -50,8 +50,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class QuanLyViFragment extends Fragment {
-
-    private QuanLyViViewModel galleryViewModel;
     private Activity activity;
     private ImageButton button_ThemVi, button_LichSuChuyenTien;
     private Button button_LuuCapNhatVi, button_HuyCapNhatVi,button_ChuyenTien,button_HuyChuyenTien;
@@ -83,7 +81,7 @@ public class QuanLyViFragment extends Fragment {
     private ArrayList<String> arrTenViDialog;
     private ArrayAdapter<String> adapterSpinnerDialog, adapterViChuyenDialog;
     private Spinner spinner_ViNhanDialog;
-    private Double sotienvitoi,sotienvichon,sotiencanchuyen,sotienchuyen = 0.0,sotienvi = 0.0;
+    private Double sotienvitoi = 0.0, sotienvichon = 0.0, sotiencanchuyen = 0.0, sotienchuyen = 0.0, sotienvi = 0.0;
     private int mavi;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -254,29 +252,29 @@ public class QuanLyViFragment extends Fragment {
         while (!cursor.isAfterLast()) {
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(tenvichuyen)) {
                 sotienvichon = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViChuyen.setText((String.valueOf(sotienvichon)).replace(".0", ""));
+                editText_TienCuaViChuyen.setText(DoiSoSangTien((sotienvichon)));
             }
             if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
                 sotienvitoi = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
-                editText_TienCuaViNhan.setText((String.valueOf(sotienvitoi)).replace(".0", ""));
+                DoiSoSangTien(sotienvitoi);
+                editText_TienCuaViNhan.setText(DoiSoSangTien(sotienvitoi));
             }
             cursor.moveToNext();
         }
     }
 
-//    public static String DoiSoSangTien(Double so) {
-//        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-//        decimalFormat.applyPattern("#,###,###,###");
-//        return decimalFormat.format((so)) + " đ";
-//    }
+    public static String DoiSoSangTien(Double so) {
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        decimalFormat.applyPattern("#,###,###,###");
+        return decimalFormat.format((so)) + " đ";
+    }
 
     public boolean KiemTraChuyenTien() {
         sotiencanchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
         if (sotiencanchuyen > sotienvichon) {
-            editText_SoTienChuyen.setText(String.valueOf(sotienvichon));
+            editText_SoTienChuyen.setText(String.valueOf(sotienvichon).replace(".0", ""));
             Double sotiencanchuyenmin = Double.parseDouble(editText_SoTienChuyen.getText().toString());
             sotiencanchuyen =  sotiencanchuyenmin;
-
             return false;
         }
         return true;

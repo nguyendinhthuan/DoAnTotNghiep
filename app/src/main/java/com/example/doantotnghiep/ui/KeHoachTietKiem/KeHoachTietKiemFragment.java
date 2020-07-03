@@ -88,9 +88,6 @@ public class KeHoachTietKiemFragment extends Fragment {
     private Spinner spinner_TrangThaiKeHoachTietKiem;
     private RadioGroup radioGroup_KeHoachTietKiem;
     private EditText editText_SoTienThuChiChoKeHoach, editText_SoTienKeHoachTietKiem;
-    private final String CHANNEL_ID = "1";
-    private AlarmManager alarmManager;
-    private int REQUEST_CODE = 27;
     private AutoFormatEditText editText_SoTienKeHoachTietKiem_ChiTiet;
     private Double sotienkehoach,sotienthuchikehoach;
 
@@ -117,7 +114,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         date = new Date();
 
         AnhXa();
-        ThemKeHoachTietKiem();
+        ThemKHTK();
         setListview();
         LoadTatCaKeHoachTietKiem();
         XuLyKhiDanhSachKeHoachTietKiemTrong(danhsachkehoachtietkiem);
@@ -143,8 +140,8 @@ public class KeHoachTietKiemFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_ThuChoKeHoachTietKiem: {
-                if (KiemTraTrangThaiKeHoach(vitri)) {
-                    ThuVaoChoKeHoachTietKiem();
+                if (KiemTraTrangThaiKHTK(vitri)) {
+                    ThuChiChoKeHoachTietKiem();
                 } else {
                     Toast.makeText(activity,"Kế hoạch đã kết thúc",Toast.LENGTH_SHORT).show();
                 }
@@ -168,7 +165,7 @@ public class KeHoachTietKiemFragment extends Fragment {
     }
 
     //Kiem tra trang thai ke hoach de thuc hien thu chi
-    public boolean KiemTraTrangThaiKeHoach(int vitrichon){
+    public boolean KiemTraTrangThaiKHTK(int vitrichon){
         int makehoach = arrayKeHoachTietKiem.get(vitrichon).makehoachtietkiem;
         Cursor cursor = data.rawQuery("Select* from tblkehoachtietkiem where tentaikhoan ='"+ taikhoan +"'",null);
         cursor.moveToFirst();
@@ -199,7 +196,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         spinner_TrangThaiKeHoachTietKiem.setVisibility(View.INVISIBLE);
     }
 
-    public void ThemKeHoachTietKiem() {
+    public void ThemKHTK() {
         imageButton_ThemKeHoachTietKiem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,16 +219,14 @@ public class KeHoachTietKiemFragment extends Fragment {
                 editText_SoTienKeHoachTietKiem.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View view, boolean b) {
-                        if(!b && editText_SoTienKeHoachTietKiem.getText().toString()!= null){
+                        if (!b && editText_SoTienKeHoachTietKiem.getText().toString() != null) {
                             if (editText_SoTienKeHoachTietKiem.getText().toString().equals("")) {
                                 Toast.makeText(activity, "Bạn chưa nhập số tiền cho kế hoạch tiết kiệm", Toast.LENGTH_SHORT).show();
                                 editText_SoTienKeHoachTietKiem.startAnimation(animation);
-                            }else {
+                            } else {
                                 GioiHanSoTienKeHoachKhiChuyen();
                             }
-
                         }
-
                     }
                 });
 
@@ -261,8 +256,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                             }
                             cursor.moveToNext();
                         }
-
-
 
                         try {
                             ngayketthuckehoach = button_NgayKetThucKeHoachTietKiem.getText().toString();
@@ -318,8 +311,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-
-
                     }
                 });
 
@@ -467,7 +458,7 @@ public class KeHoachTietKiemFragment extends Fragment {
         });
     }
 
-    public void ThuVaoChoKeHoachTietKiem() {
+    public void ThuChiChoKeHoachTietKiem() {
         animation = AnimationUtils.loadAnimation(getActivity(), R.anim.animation_edittext);
         final Dialog d = new Dialog(getActivity());
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -488,18 +479,18 @@ public class KeHoachTietKiemFragment extends Fragment {
         editText_SoTienThuChiChoKeHoach.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(!b && editText_SoTienThuChiChoKeHoach.getText().toString()!= null){
+                if (!b && editText_SoTienThuChiChoKeHoach.getText().toString()!= null) {
                     if (editText_SoTienThuChiChoKeHoach.getText().toString().equals("")) {
                         editText_SoTienThuChiChoKeHoach.startAnimation(animation);
                         Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         GioiHanSoTienThuChiKhiChuyen();
                     }
 
                 }
-
             }
         });
+
         //Xu ly
         HienThiThoiGianThemThuChiChoKeHoachTietKiem();
         LoadSpinnerThuChiChoKeHoachTietKiem();
@@ -513,7 +504,7 @@ public class KeHoachTietKiemFragment extends Fragment {
                 } else if (editText_MoTaThuChiChoKeHoach.getText().toString().equals("")) {
                     editText_MoTaThuChiChoKeHoach.startAnimation(animation);
                     Toast.makeText(activity, "Bạn chưa nhập mô tả", Toast.LENGTH_SHORT).show();
-                }else if(!GioiHanSoTienThuChi()){
+                } else if (!GioiHanSoTienThuChi()) {
                     editText_SoTienThuChiChoKeHoach.startAnimation(animation);
                     editText_SoTienThuChiChoKeHoach.setText(String.valueOf(0));
                     Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
@@ -611,36 +602,6 @@ public class KeHoachTietKiemFragment extends Fragment {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("trangthai", "Đã kết thúc - Kế hoạch thành công");
                     data.update("tblkehoachtietkiem", contentValues, "makehoachtietkiem = '" + makehoach + "' and tentaikhoan = '" + taikhoan + "'", null);
-
-                    //Thong bao
-//                    NotificationCompat.Builder builder = new NotificationCompat.Builder(activity.getApplicationContext(), CHANNEL_ID)
-//                            .setContentTitle("Thông báo kế hoạch tiết kiệm")
-//                            .setContentText("Kế hoạch đã kết thúc")
-//                            .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                        CharSequence name = getString(R.string.channel_name);
-//                        String description = getString(R.string.channel_description);
-//                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//                        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-//                        channel.setDescription(description);
-//                        // Register the channel with the system; you can't change the importance
-//                        // or other notification behaviors after this
-//                        NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
-//                        notificationManager.createNotificationChannel(channel);
-//                    }
-//
-//                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(activity.getApplicationContext());
-//                    int notificationId = 1;
-//                    notificationManager.notify(notificationId, builder.build());
-
-                    //Thong bao
-//                    alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-//                    Intent intent = new Intent(activity, AlarmReceiver.class);
-//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(activity,0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                    alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-
 
                     //Ham load danh sach ke hoach tiet kiem
                     LoadTatCaKeHoachTietKiem();
@@ -779,36 +740,35 @@ public class KeHoachTietKiemFragment extends Fragment {
         }
     }
 
-
     //Gioi han tien
-    public void GioiHanSoTienKeHoachKhiChuyen(){
+    public void GioiHanSoTienKeHoachKhiChuyen() {
         sotienkehoach = Double.parseDouble(editText_SoTienKeHoachTietKiem.getText().toString());
-        if(sotienkehoach > 100000000){
+        if (sotienkehoach > 100000000) {
             editText_SoTienKeHoachTietKiem.startAnimation(animation);
             editText_SoTienKeHoachTietKiem.setText(String.valueOf(0));
             Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
     }
-    public boolean GioiHanSoTienKeHoach(){
+    public boolean GioiHanSoTienKeHoach() {
         sotienkehoach = Double.parseDouble(editText_SoTienKeHoachTietKiem.getText().toString());
-        if(sotienkehoach > 100000000){
+        if (sotienkehoach > 100000000) {
             return false;
         }
         return true;
     }
 
-    public void GioiHanSoTienThuChiKhiChuyen(){
+    public void GioiHanSoTienThuChiKhiChuyen() {
         sotienthuchikehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString());
-        if(sotienthuchikehoach > 100000000){
+        if (sotienthuchikehoach > 100000000) {
             editText_SoTienThuChiChoKeHoach.startAnimation(animation);
             editText_SoTienThuChiChoKeHoach.setText(String.valueOf(0));
             Toast.makeText(activity,"Số tiền nhập quá lớn",Toast.LENGTH_SHORT).show();
         }
     }
 
-    public boolean GioiHanSoTienThuChi(){
+    public boolean GioiHanSoTienThuChi() {
         sotienthuchikehoach = Double.parseDouble(editText_SoTienThuChiChoKeHoach.getText().toString());
-        if(sotienthuchikehoach > 100000000){
+        if (sotienthuchikehoach > 100000000) {
             return false;
         }
         return true;

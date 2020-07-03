@@ -237,8 +237,8 @@ public class QuanLyThuChiFragment extends Fragment{
                               editText_SoTienThuChiDialog.startAnimation(animation);
                               Toast.makeText(activity, "Bạn chưa nhập số tiền", Toast.LENGTH_SHORT).show();
                             }else {
-                              GioiHanSoTienKhiChuyen();
-                              KiemTraChiTieuMax();
+                                KiemTraChiTieuMax();
+                                GioiHanSoTienKhiChuyen();
                             }
 
                           //sotiennhapthem = Double.parseDouble(editText_SoTienThuChiDialog.getText().toString());
@@ -524,7 +524,7 @@ public class QuanLyThuChiFragment extends Fragment{
         values.put("mathuchi", mathuchi);
         values.put("mota", editText_MoTaThuChiDialog.getText().toString());
         values.put("loaithuchi", spinner_LoaiThuChiDialog.getSelectedItem().toString());
-        values.put("sotienthuchi", sotienthuchi);
+        values.put("sotienthuchi", editText_SoTienThuChiDialog.getText().toString());
         values.put("mavi", arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition()));
         values.put("ngaythuchien", simpleDateFormatDialog.format(date));
         values.put("giothuchi", gio);

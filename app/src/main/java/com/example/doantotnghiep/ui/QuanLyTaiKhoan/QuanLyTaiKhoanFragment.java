@@ -38,9 +38,6 @@ import java.util.Locale;
 
 
 public class QuanLyTaiKhoanFragment extends Fragment {
-
-    private QuanLyTaiKhoanViewModel slideshowViewModel;
-
     private View myFragment;
     private Activity activity;
     private Animation animation;
