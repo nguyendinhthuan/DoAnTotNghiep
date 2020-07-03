@@ -4,15 +4,24 @@
     android:layout_height="match_parent"
     android:background="@drawable/white_listview_item">
 
+    <ImageView
+        android:id="@+id/txtIconThuChi"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/logo"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"/>
+
     <TextView
         android:id="@+id/txtNgayThuChi"
         android:layout_width="wrap_content"
-        android:layout_toLeftOf="@+id/txtTienThuChi"
-        android:layout_alignParentLeft="true"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/txtTienThuChi"
+        android:layout_toRightOf="@id/txtIconThuChi"
         android:text="Ngay thu chi"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000"/>
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/txtTienThuChi"
@@ -29,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtNgayThuChi"
         android:layout_marginTop="5dp"
-        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="45dp"
         android:text="Khoan thu"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000000"/>
@@ -74,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtLoaiKhoanThuChi"
-        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="45dp"
         android:layout_marginTop="5dp"
         android:text="Mô tả:"
         android:textAppearance="?android:attr/textAppearanceMedium"
