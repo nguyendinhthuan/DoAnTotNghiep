@@ -256,7 +256,6 @@ public class QuanLyViFragment extends Fragment {
             }
             if (cursor.getInt(cursor.getColumnIndex("mavi"))== mavi) {
                 sotienvitoi = cursor.getDouble(cursor.getColumnIndex("sotienvi"));
-                DoiSoSangTien(sotienvitoi);
                 editText_TienCuaViNhan.setText(DoiSoSangTien(sotienvitoi));
             }
             cursor.moveToNext();
@@ -265,14 +264,14 @@ public class QuanLyViFragment extends Fragment {
 
     public static String DoiSoSangTien(Double so) {
         DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        decimalFormat.applyPattern("#,###,###,###");
-        return decimalFormat.format((so)) + " đ";
+        decimalFormat.applyPattern("##########");
+        return decimalFormat.format((so));
     }
 
     public boolean KiemTraChuyenTien() {
         sotiencanchuyen = Double.parseDouble(editText_SoTienChuyen.getText().toString());
         if (sotiencanchuyen > sotienvichon) {
-            editText_SoTienChuyen.setText(String.valueOf(sotienvichon).replace(".0", ""));
+            editText_SoTienChuyen.setText(DoiSoSangTien(sotienvichon));
             Double sotiencanchuyenmin = Double.parseDouble(editText_SoTienChuyen.getText().toString());
             sotiencanchuyen =  sotiencanchuyenmin;
             return false;
