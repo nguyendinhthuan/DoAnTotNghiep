@@ -577,7 +577,7 @@ public class QuanLyThuChiFragment extends Fragment{
     public void KiemTraChiTieuMax() {
         int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
         Double sotientuvikt =0.0;
-        Cursor cursor =  data.rawQuery("select * from tblvi" ,null);
+        Cursor cursor =  data.rawQuery("select * from tblvi where tentaikhoan ='"+taikhoan+"'" ,null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem) {
@@ -601,7 +601,7 @@ public class QuanLyThuChiFragment extends Fragment{
     public boolean KiemTraChiTieuMaxLuu() {
         int mavithem = arrMaViDialog.get(spinner_ViDialog.getSelectedItemPosition());
        // Double sotientuvikt =0.0;
-        Cursor cursor =  data.rawQuery("select * from tblvi" ,null);
+        Cursor cursor =  data.rawQuery("select * from tblvi where tentaikhoan ='"+taikhoan+"'" ,null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem) {
@@ -626,7 +626,7 @@ public class QuanLyThuChiFragment extends Fragment{
         Double sotientuvitinh =0.0;
         //Tinh
         Double sotienthuchikt;
-        Cursor cursor =  data.rawQuery("select * from tblvi" ,null);
+        Cursor cursor =  data.rawQuery("select * from tblvi where tentaikhoan ='"+taikhoan+"'" ,null);
         cursor.moveToFirst();
         while (cursor.isAfterLast() == false) {
             if (cursor.getInt(cursor.getColumnIndex("mavi")) == mavithem) {
