@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/white_listview_item">
 
+    <ImageView
+        android:id="@+id/txtIconKeHoach"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/kehoachtietkiem"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="5dp"/>
+
     <TextView
         android:id="@+id/txtTenKeHoachTietKiemTieuDe"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/txtIconKeHoach"
         android:layout_height="wrap_content"
         android:text="Tên:"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -45,7 +54,7 @@
     <TextView
         android:id="@+id/txtSoTienDaTietKiemTieuDe"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/txtIconKeHoach"
         android:layout_below="@id/txtTenKeHoachTietKiemTieuDe"
         android:layout_height="wrap_content"
         android:text="Đã tiết kiệm:"
@@ -67,7 +76,7 @@
     <TextView
         android:id="@+id/txtTrangThai"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/txtIconKeHoach"
         android:layout_below="@id/txtSoTienDaTietKiemTieuDe"
         android:layout_height="wrap_content"
         android:text="Trạng thái:"

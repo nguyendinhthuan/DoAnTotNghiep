@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="@string/tendangnhap"
+                android:text="Tên tài khoản"
                 android:textAppearance="?android:attr/textAppearance"
                 android:textColor="#000000" />
 
@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="Nhập tên đăng nhập"
+                android:hint="Nhập tên tài khoản"
                 android:background="@drawable/main_edittext" />
 
             <TextView

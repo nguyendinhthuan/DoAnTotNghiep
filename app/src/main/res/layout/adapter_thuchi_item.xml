@@ -8,7 +8,7 @@
         android:id="@+id/txtIconThuChi"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@mipmap/logo"
+        android:src="@mipmap/money_out"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="20dp"/>
 
@@ -16,7 +16,7 @@
         android:id="@+id/txtNgayThuChi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:layout_toLeftOf="@+id/txtTienThuChi"
         android:layout_toRightOf="@id/txtIconThuChi"
         android:text="Ngay thu chi"
