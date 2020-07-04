@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/white_listview_item">
 
+    <ImageView
+        android:id="@+id/txtIconThuChiChoKeHoach"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/money_out"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"/>
+
     <TextView
         android:id="@+id/txtNgayThucHienThuChiChoKeHoach"
         android:layout_width="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/txtIconThuChiChoKeHoach"
         android:layout_height="wrap_content"
         android:text="Ngay thuc hien"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -26,7 +35,7 @@
         android:id="@+id/txtLoaiThuChiChoKeHoachTietKiem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/txtIconThuChiChoKeHoach"
         android:layout_below="@id/txtNgayThucHienThuChiChoKeHoach"
         android:text="Loai khoan"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -38,7 +47,7 @@
         android:id="@+id/txtMoTaThuChiChoKeHoachTieuDe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_toRightOf="@id/txtIconThuChiChoKeHoach"
         android:layout_below="@id/txtLoaiThuChiChoKeHoachTietKiem"
         android:text="Mô tả:"
         android:textAppearance="?android:attr/textAppearanceMedium"

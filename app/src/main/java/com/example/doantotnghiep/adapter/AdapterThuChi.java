@@ -45,16 +45,19 @@ public class AdapterThuChi extends ArrayAdapter<ArrayThuChi> {
             icon = view.findViewById(R.id.txtIconThuChi);
 
             ngay.setText(""+ arr.get(position).thoigian);
-            tien.setText(DoiSoSangTien(arr.get(position).tien));
+            //tien.setText(DoiSoSangTien(arr.get(position).tien));
             danhmucthuchi.setText(arr.get(position).danhmucthuchi);
             vi.setText(arr.get(position).vi);
             loaikhoan.setText(arr.get(position).loaikhoan + ":");
             mota.setText(arr.get(position).mota);
             nhanthongbao.setText(arr.get(position).nhanthongbao); //moi
+
             if (arr.get(position).loaikhoan.equals("Khoản thu")) {
                 icon.setImageResource(R.mipmap.money_in);
+                tien.setText("+ " + DoiSoSangTien(arr.get(position).tien));
             } else if (arr.get(position).loaikhoan.equals("Khoản chi")) {
                 icon.setImageResource(R.mipmap.money_out);
+                tien.setText("- " + DoiSoSangTien(arr.get(position).tien));
             }
         }
         return view;
