@@ -253,6 +253,7 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
 
     public boolean CapNhatDanhMuc(){
         String thongbao = "";
+        boolean tendanhmuc = true;
         String tenviuutien = spinner_SuaViUuTienChoDanhMuc.getSelectedItem().toString();
         int maviuutien = 0;
         final int madanhmucht = list.get(vitri).madanhmuc;
@@ -260,7 +261,20 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
         cursor = data.rawQuery("select* from tblvi where tenvi = '"+ tenviuutien +"'" + "and tentaikhoan ='" + taikhoan +"'",null);
         cursor.moveToFirst();
         maviuutien = cursor.getInt(cursor.getColumnIndex("mavi"));
-        if (editText_SuaTenDanhMucThuChi.getText().toString().equals("")) {
+
+        Cursor cursor = data.rawQuery("select tendanhmuc from tbldanhmucthuchi where tentaikhoan ='"+taikhoan+"'", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getString(cursor.getColumnIndex("tendanhmuc")).equals(editText_SuaTenDanhMucThuChi.getText().toString())) {
+                tendanhmuc = false;
+            }
+            cursor.moveToNext();
+        }
+        cursor.close();
+        if (tendanhmuc == false) {
+            Toast.makeText(activity, "Tên danh mục này đã tồn tại", Toast.LENGTH_SHORT).show();
+            editText_SuaTenDanhMucThuChi.startAnimation(animation);
+        } else if (editText_SuaTenDanhMucThuChi.getText().toString().equals("")) {
             editText_SuaTenDanhMucThuChi.startAnimation(animation);
             Toast.makeText(activity,"Bạn chưa nhập tên danh mục",Toast.LENGTH_LONG).show();
         } else {
@@ -274,8 +288,8 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
             return true;
         }
-        thongbao = "Cập nhật không thành công";
-        Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
+        //thongbao = "Cập nhật không thành công";
+        //Toast.makeText(activity,thongbao,Toast.LENGTH_LONG).show();
         return false;
     }
 

@@ -115,7 +115,8 @@
         android:id="@+id/checkBox_KeHoach"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nhận thông báo" />
+        android:text="Nhận thông báo"
+        android:layout_marginTop="15dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

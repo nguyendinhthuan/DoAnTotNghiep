@@ -22,8 +22,6 @@ public class ThongBaoKeHoachReciver extends BroadcastReceiver {
     SharedPreferences sharedPreferences,sharedPreferencesTT;
     private SQLiteDatabase data;
 
-
-
     @Override
     public void onReceive(Context context, Intent intent) {
         //Nhan ten tai khoan
@@ -35,13 +33,10 @@ public class ThongBaoKeHoachReciver extends BroadcastReceiver {
         //Nhan trang thai
         sharedPreferencesTT = context.getSharedPreferences("tendangnhapTT", Context.MODE_PRIVATE);
         trangthai = sharedPreferencesTT.getString("taikhoancanchuyentt","khong tim thay"); //Trang thai tu ben staralarm truyen qua
-        String title = "Một kế hoạch đã kế thúc"; //trangthai
+        String title = "Bạn có một kế hoạch tiết kiệm đã kết thúc"; //trangthai
         String message = "Hãy đăng nhập tài khoản "+taikhoan+" để xem kế hoạch";
         NotificationHelper notificationHelper1 = new NotificationHelper(context);
         NotificationCompat.Builder nb = notificationHelper1.getChanne12Notification(title,message);
         notificationHelper1.getManager().notify(2,nb.build());
     }
-
-
-
 }
