@@ -39,7 +39,8 @@
         android:layout_marginTop="10dp"
         android:hint="Nhập tên ví"
         android:background="@drawable/main_edittext"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textColor="#000000"/>
 
     <TextView
         android:id="@+id/textView_NhapMoTaViCapNhat"
@@ -75,7 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/main_edittext"
-        android:inputType="number" />
+        android:inputType="number"
+        android:textColor="#000000"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
