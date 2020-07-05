@@ -40,8 +40,6 @@ public class ThongBaoKeHoachReciver extends BroadcastReceiver {
         NotificationHelper notificationHelper1 = new NotificationHelper(context);
         NotificationCompat.Builder nb = notificationHelper1.getChanne12Notification(title,message);
         notificationHelper1.getManager().notify(2,nb.build());
-
-
     }
 
 
