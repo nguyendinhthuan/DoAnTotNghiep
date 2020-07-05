@@ -111,6 +111,12 @@
         android:layout_marginTop="10dp"
         android:hint="Nhập số tiền dự định cho kế hoạch"/>
 
+    <CheckBox
+        android:id="@+id/checkBox_KeHoach"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhận thông báo" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"

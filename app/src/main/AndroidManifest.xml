@@ -28,6 +28,7 @@
         </activity>
 
         <receiver android:name=".thongbao.ThongBaoThuChiReceiver" />
+        <receiver android:name=".thongbao.ThongBaoKeHoachReciver"/>
     </application>
 
 </manifest>

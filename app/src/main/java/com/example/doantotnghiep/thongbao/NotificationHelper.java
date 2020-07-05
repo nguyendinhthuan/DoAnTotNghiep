@@ -16,7 +16,9 @@ import com.example.doantotnghiep.R;
 
 public class NotificationHelper extends ContextWrapper {
     public static final String channel1ID = "channel1ID";
-    public static final String channel1Name = "Channel 1";
+    public static final String channel1Name = "Thông báo thu chi";
+    public static final String channel2ID = "channel2ID";
+    public static final String channel2Name = "Thông báo kế hoạch";
     private NotificationManager mManager;
     private PendingIntent pendingIntent;
 
@@ -28,6 +30,7 @@ public class NotificationHelper extends ContextWrapper {
         }
     }
 
+    //Thong bao thu chi
     public void createChannels(){
         NotificationChannel channel = new NotificationChannel(channel1ID,channel1Name, NotificationManager.IMPORTANCE_DEFAULT);
         channel.enableLights(true);
@@ -36,6 +39,14 @@ public class NotificationHelper extends ContextWrapper {
         channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
         getManager().createNotificationChannel(channel);
+
+        NotificationChannel channel2 = new NotificationChannel(channel2ID,channel2Name, NotificationManager.IMPORTANCE_DEFAULT);
+        channel2.enableLights(true);
+        channel2.enableVibration(true);
+        channel2.setLightColor(R.color.colorPrimary);
+        channel2.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+        getManager().createNotificationChannel(channel2);
     }
 
     public NotificationManager getManager(){
@@ -50,6 +61,17 @@ public class NotificationHelper extends ContextWrapper {
 
     public NotificationCompat.Builder getChannel1Notification(String title,String message){
         return new NotificationCompat.Builder(getApplicationContext(), channel1ID)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.mipmap.logo)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+    }
+
+    //Thong bao ke hoach
+
+    public NotificationCompat.Builder getChanne12Notification(String title,String message){
+        return new NotificationCompat.Builder(getApplicationContext(), channel2ID)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.mipmap.logo)

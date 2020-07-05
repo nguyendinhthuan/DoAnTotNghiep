@@ -21,7 +21,8 @@ public class AdapterKeHoachTietKiem extends ArrayAdapter<ArrayKeHoachTietKiem> {
     private Activity a;
     private int id;
     private ArrayList<ArrayKeHoachTietKiem> arr;
-    private TextView tenkehoachtietkiem, ngaybatdaukehoachtietkiem, ngayketthuckehoachtietkiem, sotienkehoachtietkiem, trangthai, sotiendatietkiem;
+    private TextView tenkehoachtietkiem, ngaybatdaukehoachtietkiem, ngayketthuckehoachtietkiem, sotienkehoachtietkiem, trangthai, sotiendatietkiem
+            ,nhanthongbao; //moi
 
     public AdapterKeHoachTietKiem(Activity context, int resource, ArrayList<ArrayKeHoachTietKiem> objects) {
         super(context, resource, objects);
@@ -35,14 +36,16 @@ public class AdapterKeHoachTietKiem extends ArrayAdapter<ArrayKeHoachTietKiem> {
         LayoutInflater in = a.getLayoutInflater();
         view = in.inflate(id, null);
         if (arr.size()>0 && position>=0) {
-            tenkehoachtietkiem = (TextView) view.findViewById(R.id.txtTenKeHoachTietKiem);
-            sotienkehoachtietkiem = (TextView) view.findViewById(R.id.txtSoTienKeHoachTietKiem);
-            trangthai = (TextView) view.findViewById(R.id.txtTrangThaiKeHoachTietKiem);
-            sotiendatietkiem = (TextView) view.findViewById(R.id.txtSoTienDaTietKiem);
+            tenkehoachtietkiem =  view.findViewById(R.id.txtTenKeHoachTietKiem);
+            sotienkehoachtietkiem =  view.findViewById(R.id.txtSoTienKeHoachTietKiem);
+            trangthai =  view.findViewById(R.id.txtTrangThaiKeHoachTietKiem);
+            sotiendatietkiem = view.findViewById(R.id.txtSoTienDaTietKiem);
+            nhanthongbao = view.findViewById(R.id.txtThongBaoKeHoach); //moi
 
             tenkehoachtietkiem.setText(arr.get(position).tenkehoachtietkiem);
             sotienkehoachtietkiem.setText(DoiSoSangTien(arr.get(position).sotienkehoachtietkiem));
             trangthai.setText(arr.get(position).trangthai);
+            nhanthongbao.setText(arr.get(position).nhanthongbao); //moi
             if (trangthai.getText().toString().equals("Đã kết thúc - Kế hoạch thành công")) {
                 trangthai.setTextColor(Color.parseColor("#2FB400"));
             } else if (trangthai.getText().toString().equals("Đã kết thúc - Kế hoạch thất bại")) {

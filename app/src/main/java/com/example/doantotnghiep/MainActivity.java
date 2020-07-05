@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.doantotnghiep.thongbao.ThongBaoKeHoachReciver;
 import com.example.doantotnghiep.thongbao.ThongBaoThuChiReceiver;
 
 import java.text.ParseException;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Table Ke hoach tiet kiem
             data.execSQL("create table if not exists tblkehoachtietkiem(makehoachtietkiem int primary key, tenkehoachtietkiem text, ngaybatdaukehoachtietkiem date, " +
-                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, sotiendatietkiem real, trangthai text, " +
+                    "ngayketthuckehoachtietkiem date, sotienkehoachtietkiem real, sotiendatietkiem real, nhanthongbao int, trangthai text, " +
                     "tentaikhoan text constraint tentaikhoan references tbltaikhoan(tentaikhoan) on delete cascade)");
 
             //Table Thu chi cho ke hoach tiet kiem
@@ -167,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     KiemTraThongBao();
-
+                    KiemTraThongBaoKeHoach();
                     Toast.makeText(getApplicationContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 } else {
                     mk = false;
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Kiem tra ngay thong bao
-    // Cap nhat lai thuoc tinh nhanthongbao
+    // Cap nhat lai thuoc tinh nhanthongbao thu chi
     public void KiemTraThongBao() throws ParseException {
         int mathuchi,gio,phut;
         String ngaythongbao,ngayhientai;
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 Date datehientai = simpleDateFormat.parse(ngayhientai);
                 Date datethongbao = simpleDateFormat.parse(ngaythongbao);
                 if(datethongbao.equals(datehientai)){
-                    if (gio >= gio24 || gio >= gio12 +12 && phut >= phutht){
+                    if (gio <= gio24 || gio <= gio12 +12 && phut <= phutht){ //cu >=
                         ContentValues values = new ContentValues();
                         values.put("nhanthongbao", 0);
                         data.update("tblthuchi", values, "mathuchi = " + mathuchi, null);
@@ -237,6 +238,55 @@ public class MainActivity extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ThongBaoThuChiReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+    }
+
+    // Cap nhat lai thuoc tinh nhanthongbao thu chi
+    public void KiemTraThongBaoKeHoach() throws ParseException {
+        int mathukehoach;
+        String ngaythongbao,ngayhientai;
+        Calendar calendar = Calendar.getInstance();
+
+        int ngay = calendar.get(Calendar.DAY_OF_MONTH);
+        int thang = calendar.get(Calendar.MONTH) +1 ;
+        int nam = calendar.get(Calendar.YEAR);
+
+        int gio12 = calendar.get(Calendar.HOUR);
+        int gio24 = calendar.get(Calendar.HOUR_OF_DAY);
+        int phutht = calendar.get(Calendar.MINUTE);
+
+        ngayhientai = ngay + "/" + thang +"/"+ nam;
+
+
+        Cursor cursor = data.rawQuery("select* from tblkehoachtietkiem where tentaikhoan ='" + tendangnhap + "'", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            if (cursor.getInt(cursor.getColumnIndex("nhanthongbao")) == 1) {
+                ngaythongbao = cursor.getString(cursor.getColumnIndex("ngayketthuckehoachtietkiem"));
+//                gio = cursor.getInt(cursor.getColumnIndex("giothuchi"));
+//                phut = cursor.getInt(cursor.getColumnIndex("phutthuchi"));
+                mathukehoach = cursor.getInt(cursor.getColumnIndex("makehoachtietkiem"));
+
+                Date datehientai = simpleDateFormat.parse(ngayhientai);
+                Date datethongbao = simpleDateFormat.parse(ngaythongbao);
+                if(datethongbao.equals(datehientai)){
+                    ContentValues values = new ContentValues();
+                    values.put("nhanthongbao", 0);
+                    data.update("tblkehoachtietkiem", values, "makehoachtietkiem = " + mathukehoach, null);
+                    TatThongBaoKeHoach();
+
+                }
+            }
+            cursor.moveToNext();
+        }
+    }
+
+    //Tat thong bao bo trong ham CapNhatThuChi
+    public void TatThongBaoKeHoach(){
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ThongBaoKeHoachReciver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 2, intent, 0);
 
         alarmManager.cancel(pendingIntent);
     }
