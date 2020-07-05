@@ -111,7 +111,7 @@ public class QuanLyThuChiFragment extends Fragment{
     //private Time time;
     private SimpleDateFormat simpleTimeFormat;
     //private DateFormat dateFormat;
-    private int gio, phut, gioSua, phutSua;
+    private int gio, phut, gioSua, phutSua, madanhmucht;
     private CheckBox check_thongbao, check_thongbaoSua;
     private Double sotiennhapthem;
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -847,17 +847,25 @@ public class QuanLyThuChiFragment extends Fragment{
         spinner_ViDialogSua =  d.findViewById(R.id.spinner_ViThuChiSua);
         spinner_DanhMucDialogSua = d.findViewById(R.id.spinner_DanhMucSua);
 
-        //Xu ly hien thi
-        spinner_LoaiThuChiDialogSua.setEnabled(false);
-        spinner_ViDialogSua.setEnabled(false);
-        editText_SoTienThuChiDialogSua.setEnabled(false);
 
-        //Xu ly
-        LoadThucChi();
-        //HienThiThoiGianSua();
-        //HienThiGioSua();
         LoadSpinnerDialogSua();
         LoadDanhSachViLenSpinnerDialog();
+        //LoadDanhSachDanhMucLenSpinnerDialogSua();
+        //Xu ly
+        if(LoadThucChi()){
+            //Xu ly hien thi
+            spinner_LoaiThuChiDialogSua.setEnabled(false);
+            spinner_ViDialogSua.setEnabled(false);
+            editText_SoTienThuChiDialogSua.setEnabled(false);
+
+        }
+        spinner_DanhMucDialogSua.setSelection(3);
+//        String tendanhmucsua = LayTenDanhMucChon(madanhmucht);
+//        spinner_DanhMucDialogSua.setSelection(LayViTriChuoiDanhMuc(spinner_DanhMucDialogSua,tendanhmucsua));
+        //spinner_DanhMucDialogSua.setSelection(4);
+        //HienThiThoiGianSua();
+        //HienThiGioSua();
+
 
         //Xu ly nut
         button_GioThuChiDialogSua.setOnClickListener(new View.OnClickListener() {
@@ -991,16 +999,15 @@ public class QuanLyThuChiFragment extends Fragment{
 
 
    //Load du lieu cua thu chi
-    public void LoadThucChi() {
+    public boolean LoadThucChi() {
        final int mathuchiht = arr.get(vitrils).ma;
        cursor = data.rawQuery("select* from tblthuchi where tentaikhoan ='"+taikhoan+"' and mathuchi ="+ mathuchiht,null);
        cursor.moveToFirst();
-       int vitrispinerloai;
        String loaikhoanht = cursor.getString(cursor.getColumnIndex("loaithuchi"));
        if(loaikhoanht.equals("Khoản thu")){
-           vitrispinerloai = 0;
+           spinner_LoaiThuChiDialogSua.setSelection(0);
        }else {
-           vitrispinerloai = 1;
+           spinner_LoaiThuChiDialogSua.setSelection(1);
        }
 
        int maviht = cursor.getInt(cursor.getColumnIndex("mavi"));
@@ -1023,10 +1030,9 @@ public class QuanLyThuChiFragment extends Fragment{
 //            e.printStackTrace();
 //        }
         //Set len dialog
-       spinner_LoaiThuChiDialogSua.setSelection(vitrispinerloai);
        spinner_ViDialogSua.setSelection(LayViTriChuoi(spinner_ViDialogSua,tenvisua));
-       spinner_DanhMucDialogSua.setSelection(LayViTriChuoi(spinner_DanhMucDialogSua,tendanhmucsua));
-
+     //  spinner_DanhMucDialogSua.setSelection(LayViTriChuoi(spinner_DanhMucDialogSua,tendanhmucsua));
+        //spinner_DanhMucDialogSua.setSelection(4);
        editText_SoTienThuChiDialogSua.setText(String.valueOf(sotienthuchi));
        editText_MoTaThuChiDialogSua.setText(motaht);
        button_NgayThuChiDialogSua.setText(ngaythuchien);
@@ -1037,6 +1043,7 @@ public class QuanLyThuChiFragment extends Fragment{
        }else {
            check_thongbaoSua.setChecked(false);
        }
+       return true;
 
     }
 
@@ -1050,6 +1057,7 @@ public class QuanLyThuChiFragment extends Fragment{
         }
         return 0;
     }
+
     //Lay ten vi chon de dua len spinner sua
     public String LayTenViChon(int maviht){
         cursor = data.rawQuery("select tenvi from tblvi where tentaikhoan='"+taikhoan+"' and mavi="+ maviht,null);
