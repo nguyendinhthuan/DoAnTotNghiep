@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,9 @@ import com.example.doantotnghiep.model.ArrayKeHoachTietKiem;
 import com.example.doantotnghiep.model.ArrayThuChiChoKeHoachTietKiem;
 import com.example.doantotnghiep.thongbao.ThongBaoKeHoachReciver;
 import com.example.doantotnghiep.thongbao.ThongBaoThuChiReceiver;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -972,5 +976,4 @@ public class KeHoachTietKiemFragment extends Fragment {
         Toast.makeText(activity,"Kế hoạch không có thông báo",Toast.LENGTH_SHORT).show();
         return false;
     }
-
 }

@@ -40,6 +40,5 @@
                 android:layout_height="wrap_content"
                 android:dividerHeight="3dp"/>
         </LinearLayout>
-
     </RelativeLayout>
 </RelativeLayout>
