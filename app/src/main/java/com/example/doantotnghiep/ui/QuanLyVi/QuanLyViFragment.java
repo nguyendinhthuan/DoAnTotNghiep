@@ -541,10 +541,16 @@ public class QuanLyViFragment extends Fragment {
     public boolean CapNhatVi() {
         String thongbao = "";
         boolean tenviht = true;
+        String tenvi;
         final int maviht = list.get(vitri).mavi;
         cursor = data.rawQuery("select * from tblvi where tentaikhoan ='" + taikhoan+"'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast()==false) {
+            tenvi = cursor.getString(cursor.getColumnIndex("tenvi"));
+            if (tenvi.equals("Cá nhân") || tenvi.equals("Gia đình") || tenvi.equals("Tiết kiệm"))
+            {
+                tenviht = true;
+            }else
             if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_NhapTenViCapNhat.getText().toString())) {
                 tenviht = false;
             }
@@ -579,8 +585,8 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public boolean LayThongTinLenDialogSua(){
-        final String tenviht = list.get(vitri).tenvi;
-        Cursor cursor = data.rawQuery("select * from tblvi where tenvi like '"+ tenviht +"'" + " and tentaikhoan ='" + taikhoan+"'" , null);
+        final int maviht = list.get(vitri).mavi;
+        Cursor cursor = data.rawQuery("select * from tblvi where mavi like '"+ maviht +"'" + " and tentaikhoan ='" + taikhoan+"'" , null);
         cursor.moveToFirst();
         String tenvi1 = cursor.getString(1);
         String motavi1 = cursor.getString(2);
