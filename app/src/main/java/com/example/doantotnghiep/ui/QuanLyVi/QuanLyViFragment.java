@@ -125,7 +125,12 @@ public class QuanLyViFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_CapNhat: {
-                SuaVi();
+                if(!KiemTraTenViCapNhat()){
+                    Toast.makeText(activity,"Ví mặc định không thể sửa",Toast.LENGTH_SHORT).show();
+                }else {
+                    SuaVi();
+                }
+
                 return true;
             }
             case R.id.option_Xoa: {
@@ -280,6 +285,7 @@ public class QuanLyViFragment extends Fragment {
     }
 
     public boolean XuLyChuyenTien(){
+        int mavichuyen = list.get(vitri).mavi;
         Double sotiendatru = 0.0;
         Double sotiendacong = 0.0;
         int malichsuchuyentien = 1;
@@ -291,7 +297,7 @@ public class QuanLyViFragment extends Fragment {
         //cap nhat lai so tien da tru o vi chon
         ContentValues values = new ContentValues();
         values.put("sotienvi",sotiendatru);
-        data.update("tblvi",values,"tenvi like '"+ tenvichuyen + "'",null);
+        data.update("tblvi",values,"mavi = "+ mavichuyen,null);
 
         //cap nhat lai so tien da cong them o vi duoc chuyen
         ContentValues values1 = new ContentValues();
@@ -538,6 +544,8 @@ public class QuanLyViFragment extends Fragment {
                 });
             }
 
+
+
     public boolean CapNhatVi() {
         String thongbao = "";
         boolean tenviht = true;
@@ -546,12 +554,12 @@ public class QuanLyViFragment extends Fragment {
         cursor = data.rawQuery("select * from tblvi where tentaikhoan ='" + taikhoan+"'", null);
         cursor.moveToFirst();
         while (cursor.isAfterLast()==false) {
-            tenvi = cursor.getString(cursor.getColumnIndex("tenvi"));
-            if (tenvi.equals("Cá nhân") || tenvi.equals("Gia đình") || tenvi.equals("Tiết kiệm"))
-            {
-                tenviht = true;
-            }else
-            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_NhapTenViCapNhat.getText().toString())) {
+        //tenvi = cursor.getString(cursor.getColumnIndex("tenvi"));
+//            if (tenvi.equals("Cá nhân") || tenvi.equals("Gia đình") || tenvi.equals("Tiết kiệm"))
+//            {
+//                tenviht = ;
+//            }else
+            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_NhapTenViCapNhat.getText().toString()) ) {
                 tenviht = false;
             }
             cursor.moveToNext();
@@ -584,6 +592,19 @@ public class QuanLyViFragment extends Fragment {
         return false;
     }
 
+    public boolean KiemTraTenViCapNhat(){
+        int mavi = list.get(vitri).mavi;
+        String tenvi;
+        cursor = data.rawQuery("select * from tblvi where mavi ="+ mavi+" and tentaikhoan ='" + taikhoan+"'", null);
+        cursor.moveToFirst();
+        tenvi = cursor.getString(cursor.getColumnIndex("tenvi"));
+        if (tenvi.equals("Cá nhân") || tenvi.equals("Gia đình") || tenvi.equals("Tiết kiệm"))
+        {
+            return false;
+        }
+
+        return true;
+    }
     public boolean LayThongTinLenDialogSua(){
         final int maviht = list.get(vitri).mavi;
         Cursor cursor = data.rawQuery("select * from tblvi where mavi like '"+ maviht +"'" + " and tentaikhoan ='" + taikhoan+"'" , null);
