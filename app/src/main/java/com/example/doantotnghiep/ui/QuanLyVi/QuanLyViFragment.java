@@ -529,7 +529,7 @@ public class QuanLyViFragment extends Fragment {
                 button_LuuCapNhatVi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(CapNhatVi())
+                       if(CapNhatVi())
                         {
                             d.dismiss();
                             LoadTatCaVi();
@@ -545,7 +545,6 @@ public class QuanLyViFragment extends Fragment {
             }
 
 
-
     public boolean CapNhatVi() {
         String thongbao = "";
         boolean tenviht = true;
@@ -559,7 +558,13 @@ public class QuanLyViFragment extends Fragment {
 //            {
 //                tenviht = ;
 //            }else
-            if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_NhapTenViCapNhat.getText().toString()) ) {
+            if (editText_NhapTenViCapNhat.getText().toString().equals("")) {
+                editText_NhapTenViCapNhat.startAnimation(animation);
+                Toast.makeText(activity,"Bạn chưa nhập tên ví",Toast.LENGTH_LONG).show();
+            } else if (editText_NhapMoTaViCapNhat.getText().toString().equals("")) {
+                editText_NhapMoTaViCapNhat.startAnimation(animation);
+                Toast.makeText(activity,"Bạn chưa nhập mô tả ví",Toast.LENGTH_LONG).show();
+            }else if (cursor.getString(cursor.getColumnIndex("tenvi")).equals(editText_NhapTenViCapNhat.getText().toString()) ) {
                 tenviht = false;
             }
             cursor.moveToNext();
@@ -567,12 +572,6 @@ public class QuanLyViFragment extends Fragment {
         if (tenviht == false) {
             Toast.makeText(activity, "Tên ví này đã tồn tại", Toast.LENGTH_SHORT).show();
             editText_NhapTenViCapNhat.startAnimation(animation);
-        } else if (editText_NhapTenViCapNhat.getText().toString().equals("")) {
-            editText_NhapTenViCapNhat.startAnimation(animation);
-            Toast.makeText(activity,"Bạn chưa nhập tên ví",Toast.LENGTH_LONG).show();
-        } else if (editText_NhapMoTaViCapNhat.getText().toString().equals("")) {
-            editText_NhapMoTaViCapNhat.startAnimation(animation);
-            Toast.makeText(activity,"Bạn chưa nhập mô tả ví",Toast.LENGTH_LONG).show();
         } else {
             ContentValues values = new ContentValues();
             values.put("tenvi",editText_NhapTenViCapNhat.getText().toString());

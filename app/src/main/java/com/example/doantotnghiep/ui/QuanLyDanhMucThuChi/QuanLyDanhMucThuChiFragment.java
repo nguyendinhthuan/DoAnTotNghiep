@@ -108,7 +108,11 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_CapNhatDanhMuc: {
-                SuaDanhMucDialog();
+                if(!KiemTraDanhMucMacDinh()){
+                    Toast.makeText(activity,"Danh mục mặc định không thể sửa",Toast.LENGTH_SHORT).show();
+                }else {
+                    SuaDanhMucDialog();
+                }
                 return true;
             }
             case R.id.option_XoaDanhMuc: {
@@ -249,6 +253,21 @@ public class QuanLyDanhMucThuChiFragment extends Fragment {
             }
         });
 
+    }
+
+    public boolean KiemTraDanhMucMacDinh(){
+        int madanhmucht = list.get(vitri).madanhmuc;
+        String tendanhmuc;
+        Cursor cursor = data.rawQuery("select * from tbldanhmucthuchi where madanhmuc ="+ madanhmucht +" and tentaikhoan ='"+ taikhoan+"'",null);
+        cursor.moveToFirst();
+        tendanhmuc = cursor.getString(cursor.getColumnIndex("tendanhmuc"));
+        if(tendanhmuc.equals("Tiền lương") || tendanhmuc.equals("Khoản thu khác") || tendanhmuc.equals("Được cho") || tendanhmuc.equals("Tiền thưởng")
+        || tendanhmuc.equals("Làm thêm") || tendanhmuc.equals("Ăn uống") || tendanhmuc.equals("Học tập") || tendanhmuc.equals("Chi phí đi lại")
+        || tendanhmuc.equals("Khoản chi khác") || tendanhmuc.equals("Tiền nhà trọ") || tendanhmuc.equals("Tiền điện nước") || tendanhmuc.equals("Dụng cụ sinh hoạt cá nhân")
+        || tendanhmuc.equals("Quần áo") || tendanhmuc.equals("Giải trí") || tendanhmuc.equals("Du lịch")){
+            return false;
+        }
+        return true;
     }
 
     public boolean CapNhatDanhMuc(){
